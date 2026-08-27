@@ -127,6 +127,17 @@ public partial class MainWindow : Window
         MapTitle.Text = map.Name.ToUpperInvariant();
     }
 
+    private void PushMarkersToViews()
+    {
+        var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
+        if (map == null) return;
+        var extracts = App.Settings.ShowExtracts ? App.Maps.ExtractsFor(map.Id) : [];
+        var mines = App.Settings.ShowMines ? App.Maps.MinesFor(map.Id) : [];
+        var labels = App.Settings.ShowMarkerLabels;
+        PreviewMap.SetMarkers(extracts, mines, labels);
+        _overlay?.SetMarkers(extracts, mines, labels);
+    }
+
     private void RefreshHud()
     {
         StatusBadge.Text = App.Raid.StatusLabel;
@@ -153,7 +164,7 @@ public partial class MainWindow : Window
         App.Settings.ShowMines = ShowMinesBox.IsChecked == true;
         App.Settings.ShowMarkerLabels = ShowLabelsBox.IsChecked == true;
         SettingsStore.Save(App.Settings);
-        PushMapToViews();
+        PushMarkersToViews();
     }
 
     private void Settings_Click(object sender, RoutedEventArgs e)

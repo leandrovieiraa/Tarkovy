@@ -72,6 +72,11 @@ public partial class MapView : UserControl
     public void LoadMap(MapDefinition map, IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
     {
         Post(new { type = "loadMap", map });
+        SetMarkers(extracts, mines, showLabels);
+    }
+
+    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
+    {
         Post(new
         {
             type = "markers",

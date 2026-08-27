@@ -52,7 +52,7 @@
                                    Foreground="{StaticResource BrushAmber}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Dev 0.0.1" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock Text="Dev 0.0.2" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"

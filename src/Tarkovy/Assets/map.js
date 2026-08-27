@@ -370,7 +370,7 @@
     }
     for (const m of state.mines) {
       const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
-      if (!inMapPad(pctX, pctY)) continue;
+      if (!inMap(pctX, pctY)) continue;
       const node = document.createElement("div");
       node.className = "mine";
       place(node, pctX, pctY);

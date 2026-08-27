@@ -5,9 +5,9 @@
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.1](https://img.shields.io/badge/version-Dev%200.0.1-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.1-111111?style=flat-square&labelColor=000000)
+![Dev 0.0.2](https://img.shields.io/badge/version-Dev%200.0.2-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.2-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/46f5026d6bfbfaee7f2510edb3a78fa3323c0828341c4d296b07558874655f35)
 
-[Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [License](#license--terms-of-use) · [Credits](#credits)
+[Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
 
@@ -24,7 +24,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | Dev 0.0.1                        |
+| **Version**      | Dev 0.0.2                        |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
 | **Distribution** | `dist\Tarkovy.exe` (single-file) |
@@ -132,14 +132,14 @@ dotnet run --project src\Tarkovy\Tarkovy.csproj
 
 Official builds are meant to be checked on [VirusTotal](https://www.virustotal.com/) before you run them. Windows SmartScreen may still warn on unsigned apps — that is normal for new open-source tools.
 
-### Release `v0.0.1` (`Tarkovy.exe`)
+### Release `v0.0.2` (`Tarkovy.exe`)
 
 
-|                |                                                                                                                          |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.1/Tarkovy.exe)           |
-| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/755c6719f02fac75ef3e213e6f221ae83783c1519cbcd6b16571f5c8d03175a8) |
-| **SHA-256**    | `755C6719F02FAC75EF3E213E6F221AE83783C1519CBCD6B16571F5C8D03175A8`                                                       |
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.2/Tarkovy.exe)                       |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/46f5026d6bfbfaee7f2510edb3a78fa3323c0828341c4d296b07558874655f35) |
+| **SHA-256**    | `F36744FE4E6EC06F83191B294B58E182CAD8C6B81946A9A66103FE9E63F78D69`                                                                   |
 
 
 Verify locally (PowerShell):
@@ -148,9 +148,20 @@ Verify locally (PowerShell):
 Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ```
 
-If the VirusTotal page has no report yet, upload the release `Tarkovy.exe` once at [VirusTotal → Upload](https://www.virustotal.com/gui/home/upload) (file is ~156 MB). After engines finish, the hash link above shows the results.
-
 > Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
+
+---
+
+## Changelog
+
+### Dev 0.0.2
+
+- Fixed mines toggle: populated minefield data and update markers immediately when enabling/disabling **MINES**
+- Updated branding assets (banner / logo)
+
+### Dev 0.0.1
+
+- Initial public release
 
 ---
 
@@ -188,7 +199,7 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 |                         |                                                                                                                                                                                                     |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
-| **Product**             | Tarkovy · Dev 0.0.1                                                                                                                                                                                 |
+| **Product**             | Tarkovy · Dev 0.0.2                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
 

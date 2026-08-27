@@ -71,6 +71,9 @@ public partial class OverlayWindow : Window
 
     public void SetFollow(bool follow) => OverlayMap.SetFollow(follow);
 
+    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null) =>
+        OverlayMap.SetMarkers(extracts, mines, showLabels);
+
     public void ToggleExpanded()
     {
         if (IsExpanded) ApplyMiniLayout();
