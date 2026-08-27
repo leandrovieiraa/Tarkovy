@@ -1,0 +1,318 @@
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: Bahnschrift, "Segoe UI", sans-serif;
+  user-select: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+#stage {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  cursor: grab;
+}
+
+#stage.drag { cursor: grabbing; }
+
+#world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  width: 1200px;
+  height: 1200px;
+}
+
+#svgHost {
+  position: absolute;
+  inset: 0;
+}
+
+#svgHost svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: none;
+}
+
+#mapGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  mix-blend-mode: normal;
+  opacity: 0.45;
+}
+
+#viewGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+#markers, #player {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.extract, .mine {
+  pointer-events: auto;
+  cursor: help;
+}
+
+.extract::before,
+.mine::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+
+.extract {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 0;
+  box-shadow: 0 0 6px currentColor;
+  animation: extractPulse 2.4s ease-in-out infinite;
+  will-change: opacity, box-shadow;
+  /* Anti-zoom + anti-rotação: pin fica legível na tela */
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center center;
+}
+
+.extract.pmc, .extract.any, .extract.shared, .extract.usec, .extract.bear {
+  color: #3dff7a;
+  background: #3dff7a;
+}
+.extract.scav {
+  color: #9cffb4;
+  background: #9cffb4;
+}
+
+.mine {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  background: #ff3b30;
+  transform: rotate(calc(45deg - var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center center;
+  box-shadow: 0 0 8px #ff3b30;
+  animation: mineBlink 1.8s ease-in-out infinite;
+  will-change: opacity, box-shadow;
+}
+
+.extract:nth-child(3n) { animation-delay: 0.35s; }
+.extract:nth-child(3n+1) { animation-delay: 0.7s; }
+.mine:nth-child(2n) { animation-delay: 0.45s; }
+.mine:nth-child(3n) { animation-delay: 0.9s; }
+
+@keyframes extractPulse {
+  0%, 100% {
+    opacity: 0.72;
+    box-shadow: 0 0 4px currentColor;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 10px currentColor, 0 0 16px currentColor;
+  }
+}
+
+@keyframes mineBlink {
+  0%, 100% {
+    opacity: 0.55;
+    box-shadow: 0 0 4px #ff3b30;
+  }
+  45%, 55% {
+    opacity: 1;
+    box-shadow: 0 0 10px #ff3b30, 0 0 18px rgba(255, 59, 48, 0.7);
+  }
+}
+
+.extract-label {
+  position: absolute;
+  left: 14px;
+  top: -10px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.mine .extract-label,
+.mine-label {
+  color: #ffb4ae;
+  border-color: rgba(255, 59, 48, 0.55);
+  transform: rotate(-45deg);
+  transform-origin: left center;
+  left: 16px;
+  top: -4px;
+}
+
+/* Nomes embutidos no SVG (Woods etc.): contraste em terreno claro */
+#svgHost svg text {
+  paint-order: stroke fill;
+  stroke: #000;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  fill: #fff !important;
+  font-weight: 700 !important;
+}
+
+#tip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  max-width: min(280px, 70vw);
+  padding: 10px 14px;
+  background: rgba(8, 8, 8, 0.94);
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+}
+
+#tip .tip-kind {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #8a8a8a;
+}
+
+#tip.mine-tip {
+  border-color: #ff3b30;
+}
+
+#tip.mine-tip .tip-kind {
+  color: #ff8a80;
+}
+
+#tip.extract-tip {
+  border-color: #3dff7a;
+}
+
+#tip.extract-tip .tip-kind {
+  color: #3dff7a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .extract, .mine {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+#player {
+  width: 0;
+  height: 0;
+}
+
+#player .chevron {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-left: -8px;
+  margin-top: -14px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 18px solid #fff;
+  filter: drop-shadow(0 0 5px #fff);
+  transform-origin: 8px 14px;
+}
+
+#hint {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 5;
+  text-shadow: 0 0 6px #000;
+}
+
+#mapTools {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 8;
+  display: flex;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+#mapTools button {
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(0, 0, 0, 0.55);
+  color: #e8e8e8;
+  font-family: Bahnschrift, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  line-height: 1;
+}
+
+#mapTools button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+
+#mapTools button:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#mapTools #rotReset {
+  min-width: 36px;
+  width: auto;
+  padding: 0 6px;
+  font-size: 11px;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="map.css" />
+</head>
+<body>
+  <div id="stage">
+    <div id="world">
+      <div id="svgHost"></div>
+      <div id="mapGrid"></div>
+      <div id="markers"></div>
+      <div id="player" hidden></div>
+    </div>
+    <div id="viewGrid"></div>
+    <div id="tip" hidden></div>
+    <div id="mapTools" aria-label="Map rotation">
+      <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise" aria-label="Rotate left">↺</button>
+      <button type="button" id="rotReset" title="Reset rotation" aria-label="Reset">0°</button>
+      <button type="button" id="rotRight" title="Rotate 90° clockwise" aria-label="Rotate right">↻</button>
+    </div>
+  </div>
+  <div id="hint">WAITING FOR MAP</div>
+  <script src="map.js"></script>
+</body>
+</html>

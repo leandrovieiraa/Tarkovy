@@ -1,0 +1,91 @@
+<Window x:Class="Tarkovy.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Settings.Title}"
+        Height="720" Width="520"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{StaticResource BrushBgDeep}"
+        Foreground="{StaticResource BrushText}"
+        Icon="pack://application:,,,/Assets/brand/tarkovy.ico">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="42" ResizeBorderThickness="6" GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <Border BorderBrush="{StaticResource BrushAmber}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="56"/>
+            </Grid.RowDefinitions>
+            <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,1">
+                <DockPanel Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/Assets/brand/tarkovy-icon-256.png"
+                               Width="18" Height="18" Margin="0,0,8,0"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="{DynamicResource Settings.Header}" VerticalAlignment="Center"
+                                   Foreground="{StaticResource BrushAmber}" FontSize="16" FontWeight="Bold"
+                                   FontFamily="{StaticResource HudFont}"/>
+                    </StackPanel>
+                    <Button DockPanel.Dock="Right" Content="✕" Width="36" Height="28" Click="Close_Click"
+                            Background="Transparent" Foreground="{StaticResource BrushTextDim}" BorderThickness="0"
+                            WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" HorizontalAlignment="Right"
+                            ToolTip="{DynamicResource Main.Tooltip.Close}"/>
+                </DockPanel>
+            </Border>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Padding="18">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Section.Language}"/>
+                    <ComboBox x:Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Windows}"/>
+                    <CheckBox x:Name="StartWindowsBox" Content="{DynamicResource Settings.StartWithWindows}"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Logs}"/>
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SlotButton}" Content="…" Width="40" Margin="8,0,0,0" Click="BrowseLogs_Click"/>
+                        <TextBox x:Name="LogsPathBox"/>
+                    </DockPanel>
+                    <TextBlock x:Name="LogsOk" FontSize="11" Margin="0,4,0,0"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,14,0,4" Text="{DynamicResource Settings.Section.Shots}"/>
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SlotButton}" Content="…" Width="40" Margin="8,0,0,0" Click="BrowseShots_Click"/>
+                        <TextBox x:Name="ShotsPathBox"/>
+                    </DockPanel>
+                    <TextBlock x:Name="ShotsOk" FontSize="11" Margin="0,4,0,0"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Markers}"/>
+                    <CheckBox x:Name="ShowExtractsBox" Content="{DynamicResource Settings.ShowExtracts}"/>
+                    <CheckBox x:Name="ShowMinesBox" Content="{DynamicResource Settings.ShowMines}"/>
+                    <CheckBox x:Name="ShowLabelsBox" Content="{DynamicResource Settings.ShowLabels}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ShowLabelsHint}"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Overlay}"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Opacity}"/>
+                    <Slider x:Name="OpacitySlider" Minimum="0.45" Maximum="1" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+                    <CheckBox x:Name="FollowBox" Content="{DynamicResource Settings.FollowPlayer}"/>
+                    <CheckBox x:Name="DeleteBox" Content="{DynamicResource Settings.DeleteAfterRead}"/>
+                    <CheckBox x:Name="KeepLastBox" Content="{DynamicResource Settings.KeepLast}"/>
+                    <CheckBox x:Name="AutoCleanupBox" Content="{DynamicResource Settings.AutoCleanup}" Margin="0,8,0,0"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="{DynamicResource Settings.AutoCleanupHint}"/>
+                </StackPanel>
+            </ScrollViewer>
+            <Border Grid.Row="2" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0" Padding="12">
+                <DockPanel>
+                    <TextBlock VerticalAlignment="Center" FontSize="11"
+                               Foreground="{StaticResource BrushTextDim}"
+                               Text="Anomaly Labs"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource SlotButton}" Content="{DynamicResource Settings.Cancel}" Click="Close_Click" Margin="0,0,8,0"/>
+                        <Button Style="{StaticResource SlotButton}" Content="{DynamicResource Settings.Save}" Click="Save_Click"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

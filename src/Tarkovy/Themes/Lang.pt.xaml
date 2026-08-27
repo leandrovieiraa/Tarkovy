@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+  <!-- Main -->
+  <sys:String x:Key="Main.Tooltip.Settings">Config</sys:String>
+  <sys:String x:Key="Main.Tooltip.Minimize">Minimizar</sys:String>
+  <sys:String x:Key="Main.Tooltip.Maximize">Maximizar</sys:String>
+  <sys:String x:Key="Main.Tooltip.Restore">Restaurar</sys:String>
+  <sys:String x:Key="Main.Tooltip.Close">Fechar</sys:String>
+  <sys:String x:Key="Main.Section.Notice">AVISO</sys:String>
+  <sys:String x:Key="Main.Notice.Body">Overlay exige Tarkov em Borderless Windowed. Dual-bind de Screenshot no W fica no jogo. Tarkovy só lê arquivos.</sys:String>
+  <sys:String x:Key="Main.Section.Map">MAPA</sys:String>
+  <sys:String x:Key="Main.Section.Markers">MARCADORES</sys:String>
+  <sys:String x:Key="Main.Marker.Extracts">EXTRAÇÕES</sys:String>
+  <sys:String x:Key="Main.Marker.Mines">MINAS</sys:String>
+  <sys:String x:Key="Main.Marker.Labels">NOMES VISÍVEIS</sys:String>
+  <sys:String x:Key="Main.Section.Shortcuts">ATALHOS</sys:String>
+  <sys:String x:Key="Main.Shortcut.Overlay">F8  mostrar / ocultar overlay</sys:String>
+  <sys:String x:Key="Main.Shortcut.Size">F9  minimapa / expandido</sys:String>
+  <sys:String x:Key="Main.Shortcut.CleanupHint">Fim de raid nos logs limpa leftovers (config)</sys:String>
+  <sys:String x:Key="Main.Action.Overlay">OVERLAY</sys:String>
+  <sys:String x:Key="Main.Action.Config">CONFIG</sys:String>
+  <sys:String x:Key="Main.Action.Clear">LIMPAR</sys:String>
+  <sys:String x:Key="Main.Tooltip.ShowOverlay">Mostrar overlay minimapa</sys:String>
+  <sys:String x:Key="Main.Tooltip.OpenSettings">Configurações</sys:String>
+  <sys:String x:Key="Main.Tooltip.EndRaid">Encerrar raid e limpar leftovers agora</sys:String>
+  <sys:String x:Key="Main.MapPanel.Title">MAPA</sys:String>
+  <sys:String x:Key="Main.Footer.Tagline">TARKOVY  ·  companion local  ·  sem leitura de memória</sys:String>
+
+  <!-- Status -->
+  <sys:String x:Key="Status.InRaid">EM RAID</sys:String>
+  <sys:String x:Key="Status.Loading">CARREGANDO</sys:String>
+  <sys:String x:Key="Status.Watching">MONITORANDO</sys:String>
+  <sys:String x:Key="Status.Idle">OCIOSO</sys:String>
+
+  <!-- Footer / runtime -->
+  <sys:String x:Key="Footer.NoFix">sem fix</sys:String>
+  <sys:String x:Key="Footer.Hud">{0}  ·  {1}  ·  {2}  ·  prints apagados {3}</sys:String>
+  <sys:String x:Key="Footer.RaidEndedCleaned">RAID ENCERRADA · leftovers limpos</sys:String>
+  <sys:String x:Key="Footer.RaidEndedNoAuto">RAID ENCERRADA · limpeza auto desligada</sys:String>
+  <sys:String x:Key="Footer.LogsMissing">LOGS: PASTA NAO ENCONTRADA</sys:String>
+  <sys:String x:Key="Footer.LogsWatching">LOGS: MONITORANDO</sys:String>
+  <sys:String x:Key="Footer.LogAttached">LOG: {0}</sys:String>
+  <sys:String x:Key="Footer.LogError">LOG ERR: {0}</sys:String>
+  <sys:String x:Key="Footer.MapDetected">MAPA: {0}</sys:String>
+  <sys:String x:Key="Footer.ShotsMissing">SHOTS: PASTA NAO ENCONTRADA</sys:String>
+  <sys:String x:Key="Footer.ShotsWatching">SHOTS: MONITORANDO</sys:String>
+  <sys:String x:Key="Footer.ShotError">SHOT ERR: {0}</sys:String>
+
+  <!-- Settings -->
+  <sys:String x:Key="Settings.Title">TARKOVY · CONFIG</sys:String>
+  <sys:String x:Key="Settings.Header">CONFIG</sys:String>
+  <sys:String x:Key="Settings.Section.Language">IDIOMA</sys:String>
+  <sys:String x:Key="Settings.Language.English">English</sys:String>
+  <sys:String x:Key="Settings.Language.Portuguese">Português</sys:String>
+  <sys:String x:Key="Settings.Section.Windows">WINDOWS</sys:String>
+  <sys:String x:Key="Settings.StartWithWindows">ABRIR COM O WINDOWS</sys:String>
+  <sys:String x:Key="Settings.Section.Logs">PASTA DE LOGS</sys:String>
+  <sys:String x:Key="Settings.Section.Shots">PASTA DE SCREENSHOTS</sys:String>
+  <sys:String x:Key="Settings.Path.Ok">OK</sys:String>
+  <sys:String x:Key="Settings.Path.Missing">PASTA NAO ENCONTRADA</sys:String>
+  <sys:String x:Key="Settings.Dialog.Logs">Pasta de logs do EFT</sys:String>
+  <sys:String x:Key="Settings.Dialog.Shots">Pasta de screenshots</sys:String>
+  <sys:String x:Key="Settings.Section.Markers">MARCADORES NO MAPA</sys:String>
+  <sys:String x:Key="Settings.ShowExtracts">MOSTRAR EXTRAÇÕES</sys:String>
+  <sys:String x:Key="Settings.ShowMines">MOSTRAR MINAS</sys:String>
+  <sys:String x:Key="Settings.ShowLabels">NOMES SEMPRE VISÍVEIS NO MAPA</sys:String>
+  <sys:String x:Key="Settings.ShowLabelsHint">Desligado: só tooltip ao passar o mouse.</sys:String>
+  <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
+  <sys:String x:Key="Settings.Opacity">OPACIDADE</sys:String>
+  <sys:String x:Key="Settings.FollowPlayer">SEGUIR JOGADOR NO MINIMAPA</sys:String>
+  <sys:String x:Key="Settings.DeleteAfterRead">APAGAR PRINT APÓS LER POSIÇÃO</sys:String>
+  <sys:String x:Key="Settings.KeepLast">MANTER O ÚLTIMO PRINT (DEBUG)</sys:String>
+  <sys:String x:Key="Settings.AutoCleanup">LIMPAR AUTOMÁTICO AO FIM DA RAID (LOGS)</sys:String>
+  <sys:String x:Key="Settings.AutoCleanupHint">Quando o log indicar fim de raid, encerra a sessão e remove leftovers da pasta de prints.</sys:String>
+  <sys:String x:Key="Settings.Cancel">CANCELAR</sys:String>
+  <sys:String x:Key="Settings.Save">SALVAR</sys:String>
+
+  <!-- Overlay -->
+  <sys:String x:Key="Overlay.DragHint">F9  ·  ARRASTE</sys:String>
+  <sys:String x:Key="Overlay.ExtractPrefix">EXFIL  {0}</sys:String>
+  <sys:String x:Key="Overlay.MinePrefix">MINA  {0}</sys:String>
+
+  <!-- Map webview -->
+  <sys:String x:Key="Map.Waiting">AGUARDANDO MAPA</sys:String>
+  <sys:String x:Key="Map.SvgUnavailable">SVG INDISPONIVEL</sys:String>
+  <sys:String x:Key="Map.LoadFailed">FALHA AO CARREGAR MAPA</sys:String>
+  <sys:String x:Key="Map.Rotate.Left">Girar 90° anti-horário</sys:String>
+  <sys:String x:Key="Map.Rotate.Reset">Resetar rotação</sys:String>
+  <sys:String x:Key="Map.Rotate.Right">Girar 90° horário</sys:String>
+  <sys:String x:Key="Map.Tip.Extract">EXTRAÇÃO</sys:String>
+  <sys:String x:Key="Map.Tip.Mine">MINA</sys:String>
+  <sys:String x:Key="Hazard.MineFallback">Mina</sys:String>
+</ResourceDictionary>

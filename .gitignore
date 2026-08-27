@@ -1,0 +1,15 @@
+﻿bin/
+obj/
+.vs/
+*.user
+publish/
+dist/
+dist-new/
+AppData/
+*.log
+*.suo
+*.userosscache
+[Dd]ebug/
+[Rr]elease/
+**/bin/
+**/obj/

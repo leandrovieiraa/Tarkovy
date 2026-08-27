@@ -1,0 +1,166 @@
+﻿<Window x:Class="Tarkovy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Tarkovy.Controls"
+        Title="TARKOVY"
+        Height="720" Width="1180"
+        MinHeight="560" MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BrushBgDeep}"
+        Foreground="{StaticResource BrushText}"
+        WindowStyle="None"
+        AllowsTransparency="False"
+        ResizeMode="CanResize"
+        Icon="pack://application:,,,/Assets/brand/tarkovy.ico">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="48"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Border BorderBrush="{StaticResource BrushAmber}" BorderThickness="1" Background="{StaticResource BrushBgDeep}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <Grid Margin="10,0,6,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Grid Width="32" Height="32" Margin="0,0,10,0">
+                            <Ellipse Stroke="#FFFFFF" StrokeThickness="1.6" Fill="Transparent"/>
+                            <Path StrokeThickness="0" Fill="#FFFFFF"
+                                  Stretch="Uniform" Width="14" Height="14"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Data="M 0,14 L 7,0 L 14,14 L 10.5,14 L 7,7 L 3.5,14 Z"/>
+                        </Grid>
+                        <TextBlock Text="TARKOVY" VerticalAlignment="Center"
+                                   Foreground="{StaticResource BrushAmber}" FontSize="20" FontWeight="Bold"
+                                   FontFamily="{StaticResource HudFont}"/>
+                        <TextBlock x:Name="StatusBadge" Text="{DynamicResource Status.Watching}" VerticalAlignment="Center"
+                                   Margin="14,0,0,0" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrushAmber}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Dev 0.0.1" VerticalAlignment="Center" Margin="2,0,6,0"
+                                   Foreground="{StaticResource BrushTextDim}" FontSize="11"
+                                   WindowChrome.IsHitTestVisibleInChrome="True"/>
+                        <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
+                                Background="Transparent" Foreground="{StaticResource BrushAmber}" BorderThickness="0"
+                                FontSize="15" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.Settings}"/>
+                        <Button Content="─" Width="40" Height="32" Click="Minimize_Click"
+                                Background="Transparent" Foreground="{StaticResource BrushTextDim}" BorderThickness="0"
+                                FontSize="14" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.Minimize}"/>
+                        <Button x:Name="MaximizeBtn" Content="□" Width="40" Height="32" Click="Maximize_Click"
+                                Background="Transparent" Foreground="{StaticResource BrushTextDim}" BorderThickness="0"
+                                FontSize="14" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.Maximize}"/>
+                        <Button Content="✕" Width="40" Height="32" Click="Close_Click"
+                                Background="Transparent" Foreground="{StaticResource BrushTextDim}" BorderThickness="0"
+                                FontSize="14" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.Close}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="16,16,16,8">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Main.Section.Notice}"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource BrushTextDim}"
+                                       Text="{DynamicResource Main.Notice.Body}"/>
+
+                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Map}"/>
+                            <ComboBox x:Name="MapCombo" SelectionChanged="MapCombo_SelectionChanged"/>
+
+                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Markers}"/>
+                            <CheckBox x:Name="ShowExtractsBox" Content="{DynamicResource Main.Marker.Extracts}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                            <CheckBox x:Name="ShowMinesBox" Content="{DynamicResource Main.Marker.Mines}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                            <CheckBox x:Name="ShowLabelsBox" Content="{DynamicResource Main.Marker.Labels}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+
+                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Shortcuts}"/>
+                            <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Overlay}"/>
+                            <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Size}"/>
+                            <TextBlock FontSize="12" Foreground="{StaticResource BrushTextDim}"
+                                       Text="{DynamicResource Main.Shortcut.CleanupHint}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Border Grid.Row="1" Padding="12,10,12,14" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+                        <UniformGrid Columns="3">
+                            <Button Style="{StaticResource IconActionButton}" Click="ShowOverlay_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.ShowOverlay}">
+                                <StackPanel>
+                                    <TextBlock Text="▣" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                    <TextBlock Text="{DynamicResource Main.Action.Overlay}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource IconActionButton}" Click="Settings_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.OpenSettings}">
+                                <StackPanel>
+                                    <TextBlock Text="⚙" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                    <TextBlock Text="{DynamicResource Main.Action.Config}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource IconActionButton}" Click="EndRaid_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.EndRaid}">
+                                <StackPanel>
+                                    <TextBlock Text="⌫" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                    <TextBlock Text="{DynamicResource Main.Action.Clear}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Column="1" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="{StaticResource BrushBgPanel}">
+                            <TextBlock x:Name="MapTitle" Text="{DynamicResource Main.MapPanel.Title}" VerticalAlignment="Center" Margin="12,0"
+                                       Foreground="{StaticResource BrushAmber}" FontSize="12"/>
+                        </Border>
+                        <controls:MapView x:Name="PreviewMap" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="2" Background="#000000" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+                <DockPanel Margin="12,0">
+                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="12,0,0,0"
+                               FontSize="11" Foreground="{StaticResource BrushTextDim}"
+                               Text="Anomaly Labs"/>
+                    <TextBlock x:Name="Footer" VerticalAlignment="Center"
+                               FontSize="11" Foreground="{StaticResource BrushTextDim}"
+                               Text="{DynamicResource Main.Footer.Tagline}"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

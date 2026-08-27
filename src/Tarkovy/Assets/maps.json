@@ -1,0 +1,123 @@
+[
+  {
+    "id": "customs",
+    "name": "Customs",
+    "logIds": ["bigmap", "Customs"],
+    "sceneTokens": ["customs"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Customs.svg",
+    "coordinateRotation": 180,
+    "transform": [0.239, 168.65, 0.239, 136.35],
+    "bounds": [[698, -307], [-372, 237]]
+  },
+  {
+    "id": "factory",
+    "name": "Factory",
+    "logIds": ["factory4_day", "factory4_night", "Factory"],
+    "sceneTokens": ["factory"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Factory.svg",
+    "coordinateRotation": 90,
+    "transform": [1.629, 119.9, 1.629, 139.3],
+    "bounds": [[77, -64.5], [-65.5, 67.4]]
+  },
+  {
+    "id": "woods",
+    "name": "Woods",
+    "logIds": ["woods", "Woods"],
+    "sceneTokens": ["woods"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Woods.svg",
+    "coordinateRotation": 180,
+    "transform": [0.1855, 112.95, 0.1855, 167.85],
+    "bounds": [[646, -914], [-761, 442]]
+  },
+  {
+    "id": "shoreline",
+    "name": "Shoreline",
+    "logIds": ["shoreline", "Shoreline"],
+    "sceneTokens": ["shoreline"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Shoreline.svg",
+    "coordinateRotation": 180,
+    "transform": [0.16, 83.2, 0.16, 111.1],
+    "bounds": [[504, -415], [-1056, 618]]
+  },
+  {
+    "id": "interchange",
+    "name": "Interchange",
+    "logIds": ["Interchange", "interchange", "Shopping_Mall"],
+    "sceneTokens": ["interchange", "shopping_mall"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Interchange.svg",
+    "coordinateRotation": 180,
+    "transform": [0.265, 150.6, 0.265, 134.6],
+    "bounds": [[598, -442], [-433, 426]]
+  },
+  {
+    "id": "reserve",
+    "name": "Reserve",
+    "logIds": ["RezervBase", "Rezerv_Base", "rezervbase"],
+    "sceneTokens": ["rezerv"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Reserve.svg",
+    "coordinateRotation": 180,
+    "transform": [0.395, 122.0, 0.395, 137.65],
+    "bounds": [[289, -293], [-303, 244]],
+    "svgBounds": [[289, -274], [-303, 272]]
+  },
+  {
+    "id": "lighthouse",
+    "name": "Lighthouse",
+    "logIds": ["Lighthouse", "lighthouse"],
+    "sceneTokens": ["lighthouse"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Lighthouse.svg",
+    "coordinateRotation": 180,
+    "transform": [0.2, 0, 0.2, 0],
+    "bounds": [[515, -998], [-545, 725]]
+  },
+  {
+    "id": "streets-of-tarkov",
+    "name": "Streets of Tarkov",
+    "logIds": ["TarkovStreets", "tarkovstreets"],
+    "sceneTokens": ["streets", "city"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/StreetsOfTarkov.svg",
+    "coordinateRotation": 180,
+    "transform": [0.38, 0, 0.38, 0],
+    "bounds": [[323, -295], [-280, 532]]
+  },
+  {
+    "id": "ground-zero",
+    "name": "Ground Zero",
+    "logIds": ["Sandbox", "Sandbox_high", "sandbox"],
+    "sceneTokens": ["sandbox", "groundzero"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/GroundZero.svg",
+    "coordinateRotation": 180,
+    "transform": [0.524, 167.3, 0.524, 65.1],
+    "bounds": [[249, -124], [-99, 364]]
+  },
+  {
+    "id": "the-lab",
+    "name": "The Lab",
+    "logIds": ["laboratory", "Laboratory"],
+    "sceneTokens": ["lab"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/TheLab.svg",
+    "coordinateRotation": 270,
+    "transform": [0.575, 281.2, 0.575, 193.7],
+    "bounds": [[-80, -477], [-287, -193]]
+  },
+  {
+    "id": "terminal",
+    "name": "Terminal",
+    "logIds": ["Terminal", "terminal"],
+    "sceneTokens": ["terminal"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Terminal.svg",
+    "coordinateRotation": 180,
+    "transform": [0.2, 0, 0.2, 0],
+    "bounds": [[-768, 440], [-1512, 1346]]
+  },
+  {
+    "id": "the-labyrinth",
+    "name": "The Labyrinth",
+    "logIds": ["Labyrinth", "labyrinth"],
+    "sceneTokens": ["labyrinth"],
+    "svgPath": "https://assets.tarkov.dev/maps/svg/Labyrinth.svg",
+    "coordinateRotation": 270,
+    "transform": [2.115, 85.5, 2.115, 128.0],
+    "bounds": [[-52, -37], [53, 76]]
+  }
+]

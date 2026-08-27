@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+  <!-- Main -->
+  <sys:String x:Key="Main.Tooltip.Settings">Settings</sys:String>
+  <sys:String x:Key="Main.Tooltip.Minimize">Minimize</sys:String>
+  <sys:String x:Key="Main.Tooltip.Maximize">Maximize</sys:String>
+  <sys:String x:Key="Main.Tooltip.Restore">Restore</sys:String>
+  <sys:String x:Key="Main.Tooltip.Close">Close</sys:String>
+  <sys:String x:Key="Main.Section.Notice">NOTICE</sys:String>
+  <sys:String x:Key="Main.Notice.Body">Overlay requires Tarkov in Borderless Windowed. Dual-bind Screenshot to W in the game. Tarkovy only reads files.</sys:String>
+  <sys:String x:Key="Main.Section.Map">MAP</sys:String>
+  <sys:String x:Key="Main.Section.Markers">MARKERS</sys:String>
+  <sys:String x:Key="Main.Marker.Extracts">EXTRACTS</sys:String>
+  <sys:String x:Key="Main.Marker.Mines">MINES</sys:String>
+  <sys:String x:Key="Main.Marker.Labels">SHOW NAMES</sys:String>
+  <sys:String x:Key="Main.Section.Shortcuts">HOTKEYS</sys:String>
+  <sys:String x:Key="Main.Shortcut.Overlay">F8  show / hide overlay</sys:String>
+  <sys:String x:Key="Main.Shortcut.Size">F9  minimap / expanded</sys:String>
+  <sys:String x:Key="Main.Shortcut.CleanupHint">Raid end in logs cleans leftover screenshots (config)</sys:String>
+  <sys:String x:Key="Main.Action.Overlay">OVERLAY</sys:String>
+  <sys:String x:Key="Main.Action.Config">CONFIG</sys:String>
+  <sys:String x:Key="Main.Action.Clear">CLEAR</sys:String>
+  <sys:String x:Key="Main.Tooltip.ShowOverlay">Show minimap overlay</sys:String>
+  <sys:String x:Key="Main.Tooltip.OpenSettings">Settings</sys:String>
+  <sys:String x:Key="Main.Tooltip.EndRaid">End raid and clean leftovers now</sys:String>
+  <sys:String x:Key="Main.MapPanel.Title">MAP</sys:String>
+  <sys:String x:Key="Main.Footer.Tagline">TARKOVY  ·  local companion  ·  no memory reading</sys:String>
+
+  <!-- Status -->
+  <sys:String x:Key="Status.InRaid">IN RAID</sys:String>
+  <sys:String x:Key="Status.Loading">LOADING</sys:String>
+  <sys:String x:Key="Status.Watching">WATCHING</sys:String>
+  <sys:String x:Key="Status.Idle">IDLE</sys:String>
+
+  <!-- Footer / runtime -->
+  <sys:String x:Key="Footer.NoFix">no fix</sys:String>
+  <sys:String x:Key="Footer.Hud">{0}  ·  {1}  ·  {2}  ·  deleted shots {3}</sys:String>
+  <sys:String x:Key="Footer.RaidEndedCleaned">RAID ENDED · leftovers cleaned</sys:String>
+  <sys:String x:Key="Footer.RaidEndedNoAuto">RAID ENDED · auto-cleanup off</sys:String>
+  <sys:String x:Key="Footer.LogsMissing">LOGS: FOLDER NOT FOUND</sys:String>
+  <sys:String x:Key="Footer.LogsWatching">LOGS: WATCHING</sys:String>
+  <sys:String x:Key="Footer.LogAttached">LOG: {0}</sys:String>
+  <sys:String x:Key="Footer.LogError">LOG ERR: {0}</sys:String>
+  <sys:String x:Key="Footer.MapDetected">MAP: {0}</sys:String>
+  <sys:String x:Key="Footer.ShotsMissing">SHOTS: FOLDER NOT FOUND</sys:String>
+  <sys:String x:Key="Footer.ShotsWatching">SHOTS: WATCHING</sys:String>
+  <sys:String x:Key="Footer.ShotError">SHOT ERR: {0}</sys:String>
+
+  <!-- Settings -->
+  <sys:String x:Key="Settings.Title">TARKOVY · CONFIG</sys:String>
+  <sys:String x:Key="Settings.Header">CONFIG</sys:String>
+  <sys:String x:Key="Settings.Section.Language">LANGUAGE</sys:String>
+  <sys:String x:Key="Settings.Language.English">English</sys:String>
+  <sys:String x:Key="Settings.Language.Portuguese">Português</sys:String>
+  <sys:String x:Key="Settings.Section.Windows">WINDOWS</sys:String>
+  <sys:String x:Key="Settings.StartWithWindows">START WITH WINDOWS</sys:String>
+  <sys:String x:Key="Settings.Section.Logs">LOGS FOLDER</sys:String>
+  <sys:String x:Key="Settings.Section.Shots">SCREENSHOTS FOLDER</sys:String>
+  <sys:String x:Key="Settings.Path.Ok">OK</sys:String>
+  <sys:String x:Key="Settings.Path.Missing">FOLDER NOT FOUND</sys:String>
+  <sys:String x:Key="Settings.Dialog.Logs">EFT logs folder</sys:String>
+  <sys:String x:Key="Settings.Dialog.Shots">Screenshots folder</sys:String>
+  <sys:String x:Key="Settings.Section.Markers">MAP MARKERS</sys:String>
+  <sys:String x:Key="Settings.ShowExtracts">SHOW EXTRACTS</sys:String>
+  <sys:String x:Key="Settings.ShowMines">SHOW MINES</sys:String>
+  <sys:String x:Key="Settings.ShowLabels">ALWAYS SHOW NAMES ON MAP</sys:String>
+  <sys:String x:Key="Settings.ShowLabelsHint">Off: tooltip on hover only.</sys:String>
+  <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
+  <sys:String x:Key="Settings.Opacity">OPACITY</sys:String>
+  <sys:String x:Key="Settings.FollowPlayer">FOLLOW PLAYER ON MINIMAP</sys:String>
+  <sys:String x:Key="Settings.DeleteAfterRead">DELETE SCREENSHOT AFTER READING POSITION</sys:String>
+  <sys:String x:Key="Settings.KeepLast">KEEP LAST SCREENSHOT (DEBUG)</sys:String>
+  <sys:String x:Key="Settings.AutoCleanup">AUTO-CLEAN ON RAID END (LOGS)</sys:String>
+  <sys:String x:Key="Settings.AutoCleanupHint">When logs report raid end, close the session and remove leftover screenshots.</sys:String>
+  <sys:String x:Key="Settings.Cancel">CANCEL</sys:String>
+  <sys:String x:Key="Settings.Save">SAVE</sys:String>
+
+  <!-- Overlay -->
+  <sys:String x:Key="Overlay.DragHint">F9  ·  DRAG</sys:String>
+  <sys:String x:Key="Overlay.ExtractPrefix">EXFIL  {0}</sys:String>
+  <sys:String x:Key="Overlay.MinePrefix">MINE  {0}</sys:String>
+
+  <!-- Map webview -->
+  <sys:String x:Key="Map.Waiting">WAITING FOR MAP</sys:String>
+  <sys:String x:Key="Map.SvgUnavailable">SVG UNAVAILABLE</sys:String>
+  <sys:String x:Key="Map.LoadFailed">FAILED TO LOAD MAP</sys:String>
+  <sys:String x:Key="Map.Rotate.Left">Rotate 90° counter-clockwise</sys:String>
+  <sys:String x:Key="Map.Rotate.Reset">Reset rotation</sys:String>
+  <sys:String x:Key="Map.Rotate.Right">Rotate 90° clockwise</sys:String>
+  <sys:String x:Key="Map.Tip.Extract">EXTRACT</sys:String>
+  <sys:String x:Key="Map.Tip.Mine">MINE</sys:String>
+  <sys:String x:Key="Hazard.MineFallback">Mine</sys:String>
+</ResourceDictionary>
