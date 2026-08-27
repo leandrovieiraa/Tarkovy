@@ -150,7 +150,29 @@ dotnet run --project src\Tarkovy\Tarkovy.csproj
 
 ---
 
+## Virus scan
 
+Official builds are meant to be checked on [VirusTotal](https://www.virustotal.com/) before you run them. Windows SmartScreen may still warn on unsigned apps — that is normal for new open-source tools.
+
+### Release `v0.0.1` (`Tarkovy.exe`)
+
+| | |
+| --- | --- |
+| **Download** | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.1/Tarkovy.exe) |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/755c6719f02fac75ef3e213e6f221ae83783c1519cbcd6b16571f5c8d03175a8) |
+| **SHA-256** | `755C6719F02FAC75EF3E213E6F221AE83783C1519CBCD6B16571F5C8D03175A8` |
+
+Verify locally (PowerShell):
+
+```powershell
+Get-FileHash .\Tarkovy.exe -Algorithm SHA256
+```
+
+If the VirusTotal page has no report yet, upload the release `Tarkovy.exe` once at [VirusTotal → Upload](https://www.virustotal.com/gui/home/upload) (file is ~156 MB). After engines finish, the hash link above shows the results.
+
+> Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
+
+---
 
 ## What this does not do
 
