@@ -7,9 +7,9 @@
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.1](https://img.shields.io/badge/version-Dev%200.0.1-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)
+![Dev 0.0.1](https://img.shields.io/badge/version-Dev%200.0.1-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.1-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/755c6719f02fac75ef3e213e6f221ae83783c1519cbcd6b16571f5c8d03175a8)
 
-[Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [License](#license--terms-of-use) · [Credits](#credits)
+[Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
 
