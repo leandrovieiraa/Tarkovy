@@ -1,19 +1,15 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-![Tarkovy icon](docs/tarkovy-icon.png)
-
 # TARKOVY
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.1](https://img.shields.io/badge/version-Dev%200.0.1-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.1-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/755c6719f02fac75ef3e213e6f221ae83783c1519cbcd6b16571f5c8d03175a8)
+![Dev 0.0.1](https://img.shields.io/badge/version-Dev%200.0.1-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.1-111111?style=flat-square&labelColor=000000)
 
 [Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
-
-
 
 ## Overview
 
@@ -38,8 +34,6 @@ No memory reading, no injection, no client modification.
 
 ---
 
-
-
 ## Features
 
 
@@ -55,19 +49,13 @@ No memory reading, no injection, no client modification.
 
 ---
 
-
-
 ## Interface
 
 ![Tarkovy app screenshot](docs/tarkovy-app.png)
 
 *Main window — map preview, markers, and controls · Anomaly Labs*
 
-
-
 ---
-
-
 
 ## Requirements
 
@@ -78,8 +66,6 @@ No memory reading, no injection, no client modification.
 **UI languages:** English (default) and Portuguese — switch in **CONFIG → Language**.
 
 ---
-
-
 
 ## Usage
 
@@ -97,8 +83,6 @@ On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show Smar
 
 ---
 
-
-
 ## Dual-bind
 
 Tarkovy does **not** simulate key presses. It only reads the **filename** the game writes when taking a screenshot. To refresh position while moving, your movement key must also trigger EFT’s Screenshot action.
@@ -110,8 +94,6 @@ Tarkovy does **not** simulate key presses. It only reads the **filename** the ga
 3. Bind it to the **same key you use to move forward** — usually **W**
 4. Confirm that key is bound to both **forward movement** and **Screenshot**
 5. Keep the game in **Borderless Windowed**
-
-
 
 ### In-raid flow
 
@@ -126,11 +108,7 @@ Tarkovy does **not** simulate key presses. It only reads the **filename** the ga
 
 ---
 
-
-
 ## Build
-
-
 
 ### Publish the `.exe`
 
@@ -156,11 +134,13 @@ Official builds are meant to be checked on [VirusTotal](https://www.virustotal.c
 
 ### Release `v0.0.1` (`Tarkovy.exe`)
 
-| | |
-| --- | --- |
-| **Download** | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.1/Tarkovy.exe) |
+
+|                |                                                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.1/Tarkovy.exe)           |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/755c6719f02fac75ef3e213e6f221ae83783c1519cbcd6b16571f5c8d03175a8) |
-| **SHA-256** | `755C6719F02FAC75EF3E213E6F221AE83783C1519CBCD6B16571F5C8D03175A8` |
+| **SHA-256**    | `755C6719F02FAC75EF3E213E6F221AE83783C1519CBCD6B16571F5C8D03175A8`                                                       |
+
 
 Verify locally (PowerShell):
 
@@ -182,8 +162,6 @@ If the VirusTotal page has no report yet, upload the release `Tarkovy.exe` once 
 
 ---
 
-
-
 ## License / Terms of use
 
 Tarkovy is provided by **Anomaly Labs** for **personal and educational use only**.
@@ -203,8 +181,6 @@ You **may not**:
 Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use at your own risk.
 
 ---
-
-
 
 ## Credits
 
