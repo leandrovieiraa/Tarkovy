@@ -19,6 +19,9 @@ public partial class MapView : UserControl
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
+    public event Action<string, bool>? LayerToggled;
+    public event Action<MapWaypoint?>? WaypointChanged;
+
     public MapView()
     {
         InitializeComponent();
@@ -38,19 +41,13 @@ public partial class MapView : UserControl
             Web.CoreWebView2.Settings.IsStatusBarEnabled = false;
             Web.CoreWebView2.WebMessageReceived += (_, e) =>
             {
-                var json = e.WebMessageAsJson ?? "";
-                if (json.Contains("dragWindow", StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    try { Window.GetWindow(this)?.DragMove(); }
-                    catch { /* ignore */ }
-                    return;
+                    HandleWebMessage(e.WebMessageAsJson);
                 }
-                if (json.Contains("ready", StringComparison.OrdinalIgnoreCase))
+                catch
                 {
-                    _ready = true;
-                    ApplyLanguage();
-                    while (_pending.Count > 0)
-                        Web.CoreWebView2.PostWebMessageAsJson(_pending.Dequeue());
+                    /* ignore malformed host messages */
                 }
             };
 
@@ -66,6 +63,49 @@ public partial class MapView : UserControl
             Web.NavigateToString(
                 "<html><body style='background:#000;color:#fff;font-family:Bahnschrift;padding:16px'>WEBVIEW2: " +
                 System.Net.WebUtility.HtmlEncode(ex.Message) + "</body></html>");
+        }
+    }
+
+    private void HandleWebMessage(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json)) return;
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+        if (root.ValueKind != JsonValueKind.Object) return;
+        if (!root.TryGetProperty("type", out var typeEl)) return;
+        var type = typeEl.GetString() ?? "";
+
+        if (string.Equals(type, "dragWindow", StringComparison.OrdinalIgnoreCase))
+        {
+            try { Window.GetWindow(this)?.DragMove(); }
+            catch { /* ignore */ }
+            return;
+        }
+
+        if (string.Equals(type, "ready", StringComparison.OrdinalIgnoreCase))
+        {
+            _ready = true;
+            ApplyLanguage();
+            while (_pending.Count > 0)
+                Web.CoreWebView2.PostWebMessageAsJson(_pending.Dequeue());
+            return;
+        }
+
+        if (string.Equals(type, "layer", StringComparison.OrdinalIgnoreCase))
+        {
+            var key = root.TryGetProperty("key", out var k) ? k.GetString() ?? "" : "";
+            var value = root.TryGetProperty("value", out var v) && v.ValueKind == JsonValueKind.True;
+            if (!string.IsNullOrEmpty(key))
+                LayerToggled?.Invoke(key, value);
+            return;
+        }
+
+        if (string.Equals(type, "waypoint", StringComparison.OrdinalIgnoreCase))
+        {
+            MapWaypoint? wp = null;
+            if (root.TryGetProperty("waypoint", out var wpEl) && wpEl.ValueKind == JsonValueKind.Object)
+                wp = JsonSerializer.Deserialize<MapWaypoint>(wpEl.GetRawText(), Json);
+            WaypointChanged?.Invoke(wp);
         }
     }
 
@@ -85,6 +125,33 @@ public partial class MapView : UserControl
             showLabels = showLabels ?? true
         });
     }
+
+    public void SetQuests(IReadOnlyList<QuestDefinition> quests, IEnumerable<string>? enabledSlugs = null)
+    {
+        var payload = quests.Select(q => new
+        {
+            slug = q.Slug,
+            name = Loc.QuestName(q),
+            trader = Loc.QuestTrader(q),
+            objectives = q.Objectives
+        }).ToArray();
+        Post(new
+        {
+            type = "quests",
+            quests = payload,
+            enabled = enabledSlugs?.ToArray() ?? Array.Empty<string>()
+        });
+    }
+
+    public void SetLayers(bool extracts, bool mines, bool quests, bool labels) =>
+        Post(new
+        {
+            type = "layers",
+            layers = new { extracts, mines, quests, labels }
+        });
+
+    public void SetWaypoint(MapWaypoint? waypoint) =>
+        Post(new { type = "waypoint", waypoint });
 
     public void SetShowLabels(bool show) => Post(new { type = "showLabels", value = show });
 

@@ -13,3 +13,9 @@ AppData/
 [Rr]elease/
 **/bin/
 **/obj/
+
+# Local secrets / VirusTotal output (never commit API keys)
+tools/vt.local.env
+tools/_vt-out/
+tools/_spt/
+releases/

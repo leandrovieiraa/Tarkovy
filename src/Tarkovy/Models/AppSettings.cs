@@ -23,9 +23,14 @@ public sealed class AppSettings
     public bool AutoCleanupOnRaidEnd { get; set; } = true;
     /// <summary>Mostra nomes das marcações no mapa; se false, só tooltip no hover.</summary>
     public bool ShowMarkerLabels { get; set; } = true;
+    public bool ShowQuests { get; set; } = true;
+    /// <summary>Quest slugs enabled as active waypoints for the current character/session.</summary>
+    public List<string> EnabledQuestSlugs { get; set; } = [];
     /// <summary>UI language: en (default) or pt.</summary>
     public string UiLanguage { get; set; } = "en";
 
+    [JsonIgnore]
+    public MapWaypoint? ActiveWaypoint { get; set; }
     [JsonIgnore]
     public string HotkeyToggleOverlay { get; } = "F8";
 

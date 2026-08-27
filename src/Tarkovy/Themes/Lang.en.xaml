@@ -15,6 +15,13 @@
   <sys:String x:Key="Main.Marker.Extracts">EXTRACTS</sys:String>
   <sys:String x:Key="Main.Marker.Mines">MINES</sys:String>
   <sys:String x:Key="Main.Marker.Labels">SHOW NAMES</sys:String>
+  <sys:String x:Key="Main.Marker.Quests">QUEST MARKERS</sys:String>
+  <sys:String x:Key="Main.Section.Quests">MAP QUESTS</sys:String>
+  <sys:String x:Key="Main.Quests.Hint">Quests for this map (catalog). Tarkov logs don’t expose your PMC’s active quest journal — enable the ones you’re running manually.</sys:String>
+  <sys:String x:Key="Main.Quests.MapTooltip">Map: {0}</sys:String>
+  <sys:String x:Key="Main.EftTarget">EFT {0} · {1}</sys:String>
+  <sys:String x:Key="Main.Tooltip.EftTarget">Built / validated against Escape from Tarkov {0} ({1}). After a major patch, maps, quests, or screenshot filenames may change — recheck Tarkovy.</sys:String>
+  <sys:String x:Key="Main.Map.HasQuests">Quests available on this map</sys:String>
   <sys:String x:Key="Main.Section.Shortcuts">HOTKEYS</sys:String>
   <sys:String x:Key="Main.Shortcut.Overlay">F8  show / hide overlay</sys:String>
   <sys:String x:Key="Main.Shortcut.Size">F9  minimap / expanded</sys:String>
@@ -81,6 +88,10 @@
   <sys:String x:Key="Overlay.DragHint">F9  ·  DRAG</sys:String>
   <sys:String x:Key="Overlay.ExtractPrefix">EXFIL  {0}</sys:String>
   <sys:String x:Key="Overlay.MinePrefix">MINE  {0}</sys:String>
+  <sys:String x:Key="Overlay.Section.Extracts">EXTRACTS · TAP = WAYPOINT</sys:String>
+  <sys:String x:Key="Overlay.Section.Quests">QUESTS · TOGGLE</sys:String>
+  <sys:String x:Key="Overlay.Quests.Empty">No quest markers for this map.</sys:String>
+  <sys:String x:Key="Overlay.WaypointBtn">WP</sys:String>
 
   <!-- Map webview -->
   <sys:String x:Key="Map.Waiting">WAITING FOR MAP</sys:String>
@@ -91,5 +102,12 @@
   <sys:String x:Key="Map.Rotate.Right">Rotate 90° clockwise</sys:String>
   <sys:String x:Key="Map.Tip.Extract">EXTRACT</sys:String>
   <sys:String x:Key="Map.Tip.Mine">MINE</sys:String>
+  <sys:String x:Key="Map.Tip.Quest">QUEST</sys:String>
+  <sys:String x:Key="Map.Waypoint">WAYPOINT</sys:String>
+  <sys:String x:Key="Map.ClearWaypoint">Clear waypoint</sys:String>
+  <sys:String x:Key="Map.Layer.Extracts">Extracts</sys:String>
+  <sys:String x:Key="Map.Layer.Mines">Mines</sys:String>
+  <sys:String x:Key="Map.Layer.Quests">Quests</sys:String>
+  <sys:String x:Key="Map.Layer.Labels">Labels</sys:String>
   <sys:String x:Key="Hazard.MineFallback">Mine</sys:String>
 </ResourceDictionary>

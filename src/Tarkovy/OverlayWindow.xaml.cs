@@ -9,6 +9,13 @@ namespace Tarkovy;
 public partial class OverlayWindow : Window
 {
     public bool IsExpanded { get; private set; }
+    private bool _suppressQuest;
+    private IReadOnlyList<ExtractMarker> _extracts = [];
+    private IReadOnlyList<QuestDefinition> _quests = [];
+
+    public event Action? QuestSelectionChanged;
+    public event Action<MapWaypoint?>? WaypointRequested;
+    public event Action? LayersChanged;
 
     public OverlayWindow()
     {
@@ -25,6 +32,26 @@ public partial class OverlayWindow : Window
                  Math.Abs(e.NewSize.Height - e.PreviousSize.Height) > 8))
                 OverlayMap.ResetView();
         };
+        OverlayMap.WaypointChanged += wp =>
+        {
+            App.Settings.ActiveWaypoint = wp;
+            WaypointRequested?.Invoke(wp);
+        };
+        OverlayMap.LayerToggled += OnLayerToggled;
+    }
+
+    private void OnLayerToggled(string key, bool value)
+    {
+        switch (key)
+        {
+            case "extracts": App.Settings.ShowExtracts = value; break;
+            case "mines": App.Settings.ShowMines = value; break;
+            case "quests": App.Settings.ShowQuests = value; break;
+            case "labels": App.Settings.ShowMarkerLabels = value; break;
+            default: return;
+        }
+        SettingsStore.Save(App.Settings);
+        LayersChanged?.Invoke();
     }
 
     public void SetGlassOpacity(double opacity)
@@ -33,46 +60,165 @@ public partial class OverlayWindow : Window
         GlassBrush.Color = Color.FromArgb(255, 26, 26, 26);
     }
 
-    public void LoadMap(MapDefinition map, IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
+    public void LoadMap(
+        MapDefinition map,
+        IReadOnlyList<ExtractMarker> extracts,
+        IReadOnlyList<HazardMarker>? mines = null,
+        bool? showLabels = null,
+        IReadOnlyList<QuestDefinition>? quests = null)
     {
         OverlayTitle.Text = map.Name.ToUpperInvariant();
+        _extracts = extracts;
+        _quests = quests ?? [];
         OverlayMap.LoadMap(map, extracts, mines, showLabels);
+        OverlayMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+        OverlayMap.SetQuests(_quests, App.Settings.EnabledQuestSlugs);
+        OverlayMap.SetWaypoint(App.Settings.ActiveWaypoint);
         OverlayMap.SetFollow(App.Settings.FollowPlayer);
         OverlayMap.ResetView();
-        ExtractList.Children.Clear();
-        foreach (var ex in extracts)
-        {
-            ExtractList.Children.Add(new TextBlock
-            {
-                Text = Loc.T("Overlay.ExtractPrefix", ex.Name.ToUpperInvariant()),
-                Foreground = (Brush)FindResource("BrushText"),
-                FontSize = 11,
-                Margin = new Thickness(0, 0, 0, 6)
-            });
-        }
-        foreach (var mine in mines ?? [])
-        {
-            ExtractList.Children.Add(new TextBlock
-            {
-                Text = Loc.T("Overlay.MinePrefix", mine.Name.ToUpperInvariant()),
-                Foreground = (Brush)FindResource("BrushTextDim"),
-                FontSize = 11,
-                Margin = new Thickness(0, 0, 0, 6)
-            });
-        }
+        RebuildSidePanel();
     }
 
     public void ApplyLanguage()
     {
         OverlayMap.ApplyLanguage();
+        RebuildSidePanel();
     }
 
     public void SetPlayer(PlayerFix? fix) => OverlayMap.SetPlayer(fix);
 
     public void SetFollow(bool follow) => OverlayMap.SetFollow(follow);
 
-    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null) =>
+    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
+    {
+        _extracts = extracts;
         OverlayMap.SetMarkers(extracts, mines, showLabels);
+        OverlayMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+        RebuildSidePanel();
+    }
+
+    public void SetQuests(IReadOnlyList<QuestDefinition> quests)
+    {
+        _quests = quests;
+        OverlayMap.SetQuests(quests, App.Settings.EnabledQuestSlugs);
+        RebuildSidePanel();
+    }
+
+    public void SetWaypoint(MapWaypoint? wp) => OverlayMap.SetWaypoint(wp);
+
+    private void RebuildSidePanel()
+    {
+        ExtractList.Children.Clear();
+        _suppressQuest = true;
+
+        ExtractList.Children.Add(SectionLabel(Loc.T("Overlay.Section.Extracts")));
+        foreach (var ex in _extracts)
+        {
+            var btn = new Button
+            {
+                Content = Loc.T("Overlay.ExtractPrefix", ex.Name.ToUpperInvariant()),
+                Margin = new Thickness(0, 0, 0, 4),
+                Padding = new Thickness(6, 4, 6, 4),
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+                Background = new SolidColorBrush(Color.FromRgb(0x14, 0x14, 0x14)),
+                Foreground = (Brush)FindResource("BrushText"),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(0x3d, 0xff, 0x7a)),
+                BorderThickness = new Thickness(1),
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Tag = ex
+            };
+            btn.Click += ExtractWaypoint_Click;
+            ExtractList.Children.Add(btn);
+        }
+
+        ExtractList.Children.Add(SectionLabel(Loc.T("Overlay.Section.Quests"), top: 12));
+        if (_quests.Count == 0)
+        {
+            ExtractList.Children.Add(new TextBlock
+            {
+                Text = Loc.T("Overlay.Quests.Empty"),
+                Foreground = (Brush)FindResource("BrushTextDim"),
+                FontSize = 11,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 0, 0, 6)
+            });
+        }
+        else
+        {
+            var enabled = new HashSet<string>(App.Settings.EnabledQuestSlugs, StringComparer.OrdinalIgnoreCase);
+            foreach (var q in _quests.OrderBy(q => Loc.QuestName(q), StringComparer.OrdinalIgnoreCase))
+            {
+                var title = Loc.QuestName(q);
+                var trader = Loc.QuestTrader(q);
+                var box = new CheckBox
+                {
+                    Content = string.IsNullOrWhiteSpace(trader) ? title : $"{title}  ·  {trader}",
+                    IsChecked = enabled.Contains(q.Slug),
+                    Foreground = (Brush)FindResource("BrushText"),
+                    FontSize = 11,
+                    Margin = new Thickness(0, 0, 0, 5),
+                    Tag = q.Slug
+                };
+                box.Checked += QuestBox_Changed;
+                box.Unchecked += QuestBox_Changed;
+                ExtractList.Children.Add(box);
+            }
+        }
+
+        _suppressQuest = false;
+    }
+
+    private static TextBlock SectionLabel(string text, double top = 0) => new()
+    {
+        Text = text,
+        Foreground = (Brush)Application.Current.FindResource("BrushAmber"),
+        FontSize = 10,
+        FontWeight = FontWeights.SemiBold,
+        Margin = new Thickness(0, top, 0, 6)
+    };
+
+    private void ExtractWaypoint_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: ExtractMarker ex }) return;
+        var wp = new MapWaypoint
+        {
+            Kind = "extract",
+            Id = ex.Name,
+            Name = ex.Name,
+            X = ex.X,
+            Z = ex.Z
+        };
+        App.Settings.ActiveWaypoint = wp;
+        OverlayMap.SetWaypoint(wp);
+        WaypointRequested?.Invoke(wp);
+    }
+
+    private void QuestBox_Changed(object sender, RoutedEventArgs e)
+    {
+        if (_suppressQuest || sender is not CheckBox { Tag: string slug } box) return;
+        var list = App.Settings.EnabledQuestSlugs;
+        var on = box.IsChecked == true;
+        if (on)
+        {
+            if (!list.Contains(slug, StringComparer.OrdinalIgnoreCase))
+                list.Add(slug);
+        }
+        else
+        {
+            list.RemoveAll(s => string.Equals(s, slug, StringComparison.OrdinalIgnoreCase));
+        }
+        SettingsStore.Save(App.Settings);
+        OverlayMap.SetQuests(_quests, list);
+        QuestSelectionChanged?.Invoke();
+    }
 
     public void ToggleExpanded()
     {
@@ -100,9 +246,9 @@ public partial class OverlayWindow : Window
     public void ApplyExpandedLayout()
     {
         IsExpanded = true;
-        Width = 820;
+        Width = 920;
         Height = 560;
-        ExtractCol.Width = new GridLength(200);
+        ExtractCol.Width = new GridLength(240);
         ExtractPanel.Visibility = Visibility.Visible;
         NativeMethods.SetClickThrough(this, false);
     }

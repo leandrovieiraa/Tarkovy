@@ -1,13 +1,13 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY
+# TARKOVY · Dev 0.0.3
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.2](https://img.shields.io/badge/version-Dev%200.0.2-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.2-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/46f5026d6bfbfaee7f2510edb3a78fa3323c0828341c4d296b07558874655f35)
+![Dev 0.0.3](https://img.shields.io/badge/version-Dev%200.0.3-111111?style=flat-square&labelColor=000000)![EFT 1.1.0](https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.3-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D)[![Buy me a beer](https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-111111?style=flat-square&labelColor=000000)](https://buymeacoffee.com/anomalylabs)
 
-[Overview](#overview) · [Features](#features) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
+[Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
 
@@ -24,28 +24,67 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | Dev 0.0.2                        |
+| **Version**      | **Dev 0.0.3**                    |
+| **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
-| **Distribution** | `dist\Tarkovy.exe` (single-file) |
+| **Distribution** | `Tarkovy-0.0.3.zip` (exe + assets + runtimes) |
 
 
 > **Disclaimer** — Not affiliated with Battlestate Games. Use at your own risk; BSG rules may change.
+
+> **Game compatibility** — Quest names, map SVGs, extracts, and screenshot filename parsing were validated against **Escape from Tarkov 1.1.0** (Season 1 — KORD BREACH). A major EFT update can change any of that; the target patch is also shown in the app header.
 
 ---
 
 ## Features
 
 
-|                                                                        | Feature            | Detail                                                             |
-| ---------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------ |
-| ![map](https://img.shields.io/badge/-map-222?style=flat-square)        | Map detection      | Reads `application.log` and swaps the SVG automatically            |
-| ![pos](https://img.shields.io/badge/-position-222?style=flat-square)   | Position + heading | Parses the EFT screenshot filename                                 |
-| ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD        | Corner minimap and expanded mode (`F8` / `F9`)                     |
-| ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines   | Marker layer (data from [tarkov.dev](https://tarkov.dev))          |
-| ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup | Deletes the print after reading (and sweeps leftovers at raid end) |
-| ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach      | Filesystem only — no memory read / inject                          |
+|                                                                        | Feature              | Detail                                                                 |
+| ---------------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------- |
+| ![map](https://img.shields.io/badge/-map-222?style=flat-square)        | Map detection        | Reads `application.log` and swaps the SVG automatically                |
+| ![pos](https://img.shields.io/badge/-position-222?style=flat-square)   | Position + heading   | Parses the EFT screenshot filename                                     |
+| ![follow](https://img.shields.io/badge/-follow-222?style=flat-square)  | Follow player        | Minimap zooms in and tracks you as screenshots update                  |
+| ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Corner minimap and expanded mode (`F8` / `F9`)                         |
+| ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
+| ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Enable missions per map (EN/PT names); markers + route line to waypoint |
+| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | EX / MN / QT / LB + map rotation on the minimap                        |
+| ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
+| ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup   | Deletes the print after reading (and sweeps leftovers at raid end)     |
+| ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Filesystem only — no memory read / inject                              |
 
+
+> Quests are a **map catalog** you toggle manually. Tarkov logs do not expose your live PMC journal.
+
+---
+
+## Download
+
+Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.3.zip`), extract, and run `Tarkovy.exe`.
+
+---
+
+## Report a bug
+
+Found something broken? Please open a GitHub Issue — we want the reports.
+
+1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
+2. Describe what you expected vs what happened
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.3`)
+4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
+5. Steps to reproduce if you have them
+
+---
+
+## Buy me a beer
+
+Long raids, cold hops, and map SVG wrestling — that’s the Anomaly Labs diet.
+
+If Tarkovy saved you a death or two (or just made the mall less confusing), you can [**buy me a craft beer**](https://buymeacoffee.com/anomalylabs) on Buy Me a Coffee. IPA, stout, sour, whatever’s on tap — much appreciated.
+
+[![Buy me a craft beer](https://img.shields.io/badge/%F0%9F%8D%BA_Buy%20me%20a%20craft%20beer-anomalylabs-FFDD00?style=for-the-badge&labelColor=111111)](https://buymeacoffee.com/anomalylabs)
+
+*No pressure. Shipping pixels is already fun. Beer just makes the next patch notes easier to read.*
 
 ---
 
@@ -69,8 +108,8 @@ No memory reading, no injection, no client modification.
 
 ## Usage
 
-1. Run `dist\Tarkovy.exe`
-2. Open **CONFIG** and set your folders:
+1. Extract `Tarkovy-0.0.3.zip` and run `Tarkovy.exe`
+2. Open **CONFIG** (gear in the header) and set your folders:
   - **Logs:** `<EFT install>\Logs` (example: `D:\Battlestate Games\Escape from Tarkov\Logs`)
   - **Screenshots:** `Documents\Escape from Tarkov\Screenshots`
 3. Set up the **dual-bind** in EFT (see below)
@@ -110,7 +149,7 @@ Tarkovy does **not** simulate key presses. It only reads the **filename** the ga
 
 ## Build
 
-### Publish the `.exe`
+### Publish
 
 Requires [.NET 8 SDK](https://dotnet.microsoft.com/download):
 
@@ -118,7 +157,7 @@ Requires [.NET 8 SDK](https://dotnet.microsoft.com/download):
 dotnet publish src\Tarkovy\Tarkovy.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o dist
 ```
 
-Output: `dist\Tarkovy.exe` (~70 MB, self-contained).
+Output folder: `dist\` (exe + `Assets` + WebView2 / runtimes). Ship as a **ZIP** of that folder.
 
 ### Development
 
@@ -132,8 +171,35 @@ dotnet run --project src\Tarkovy\Tarkovy.csproj
 
 Official builds are meant to be checked on [VirusTotal](https://www.virustotal.com/) before you run them. Windows SmartScreen may still warn on unsigned apps — that is normal for new open-source tools.
 
-### Release `v0.0.2` (`Tarkovy.exe`)
+### Automated scan (local API key)
 
+Zip the current `dist\` folder and upload via the [VirusTotal files API](https://docs.virustotal.com/reference/files-scan) (large builds use [upload_url](https://docs.virustotal.com/reference/files-upload-url)). The API key stays **only on your machine**.
+
+```powershell
+# once
+copy tools\vt.local.env.example tools\vt.local.env
+# edit tools\vt.local.env → VT_API_KEY=...
+
+# publish + zip dist + upload
+.\tools\publish-and-vt.ps1 -Wait
+
+# or scan an existing dist\ without rebuilding
+.\tools\vt-scan-dist.ps1 -Wait
+```
+
+`tools\vt.local.env` and `tools\_vt-out\` are gitignored.
+
+### Release `v0.0.3` (`Tarkovy-0.0.3.zip`)
+
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy-0.0.3.zip (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.3/Tarkovy-0.0.3.zip)           |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D)             |
+| **SHA-256**    | `10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D`                                                                   |
+
+
+### Previous: `v0.0.2` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -141,11 +207,10 @@ Official builds are meant to be checked on [VirusTotal](https://www.virustotal.c
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/46f5026d6bfbfaee7f2510edb3a78fa3323c0828341c4d296b07558874655f35) |
 | **SHA-256**    | `F36744FE4E6EC06F83191B294B58E182CAD8C6B81946A9A66103FE9E63F78D69`                                                                   |
 
-
 Verify locally (PowerShell):
 
 ```powershell
-Get-FileHash .\Tarkovy.exe -Algorithm SHA256
+Get-FileHash .\Tarkovy-0.0.3.zip -Algorithm SHA256
 ```
 
 > Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
@@ -153,6 +218,18 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ---
 
 ## Changelog
+
+### Dev 0.0.3
+
+- Map quest catalog with EN/PT titles; toggle missions and show markers on the map
+- Click extracts or quest objectives to set a waypoint + route line toward the player
+- Minimap side tools: layers (extracts / mines / quests / labels) and rotation
+- Follow-player camera on the minimap (zoomed tracking as screenshots update)
+- Cleaner HUD (no duplicate map coords / status clutter); compact icon actions
+- EFT target patch shown in the app header (validated against **1.1.0 / KORD BREACH**)
+- Release package is a **ZIP** of `dist\` (exe + assets + runtimes)
+- Local VirusTotal upload script for dist ZIP scans
+- README: bug reports via Issues (screenshots welcome) + Buy Me a Coffee / craft beer
 
 ### Dev 0.0.2
 
@@ -168,6 +245,7 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## What this does not do
 
 - No loot, enemies, or continuous tracking without screenshots
+- Does not read your live PMC quest journal from logs
 - Does not work over exclusive fullscreen
 - Does not fire PrintScreen automatically
 
@@ -199,7 +277,7 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 |                         |                                                                                                                                                                                                     |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
-| **Product**             | Tarkovy · Dev 0.0.2                                                                                                                                                                                 |
+| **Product**             | Tarkovy · Dev 0.0.3                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="map.css" />
@@ -9,18 +9,32 @@
     <div id="world">
       <div id="svgHost"></div>
       <div id="mapGrid"></div>
+      <svg id="routeLayer" xmlns="http://www.w3.org/2000/svg"></svg>
       <div id="markers"></div>
       <div id="player" hidden></div>
     </div>
     <div id="viewGrid"></div>
     <div id="tip" hidden></div>
-    <div id="mapTools" aria-label="Map rotation">
-      <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise" aria-label="Rotate left">↺</button>
-      <button type="button" id="rotReset" title="Reset rotation" aria-label="Reset">0°</button>
-      <button type="button" id="rotRight" title="Rotate 90° clockwise" aria-label="Rotate right">↻</button>
+    <div id="sideTools" aria-label="Map controls">
+      <div class="tool-group" id="layerTools">
+        <button type="button" class="layer-btn active" data-layer="extracts" title="Extracts">EX</button>
+        <button type="button" class="layer-btn active" data-layer="mines" title="Mines">MN</button>
+        <button type="button" class="layer-btn active" data-layer="quests" title="Quests">QT</button>
+        <button type="button" class="layer-btn active" data-layer="labels" title="Labels">LB</button>
+      </div>
+      <div class="tool-sep"></div>
+      <div class="tool-group" id="mapTools">
+        <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise">↺</button>
+        <button type="button" id="rotReset" title="Reset rotation">0°</button>
+        <button type="button" id="rotRight" title="Rotate 90° clockwise">↻</button>
+      </div>
+      <div class="tool-sep"></div>
+      <div class="tool-group">
+        <button type="button" id="clearWp" title="Clear waypoint">✕</button>
+      </div>
     </div>
+    <div id="wpBanner" hidden></div>
   </div>
-  <div id="hint">WAITING FOR MAP</div>
   <script src="map.js"></script>
 </body>
 </html>

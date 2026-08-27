@@ -47,12 +47,12 @@
                         <TextBlock Text="TARKOVY" VerticalAlignment="Center"
                                    Foreground="{StaticResource BrushAmber}" FontSize="20" FontWeight="Bold"
                                    FontFamily="{StaticResource HudFont}"/>
-                        <TextBlock x:Name="StatusBadge" Text="{DynamicResource Status.Watching}" VerticalAlignment="Center"
-                                   Margin="14,0,0,0" FontSize="12" FontWeight="SemiBold"
-                                   Foreground="{StaticResource BrushAmber}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Dev 0.0.2" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
+                                   Foreground="{StaticResource BrushTextDim}" FontSize="10"
+                                   ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.0.3" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
@@ -87,8 +87,14 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="16,16,16,8">
-                        <StackPanel>
+                    <Grid Grid.Row="0" Margin="16,16,16,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
                             <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Main.Section.Notice}"/>
                             <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource BrushTextDim}"
                                        Text="{DynamicResource Main.Notice.Body}"/>
@@ -100,39 +106,40 @@
                             <CheckBox x:Name="ShowExtractsBox" Content="{DynamicResource Main.Marker.Extracts}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
                             <CheckBox x:Name="ShowMinesBox" Content="{DynamicResource Main.Marker.Mines}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
                             <CheckBox x:Name="ShowLabelsBox" Content="{DynamicResource Main.Marker.Labels}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                            <CheckBox x:Name="ShowQuestsBox" Content="{DynamicResource Main.Marker.Quests}" Checked="Markers_Changed" Unchecked="Markers_Changed"/>
 
-                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Shortcuts}"/>
+                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Quests}"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="{StaticResource BrushTextDim}" Margin="0,0,0,6"
+                                       Text="{DynamicResource Main.Quests.Hint}"/>
+                        </StackPanel>
+
+                        <Border Grid.Row="1"
+                                Background="#0A0A0A"
+                                BorderBrush="{StaticResource BrushBorder}"
+                                BorderThickness="1"
+                                Padding="6,4,2,4"
+                                MinHeight="120">
+                            <ScrollViewer Style="{StaticResource DarkQuestScrollViewer}">
+                                <StackPanel x:Name="QuestListPanel"/>
+                            </ScrollViewer>
+                        </Border>
+
+                        <StackPanel Grid.Row="2" Margin="0,12,0,0">
+                            <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Main.Section.Shortcuts}"/>
                             <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Overlay}"/>
                             <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Size}"/>
                             <TextBlock FontSize="12" Foreground="{StaticResource BrushTextDim}"
                                        Text="{DynamicResource Main.Shortcut.CleanupHint}"/>
                         </StackPanel>
-                    </ScrollViewer>
+                    </Grid>
 
-                    <Border Grid.Row="1" Padding="12,10,12,14" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
-                        <UniformGrid Columns="3">
-                            <Button Style="{StaticResource IconActionButton}" Click="ShowOverlay_Click"
-                                    ToolTip="{DynamicResource Main.Tooltip.ShowOverlay}">
-                                <StackPanel>
-                                    <TextBlock Text="▣" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                                    <TextBlock Text="{DynamicResource Main.Action.Overlay}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                                </StackPanel>
-                            </Button>
-                            <Button Style="{StaticResource IconActionButton}" Click="Settings_Click"
-                                    ToolTip="{DynamicResource Main.Tooltip.OpenSettings}">
-                                <StackPanel>
-                                    <TextBlock Text="⚙" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                                    <TextBlock Text="{DynamicResource Main.Action.Config}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                                </StackPanel>
-                            </Button>
-                            <Button Style="{StaticResource IconActionButton}" Click="EndRaid_Click"
-                                    ToolTip="{DynamicResource Main.Tooltip.EndRaid}">
-                                <StackPanel>
-                                    <TextBlock Text="⌫" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                                    <TextBlock Text="{DynamicResource Main.Action.Clear}" FontSize="10" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                                </StackPanel>
-                            </Button>
-                        </UniformGrid>
+                    <Border Grid.Row="1" Padding="10,6" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Style="{StaticResource IconOnlyButton}" Content="▣" Click="ShowOverlay_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.ShowOverlay}" Margin="0,0,4,0"/>
+                            <Button Style="{StaticResource IconOnlyButton}" Content="⌫" Click="EndRaid_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.EndRaid}"/>
+                        </StackPanel>
                     </Border>
                 </Grid>
 

@@ -236,6 +236,14 @@ body::-webkit-scrollbar,
   color: #3dff7a;
 }
 
+#tip.quest-tip {
+  border-color: #5aa8ff;
+}
+
+#tip.quest-tip .tip-kind {
+  color: #5aa8ff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .extract, .mine {
     animation: none;
@@ -262,57 +270,128 @@ body::-webkit-scrollbar,
 }
 
 #hint {
-  position: absolute;
-  left: 10px;
-  bottom: 8px;
-  color: #fff;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  pointer-events: none;
-  z-index: 5;
-  text-shadow: 0 0 6px #000;
+  display: none !important;
 }
 
-#mapTools {
+#routeLayer {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+#sideTools {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 8;
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
   pointer-events: auto;
 }
 
-#mapTools button {
-  width: 32px;
-  height: 28px;
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tool-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 2px 0;
+}
+
+#sideTools button {
+  width: 30px;
+  min-height: 26px;
   padding: 0;
   margin: 0;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.62);
   color: #e8e8e8;
   font-family: Bahnschrift, "Segoe UI", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
   line-height: 1;
 }
 
-#mapTools button:hover {
-  background: rgba(255, 255, 255, 0.12);
+#sideTools button:hover {
+  background: rgba(255, 255, 255, 0.14);
   border-color: rgba(255, 255, 255, 0.55);
   color: #fff;
 }
 
-#mapTools button:active {
-  background: rgba(255, 255, 255, 0.2);
+#sideTools .layer-btn.active {
+  border-color: #3dff7a;
+  color: #3dff7a;
 }
 
-#mapTools #rotReset {
-  min-width: 36px;
-  width: auto;
-  padding: 0 6px;
+#sideTools #rotReset {
+  font-size: 10px;
+}
+
+#wpBanner {
+  position: absolute;
+  left: 8px;
+  right: 44px;
+  bottom: 8px;
+  z-index: 7;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.78);
+  border: 1px solid rgba(255, 210, 70, 0.65);
+  color: #ffe08a;
   font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.quest {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: #5aa8ff;
+  box-shadow: 0 0 8px #5aa8ff;
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center center;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.quest.waypoint-target,
+.extract.waypoint-target {
+  outline: 2px solid #ffd246;
+  outline-offset: 2px;
+}
+
+.waypoint-pin {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-left: -7px;
+  margin-top: -18px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 16px solid #ffd246;
+  filter: drop-shadow(0 0 4px #ffd246);
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: 7px 18px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.extract {
+  cursor: pointer;
 }

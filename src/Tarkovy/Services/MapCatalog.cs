@@ -11,6 +11,7 @@ public sealed class MapCatalog
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(12) };
     private readonly Dictionary<string, List<ExtractMarker>> _extracts = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<HazardMarker>> _mines = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, List<QuestDefinition>> _quests = new(StringComparer.OrdinalIgnoreCase);
 
     public IReadOnlyList<MapDefinition> Maps { get; private set; } = [];
 
@@ -39,6 +40,9 @@ public sealed class MapCatalog
     public IReadOnlyList<HazardMarker> MinesFor(string mapId) =>
         _mines.TryGetValue(mapId, out var list) ? list : [];
 
+    public IReadOnlyList<QuestDefinition> QuestsFor(string mapId) =>
+        _quests.TryGetValue(mapId, out var list) ? list : [];
+
     public void LoadBundled(string assetsDir)
     {
         var path = Path.Combine(assetsDir, "maps.json");
@@ -57,6 +61,10 @@ public sealed class MapCatalog
         var minesPath = Path.Combine(assetsDir, "mines.json");
         if (File.Exists(minesPath))
             MergeMinesFile(File.ReadAllText(minesPath));
+
+        var questsPath = Path.Combine(assetsDir, "quests.json");
+        if (File.Exists(questsPath))
+            MergeQuestsFile(File.ReadAllText(questsPath));
     }
 
     public async Task RefreshMarkersAsync(CancellationToken ct = default)
@@ -117,6 +125,18 @@ public sealed class MapCatalog
             if (dict == null) return;
             foreach (var kv in dict)
                 _mines[kv.Key] = kv.Value;
+        }
+        catch { /* ignore */ }
+    }
+
+    private void MergeQuestsFile(string json)
+    {
+        try
+        {
+            var dict = JsonSerializer.Deserialize<Dictionary<string, List<QuestDefinition>>>(json, JsonOptions());
+            if (dict == null) return;
+            foreach (var kv in dict)
+                _quests[kv.Key] = kv.Value;
         }
         catch { /* ignore */ }
     }

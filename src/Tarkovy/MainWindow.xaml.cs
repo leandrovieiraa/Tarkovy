@@ -30,21 +30,19 @@ public partial class MainWindow : Window
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         _suppress = true;
-        foreach (var map in App.Maps.Maps)
-            MapCombo.Items.Add(new ComboBoxItem
-            {
-                Content = map.Name,
-                Tag = map.Id,
-                Foreground = (System.Windows.Media.Brush)FindResource("BrushText"),
-                Background = (System.Windows.Media.Brush)FindResource("BrushBgRaised")
-            });
+        AppVersionLabel.Text = ProductInfo.AppVersionLabel;
+        RefreshEftTargetLabel();
+        PopulateMapCombo();
         SelectMapId(App.Settings.SelectedMapId);
         ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
         ShowMinesBox.IsChecked = App.Settings.ShowMines;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
+        ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
 
         WireRuntime();
+        PreviewMap.LayerToggled += OnMapLayerToggled;
+        PreviewMap.WaypointChanged += wp => App.Settings.ActiveWaypoint = wp;
         SettingsWindow.SettingsApplied += OnSettingsApplied;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
@@ -54,13 +52,44 @@ public partial class MainWindow : Window
         RefreshHud();
     }
 
+    private void PopulateMapCombo()
+    {
+        var selected = App.Settings.SelectedMapId;
+        MapCombo.Items.Clear();
+        foreach (var map in App.Maps.Maps)
+        {
+            MapCombo.Items.Add(new ComboBoxItem
+            {
+                Content = map.Name,
+                Tag = map.Id,
+                Foreground = (Brush)FindResource("BrushText"),
+                Background = (Brush)FindResource("BrushBgRaised")
+            });
+        }
+
+        SelectMapId(selected);
+    }
+
+    private void RefreshEftTargetLabel()
+    {
+        EftTargetLabel.Text = Loc.T("Main.EftTarget", ProductInfo.EftPatch, ProductInfo.EftSeason);
+        EftTargetLabel.ToolTip = Loc.T("Main.Tooltip.EftTarget", ProductInfo.EftBuild, ProductInfo.EftSeason);
+    }
+
     private void OnLanguageChanged()
     {
         Dispatcher.Invoke(() =>
         {
+            var selected = App.Settings.SelectedMapId;
+            _suppress = true;
+            PopulateMapCombo();
+            SelectMapId(selected);
+            _suppress = false;
+            RefreshEftTargetLabel();
             PreviewMap.ApplyLanguage();
             _overlay?.ApplyLanguage();
             UpdateMaximizeGlyph();
+            RebuildQuestList();
             RefreshHud();
         });
     }
@@ -71,9 +100,12 @@ public partial class MainWindow : Window
         {
             App.Raid.SetMap(map);
             App.Settings.SelectedMapId = map.Id;
+            App.Settings.ActiveWaypoint = null;
             SelectMapId(map.Id);
             PushMapToViews();
             RefreshHud();
+            if (_overlay is { IsVisible: true })
+                _overlay.ApplyExpandedLayout();
         });
         App.Logs.RaidStarted += () => Dispatcher.Invoke(() =>
         {
@@ -116,34 +148,190 @@ public partial class MainWindow : Window
         var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
         if (map == null) return;
         App.Raid.SetMap(map);
-        var extracts = App.Settings.ShowExtracts ? App.Maps.ExtractsFor(map.Id) : [];
-        var mines = App.Settings.ShowMines ? App.Maps.MinesFor(map.Id) : [];
+        var extracts = App.Maps.ExtractsFor(map.Id);
+        var mines = App.Maps.MinesFor(map.Id);
+        var quests = App.Maps.QuestsFor(map.Id);
         var labels = App.Settings.ShowMarkerLabels;
         PreviewMap.LoadMap(map, extracts, mines, labels);
+        PreviewMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+        PreviewMap.SetQuests(quests, App.Settings.EnabledQuestSlugs);
+        PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
         PreviewMap.SetFollow(App.Settings.FollowPlayer);
-        _overlay?.LoadMap(map, extracts, mines, labels);
-        _overlay?.SetFollow(App.Settings.FollowPlayer);
-        _overlay?.SetGlassOpacity(App.Settings.OverlayOpacity);
+        if (_overlay != null)
+        {
+            _overlay.QuestSelectionChanged -= OnOverlayQuestSelectionChanged;
+            _overlay.WaypointRequested -= OnOverlayWaypointRequested;
+            _overlay.LayersChanged -= OnOverlayLayersChanged;
+            _overlay.LoadMap(map, extracts, mines, labels, quests);
+            _overlay.SetFollow(App.Settings.FollowPlayer);
+            _overlay.SetGlassOpacity(App.Settings.OverlayOpacity);
+            _overlay.QuestSelectionChanged += OnOverlayQuestSelectionChanged;
+            _overlay.WaypointRequested += OnOverlayWaypointRequested;
+            _overlay.LayersChanged += OnOverlayLayersChanged;
+        }
         MapTitle.Text = map.Name.ToUpperInvariant();
+        RebuildQuestList();
     }
 
     private void PushMarkersToViews()
     {
         var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
         if (map == null) return;
-        var extracts = App.Settings.ShowExtracts ? App.Maps.ExtractsFor(map.Id) : [];
-        var mines = App.Settings.ShowMines ? App.Maps.MinesFor(map.Id) : [];
+        var extracts = App.Maps.ExtractsFor(map.Id);
+        var mines = App.Maps.MinesFor(map.Id);
+        var quests = App.Maps.QuestsFor(map.Id);
         var labels = App.Settings.ShowMarkerLabels;
         PreviewMap.SetMarkers(extracts, mines, labels);
+        PreviewMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+        PreviewMap.SetQuests(quests, App.Settings.EnabledQuestSlugs);
         _overlay?.SetMarkers(extracts, mines, labels);
+        _overlay?.SetQuests(quests);
+    }
+
+    private sealed class QuestRowTag
+    {
+        public required string MapId { get; init; }
+        public required string MapName { get; init; }
+        public required string Slug { get; init; }
+    }
+
+    private void RebuildQuestList()
+    {
+        QuestListPanel.Children.Clear();
+        var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
+        if (map == null) return;
+
+        var quests = App.Maps.QuestsFor(map.Id);
+        if (quests.Count == 0)
+        {
+            QuestListPanel.Children.Add(new TextBlock
+            {
+                Text = Loc.T("Overlay.Quests.Empty"),
+                FontSize = 11,
+                Foreground = (Brush)FindResource("BrushTextDim"),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 4, 0, 0)
+            });
+            return;
+        }
+
+        var enabled = new HashSet<string>(App.Settings.EnabledQuestSlugs, StringComparer.OrdinalIgnoreCase);
+        foreach (var q in quests.OrderBy(q => q.Name, StringComparer.OrdinalIgnoreCase))
+        {
+            var label = string.IsNullOrWhiteSpace(Loc.QuestTrader(q))
+                ? Loc.QuestName(q)
+                : $"{Loc.QuestName(q)}  ·  {Loc.QuestTrader(q)}";
+            var box = new CheckBox
+            {
+                Content = label,
+                IsChecked = enabled.Contains(q.Slug),
+                Margin = new Thickness(0, 0, 0, 4),
+                ToolTip = Loc.T("Main.Quests.MapTooltip", map.Name),
+                Tag = new QuestRowTag { MapId = map.Id, MapName = map.Name, Slug = q.Slug }
+            };
+            box.Checked += QuestToggle_Changed;
+            box.Unchecked += QuestToggle_Changed;
+            QuestListPanel.Children.Add(box);
+        }
+    }
+
+    private void QuestToggle_Changed(object sender, RoutedEventArgs e)
+    {
+        if (_suppress || sender is not CheckBox { Tag: QuestRowTag tag } box) return;
+        if (!string.Equals(tag.MapId, App.Settings.SelectedMapId, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        var list = App.Settings.EnabledQuestSlugs;
+        if (box.IsChecked == true)
+        {
+            if (!list.Contains(tag.Slug, StringComparer.OrdinalIgnoreCase))
+                list.Add(tag.Slug);
+        }
+        else
+        {
+            list.RemoveAll(s => string.Equals(s, tag.Slug, StringComparison.OrdinalIgnoreCase));
+        }
+        SettingsStore.Save(App.Settings);
+        PushMarkersToViews();
+    }
+
+    private void OnOverlayQuestSelectionChanged()
+    {
+        RebuildQuestList();
+        var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
+        if (map == null) return;
+        PreviewMap.SetQuests(App.Maps.QuestsFor(map.Id), App.Settings.EnabledQuestSlugs);
+    }
+
+    private void OnOverlayWaypointRequested(MapWaypoint? wp)
+    {
+        App.Settings.ActiveWaypoint = wp;
+        PreviewMap.SetWaypoint(wp);
+    }
+
+    private void OnOverlayLayersChanged()
+    {
+        _suppress = true;
+        ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
+        ShowMinesBox.IsChecked = App.Settings.ShowMines;
+        ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
+        ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
+        _suppress = false;
+        PreviewMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+    }
+
+    private void OnMapLayerToggled(string key, bool value)
+    {
+        switch (key)
+        {
+            case "extracts":
+                App.Settings.ShowExtracts = value;
+                _suppress = true;
+                ShowExtractsBox.IsChecked = value;
+                _suppress = false;
+                break;
+            case "mines":
+                App.Settings.ShowMines = value;
+                _suppress = true;
+                ShowMinesBox.IsChecked = value;
+                _suppress = false;
+                break;
+            case "quests":
+                App.Settings.ShowQuests = value;
+                _suppress = true;
+                ShowQuestsBox.IsChecked = value;
+                _suppress = false;
+                break;
+            case "labels":
+                App.Settings.ShowMarkerLabels = value;
+                _suppress = true;
+                ShowLabelsBox.IsChecked = value;
+                _suppress = false;
+                break;
+            default:
+                return;
+        }
+        SettingsStore.Save(App.Settings);
+        _overlay?.SetMarkers(
+            App.Maps.ExtractsFor(App.Settings.SelectedMapId),
+            App.Maps.MinesFor(App.Settings.SelectedMapId),
+            App.Settings.ShowMarkerLabels);
     }
 
     private void RefreshHud()
     {
-        StatusBadge.Text = App.Raid.StatusLabel;
-        StatusBadge.Foreground = App.Raid.Status == RaidStatus.InRaid
-            ? (Brush)FindResource("BrushAmberHot")
-            : (Brush)FindResource("BrushAmber");
         var pos = App.Raid.LastPosition;
         var mapName = App.Raid.CurrentMap?.Name ?? "—";
         var posTxt = pos == null
@@ -163,6 +351,7 @@ public partial class MainWindow : Window
         App.Settings.ShowExtracts = ShowExtractsBox.IsChecked == true;
         App.Settings.ShowMines = ShowMinesBox.IsChecked == true;
         App.Settings.ShowMarkerLabels = ShowLabelsBox.IsChecked == true;
+        App.Settings.ShowQuests = ShowQuestsBox.IsChecked == true;
         SettingsStore.Save(App.Settings);
         PushMarkersToViews();
     }
@@ -179,6 +368,7 @@ public partial class MainWindow : Window
         ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
         ShowMinesBox.IsChecked = App.Settings.ShowMines;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
+        ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
         PushMapToViews();
         RefreshHud();
@@ -189,6 +379,7 @@ public partial class MainWindow : Window
         if (_suppress) return;
         if (MapCombo.SelectedItem is not ComboBoxItem item || item.Tag is not string id) return;
         App.Settings.SelectedMapId = id;
+        App.Settings.ActiveWaypoint = null;
         PushMapToViews();
         SettingsStore.Save(App.Settings);
     }

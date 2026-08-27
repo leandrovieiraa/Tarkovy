@@ -2,13 +2,15 @@
   const stage = document.getElementById("stage");
   const world = document.getElementById("world");
   const svgHost = document.getElementById("svgHost");
+  const routeLayer = document.getElementById("routeLayer");
   const markers = document.getElementById("markers");
   const playerEl = document.getElementById("player");
-  const hint = document.getElementById("hint");
   const tip = document.getElementById("tip");
+  const wpBanner = document.getElementById("wpBanner");
   const rotLeftBtn = document.getElementById("rotLeft");
   const rotRightBtn = document.getElementById("rotRight");
   const rotResetBtn = document.getElementById("rotReset");
+  const clearWpBtn = document.getElementById("clearWp");
 
   const strings = {
     waiting: "WAITING FOR MAP",
@@ -18,7 +20,14 @@
     rotateReset: "Reset rotation",
     rotateRight: "Rotate 90° clockwise",
     extract: "EXTRACT",
-    mine: "MINE"
+    mine: "MINE",
+    quest: "QUEST",
+    waypoint: "WAYPOINT",
+    clearWaypoint: "Clear waypoint",
+    layerExtracts: "Extracts",
+    layerMines: "Mines",
+    layerQuests: "Quests",
+    layerLabels: "Labels"
   };
 
   const BASE = 1200;
@@ -31,10 +40,16 @@
     panY: 0,
     rotation: 0,
     follow: true,
+    followPaused: false,
+    followZoomApplied: false,
+    followZoomMult: 3.2,
     player: null,
     extracts: [],
     mines: [],
-    showLabels: true,
+    quests: [],
+    enabledQuests: new Set(),
+    layers: { extracts: true, mines: true, quests: true, labels: true },
+    waypoint: null,
     dragging: false,
     lastX: 0,
     lastY: 0
@@ -46,7 +61,23 @@
     if (rotLeftBtn) rotLeftBtn.title = strings.rotateLeft;
     if (rotRightBtn) rotRightBtn.title = strings.rotateRight;
     if (rotResetBtn) rotResetBtn.title = strings.rotateReset;
-    if (!state.map && hint) hint.textContent = strings.waiting;
+    if (clearWpBtn) clearWpBtn.title = strings.clearWaypoint;
+    syncLayerButtons();
+    updateWpBanner();
+  }
+
+  function syncLayerButtons() {
+    const titles = {
+      extracts: strings.layerExtracts,
+      mines: strings.layerMines,
+      quests: strings.layerQuests,
+      labels: strings.layerLabels
+    };
+    document.querySelectorAll(".layer-btn").forEach((btn) => {
+      const key = btn.getAttribute("data-layer");
+      btn.classList.toggle("active", !!state.layers[key]);
+      btn.title = titles[key] || key;
+    });
   }
 
   playerEl.innerHTML = '<div class="chevron"></div>';
@@ -74,6 +105,11 @@
     state.worldH = h;
     world.style.width = w + "px";
     world.style.height = h + "px";
+    if (routeLayer) {
+      routeLayer.setAttribute("width", String(w));
+      routeLayer.setAttribute("height", String(h));
+      routeLayer.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    }
   }
 
   /** Como Sayser: content = viewBox do SVG (marcas em % batem com o desenho). */
@@ -95,7 +131,6 @@
     const cy = state.worldH / 2;
     const s = state.scale;
     const r = state.rotation;
-    // Pan em tela + escala/rotação em torno do centro do mapa.
     world.style.transformOrigin = "0 0";
     world.style.transform =
       `translate(${state.panX}px, ${state.panY}px) ` +
@@ -108,6 +143,7 @@
     world.style.setProperty("--map-rot", `${r}deg`);
     if (rotResetBtn) rotResetBtn.textContent = `${((r % 360) + 360) % 360}°`;
     updatePlayerVisual();
+    updateRoute();
   }
 
   function updatePlayerVisual() {
@@ -115,7 +151,6 @@
     if (!chev) return;
     const inv = state.scale > 0.0001 ? 1 / state.scale : 1;
     const yaw = state.player?.yaw || 0;
-    // Contra-roda só o anti-zoom; yaw fica no espaço do mapa (pai já gira).
     chev.style.transform = `rotate(${yaw}deg) scale(${inv})`;
   }
 
@@ -149,7 +184,7 @@
     return { x: dx / sc + cx, y: dy / sc + cy };
   }
 
-  function fitToView() {
+  function computeFitScale() {
     const w = Math.max(stage.clientWidth, 1);
     const h = Math.max(stage.clientHeight, 1);
     const rad = (state.rotation * Math.PI) / 180;
@@ -157,28 +192,61 @@
     const as = Math.abs(Math.sin(rad));
     const bw = state.worldW * ac + state.worldH * as;
     const bh = state.worldW * as + state.worldH * ac;
-    state.scale = Math.min(w / bw, h / bh) * 0.96;
+    return Math.min(w / bw, h / bh) * 0.96;
+  }
+
+  function fitToView() {
+    state.scale = computeFitScale();
     const cx = state.worldW / 2;
     const cy = state.worldH / 2;
+    const w = Math.max(stage.clientWidth, 1);
+    const h = Math.max(stage.clientHeight, 1);
     state.panX = w / 2 - cx * state.scale;
     state.panY = h / 2 - cy * state.scale;
     applyTransform();
   }
 
-  function centerOnPlayer() {
+  /** Mantém o player no centro com zoom útil (minimapa que acompanha o movimento). */
+  function trackPlayer(resetZoom) {
     if (!state.player || !state.map) {
       fitToView();
       return;
+    }
+    const fit = computeFitScale();
+    if (resetZoom || !state.followZoomApplied) {
+      state.scale = Math.min(6, Math.max(fit * 1.4, fit * state.followZoomMult));
+      state.followZoomApplied = true;
     }
     const { pctX, pctY } = gameToPct(state.player.x, state.player.z, state.map);
     const lx = pctX * state.worldW;
     const ly = pctY * state.worldH;
     const w = Math.max(stage.clientWidth, 1);
     const h = Math.max(stage.clientHeight, 1);
+    applyTransform();
     const scr = worldToScreen(lx, ly);
     state.panX += w / 2 - scr.x;
     state.panY += h / 2 - scr.y;
     applyTransform();
+  }
+
+  function centerOnPlayer() {
+    trackPlayer(false);
+  }
+
+  function shouldFollow() {
+    return state.follow && !state.followPaused && !state.dragging;
+  }
+
+  let followResumeTimer = 0;
+  function pauseFollowTemporarily() {
+    state.followPaused = true;
+    if (followResumeTimer) clearTimeout(followResumeTimer);
+    followResumeTimer = setTimeout(() => {
+      followResumeTimer = 0;
+      if (!state.follow) return;
+      state.followPaused = false;
+      if (state.player) trackPlayer(false);
+    }, 1800);
   }
 
   function rotateMap(deltaDeg) {
@@ -191,7 +259,7 @@
     state.panX += before.x - after.x;
     state.panY += before.y - after.y;
     applyTransform();
-    state.follow = false;
+    if (shouldFollow() && state.player) trackPlayer(false);
   }
 
   function resetRotation() {
@@ -209,7 +277,6 @@
   }
 
   function gameToPct(x, z, map) {
-    // Sayser/tarkov.dev: lat=gameZ, lng=gameX → rotate → (opcional) Leaflet transform → normaliza.
     const rot = map.coordinateRotation || 0;
     const rad = (rot * Math.PI) / 180;
     const cos = Math.cos(rad);
@@ -278,9 +345,10 @@
   async function loadMap(map) {
     state.map = map;
     state.rotation = 0;
+    state.followZoomApplied = false;
+    state.followPaused = false;
     const fallback = boundsSize(map);
     applyWorldSize(fallback.w, fallback.h);
-    hint.textContent = map.name || strings.waiting;
     svgHost.innerHTML = "";
     if (map.svgPath) {
       try {
@@ -298,18 +366,15 @@
       }
     }
     renderMarkers();
+    updateRoute();
     requestAnimationFrame(() => {
-      if (state.follow && state.player) centerOnPlayer();
+      if (shouldFollow() && state.player) trackPlayer(true);
       else fitToView();
     });
   }
 
   function inMap(pctX, pctY) {
     return pctX >= -0.02 && pctX <= 1.02 && pctY >= -0.02 && pctY <= 1.02;
-  }
-
-  function inMapPad(pctX, pctY) {
-    return pctX >= 0.01 && pctX <= 0.99 && pctY >= 0.01 && pctY <= 0.99;
   }
 
   function hideTip() {
@@ -321,12 +386,11 @@
   function showTip(name, kind, clientX, clientY) {
     const rect = stage.getBoundingClientRect();
     tip.hidden = false;
-    tip.className = kind === "mine" ? "mine-tip" : "extract-tip";
+    const kindLabel = kind === "mine" ? strings.mine : kind === "quest" ? strings.quest : strings.extract;
+    tip.className = kind === "mine" ? "mine-tip" : kind === "quest" ? "quest-tip" : "extract-tip";
     tip.innerHTML =
-      `<span class="tip-kind">${kind === "mine" ? strings.mine : strings.extract}</span>` +
-      `<span class="tip-name">${name || (kind === "mine" ? strings.mine : strings.extract)}</span>`;
-
-    // Mede depois de preencher pra não sair da tela.
+      `<span class="tip-kind">${kindLabel}</span>` +
+      `<span class="tip-name">${name || kindLabel}</span>`;
     const pad = 10;
     let x = clientX - rect.left + 14;
     let y = clientY - rect.top + 14;
@@ -348,53 +412,173 @@
     node.addEventListener("pointerleave", hideTip);
   }
 
+  function isWp(kind, id) {
+    return state.waypoint && state.waypoint.kind === kind && state.waypoint.id === id;
+  }
+
+  function setWaypoint(wp) {
+    state.waypoint = wp;
+    updateWpBanner();
+    renderMarkers();
+    updateRoute();
+    window.chrome?.webview?.postMessage({ type: "waypoint", waypoint: wp });
+  }
+
+  function clearWaypoint() {
+    state.waypoint = null;
+    updateWpBanner();
+    renderMarkers();
+    updateRoute();
+    window.chrome?.webview?.postMessage({ type: "waypoint", waypoint: null });
+  }
+
+  function updateWpBanner() {
+    if (!wpBanner) return;
+    if (!state.waypoint) {
+      wpBanner.hidden = true;
+      wpBanner.textContent = "";
+      return;
+    }
+    wpBanner.hidden = false;
+    wpBanner.textContent = `${strings.waypoint}: ${state.waypoint.name || ""}`;
+  }
+
+  function updateRoute() {
+    if (!routeLayer) return;
+    routeLayer.innerHTML = "";
+    if (!state.map || !state.player || !state.waypoint) return;
+    const a = gameToPct(state.player.x, state.player.z, state.map);
+    const b = gameToPct(state.waypoint.x, state.waypoint.z, state.map);
+    const x1 = a.pctX * state.worldW;
+    const y1 = a.pctY * state.worldH;
+    const x2 = b.pctX * state.worldW;
+    const y2 = b.pctY * state.worldH;
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", String(x1));
+    line.setAttribute("y1", String(y1));
+    line.setAttribute("x2", String(x2));
+    line.setAttribute("y2", String(y2));
+    line.setAttribute("stroke", "#ffd246");
+    line.setAttribute("stroke-width", "2");
+    line.setAttribute("stroke-dasharray", "8 6");
+    line.setAttribute("opacity", "0.9");
+    routeLayer.appendChild(line);
+  }
+
   function renderMarkers() {
     hideTip();
     markers.innerHTML = "";
     if (!state.map) return;
-    for (const ex of state.extracts) {
-      const { pctX, pctY } = gameToPct(ex.x, ex.z, state.map);
-      if (!inMap(pctX, pctY)) continue;
-      const node = document.createElement("div");
-      node.className = "extract " + String(ex.faction || "any").toLowerCase();
-      place(node, pctX, pctY);
-      const name = ex.name || "EXFIL";
-      if (state.showLabels) {
-        const lab = document.createElement("div");
-        lab.className = "extract-label";
-        lab.textContent = name;
-        node.appendChild(lab);
+
+    if (state.layers.extracts) {
+      for (const ex of state.extracts) {
+        const { pctX, pctY } = gameToPct(ex.x, ex.z, state.map);
+        if (!inMap(pctX, pctY)) continue;
+        const id = ex.name || `${ex.x},${ex.z}`;
+        const node = document.createElement("div");
+        node.className = "extract " + String(ex.faction || "any").toLowerCase();
+        if (isWp("extract", id)) node.classList.add("waypoint-target");
+        place(node, pctX, pctY);
+        const name = ex.name || "EXFIL";
+        if (state.layers.labels) {
+          const lab = document.createElement("div");
+          lab.className = "extract-label";
+          lab.textContent = name;
+          node.appendChild(lab);
+        }
+        bindMarkerTip(node, name, "extract");
+        node.addEventListener("click", (e) => {
+          e.stopPropagation();
+          setWaypoint({ kind: "extract", id, name, x: ex.x, z: ex.z });
+        });
+        markers.appendChild(node);
       }
-      bindMarkerTip(node, name, "extract");
-      markers.appendChild(node);
     }
-    for (const m of state.mines) {
-      const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
-      if (!inMap(pctX, pctY)) continue;
-      const node = document.createElement("div");
-      node.className = "mine";
-      place(node, pctX, pctY);
-      const name = m.name || strings.mine;
-      if (state.showLabels) {
-        const lab = document.createElement("div");
-        lab.className = "extract-label mine-label";
-        lab.textContent = name;
-        node.appendChild(lab);
+
+    if (state.layers.mines) {
+      for (const m of state.mines) {
+        const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
+        if (!inMap(pctX, pctY)) continue;
+        const node = document.createElement("div");
+        node.className = "mine";
+        place(node, pctX, pctY);
+        const name = m.name || strings.mine;
+        if (state.layers.labels) {
+          const lab = document.createElement("div");
+          lab.className = "extract-label mine-label";
+          lab.textContent = name;
+          node.appendChild(lab);
+        }
+        bindMarkerTip(node, name, "mine");
+        markers.appendChild(node);
       }
-      bindMarkerTip(node, name, "mine");
-      markers.appendChild(node);
+    }
+
+    if (state.layers.quests) {
+      for (const q of state.quests) {
+        if (!state.enabledQuests.has(q.slug)) continue;
+        for (const obj of q.objectives || []) {
+          const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
+          if (!inMap(pctX, pctY)) continue;
+          const id = obj.id || `${q.slug}-${obj.x}`;
+          const node = document.createElement("div");
+          node.className = "quest";
+          if (isWp("quest", id)) node.classList.add("waypoint-target");
+          place(node, pctX, pctY);
+          const name = obj.description || q.name;
+          if (state.layers.labels) {
+            const lab = document.createElement("div");
+            lab.className = "extract-label";
+            lab.textContent = q.name;
+            node.appendChild(lab);
+          }
+          bindMarkerTip(node, name, "quest");
+          node.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setWaypoint({ kind: "quest", id, name: q.name, x: obj.x, z: obj.z });
+          });
+          markers.appendChild(node);
+        }
+      }
+    }
+
+    if (state.waypoint) {
+      const { pctX, pctY } = gameToPct(state.waypoint.x, state.waypoint.z, state.map);
+      if (inMap(pctX, pctY)) {
+        const pin = document.createElement("div");
+        pin.className = "waypoint-pin";
+        place(pin, pctX, pctY);
+        markers.appendChild(pin);
+      }
     }
   }
 
   function setMarkers(extracts, mines, showLabels) {
     state.extracts = Array.isArray(extracts) ? extracts : [];
     state.mines = Array.isArray(mines) ? mines : [];
-    if (typeof showLabels === "boolean") state.showLabels = showLabels;
+    if (typeof showLabels === "boolean") state.layers.labels = showLabels;
+    syncLayerButtons();
+    renderMarkers();
+    updateRoute();
+  }
+
+  function setQuests(quests, enabledSlugs) {
+    state.quests = Array.isArray(quests) ? quests : [];
+    state.enabledQuests = new Set(Array.isArray(enabledSlugs) ? enabledSlugs : []);
+    renderMarkers();
+    updateRoute();
+  }
+
+  function setLayers(layers) {
+    if (!layers || typeof layers !== "object") return;
+    Object.assign(state.layers, layers);
+    syncLayerButtons();
     renderMarkers();
   }
 
   function setShowLabels(value) {
-    state.showLabels = !!value;
+    state.layers.labels = !!value;
+    syncLayerButtons();
     renderMarkers();
   }
 
@@ -402,14 +586,15 @@
     state.player = p;
     if (!p || !state.map) {
       playerEl.hidden = true;
+      updateRoute();
       return;
     }
     playerEl.hidden = false;
     const { pctX, pctY } = gameToPct(p.x, p.z, state.map);
     place(playerEl, pctX, pctY);
     updatePlayerVisual();
-    hint.textContent = `${state.map.name}  ${p.x.toFixed(1)}  ${p.z.toFixed(1)}`;
-    if (state.follow) centerOnPlayer();
+    updateRoute();
+    if (shouldFollow()) trackPlayer(false);
   }
 
   stage.addEventListener("wheel", (e) => {
@@ -429,13 +614,13 @@
   stage.addEventListener("contextmenu", (e) => e.preventDefault());
 
   stage.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("#mapTools")) return;
+    if (e.target.closest("#sideTools")) return;
     if (e.altKey || e.button === 2) {
       window.chrome?.webview?.postMessage({ type: "dragWindow" });
       return;
     }
     state.dragging = true;
-    state.follow = false;
+    pauseFollowTemporarily();
     state.lastX = e.clientX;
     state.lastY = e.clientY;
     stage.classList.add("drag");
@@ -466,9 +651,25 @@
     e.stopPropagation();
     resetRotation();
   });
+  clearWpBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    clearWaypoint();
+  });
+
+  document.querySelectorAll(".layer-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute("data-layer");
+      if (!key) return;
+      state.layers[key] = !state.layers[key];
+      syncLayerButtons();
+      renderMarkers();
+      window.chrome?.webview?.postMessage({ type: "layer", key, value: state.layers[key] });
+    });
+  });
 
   new ResizeObserver(() => {
-    if (state.follow && state.player) centerOnPlayer();
+    if (shouldFollow() && state.player) trackPlayer(false);
     else fitToView();
   }).observe(stage);
 
@@ -477,20 +678,41 @@
     if (data.type === "lang") applyStrings(data.strings);
     if (data.type === "loadMap") loadMap(data.map);
     if (data.type === "markers") setMarkers(data.extracts, data.mines, data.showLabels);
+    if (data.type === "quests") setQuests(data.quests, data.enabled);
+    if (data.type === "layers") setLayers(data.layers);
     if (data.type === "extracts") setMarkers(data.extracts, [], data.showLabels);
     if (data.type === "showLabels") setShowLabels(data.value);
+    if (data.type === "waypoint") {
+      state.waypoint = data.waypoint || null;
+      updateWpBanner();
+      renderMarkers();
+      updateRoute();
+    }
     if (data.type === "player") setPlayer(data.player);
     if (data.type === "follow") {
       state.follow = !!data.value;
-      if (state.follow && state.player) centerOnPlayer();
-      else fitToView();
+      state.followPaused = false;
+      if (state.follow) {
+        state.followZoomApplied = false;
+        if (state.player) trackPlayer(true);
+      } else {
+        fitToView();
+      }
     }
-    if (data.type === "resetView") fitToView();
+    if (data.type === "resetView") {
+      if (shouldFollow() && state.player) {
+        state.followZoomApplied = false;
+        trackPlayer(true);
+      } else {
+        fitToView();
+      }
+    }
   }
 
   window.chrome?.webview?.addEventListener("message", (ev) => onMessage(ev.data));
   window.addEventListener("message", (ev) => onMessage(ev.data));
 
+  syncLayerButtons();
   fitToView();
   window.chrome?.webview?.postMessage({ type: "ready" });
 })();

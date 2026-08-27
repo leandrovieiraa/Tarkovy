@@ -1,4 +1,5 @@
 using System.Windows;
+using Tarkovy.Models;
 
 namespace Tarkovy.Services;
 
@@ -60,6 +61,14 @@ public static class Loc
             ? Portuguese
             : English;
 
+    public static bool IsPortuguese => _code == Portuguese;
+
+    public static string QuestName(QuestDefinition q) =>
+        IsPortuguese && !string.IsNullOrWhiteSpace(q.NamePt) ? q.NamePt : q.Name;
+
+    public static string QuestTrader(QuestDefinition q) =>
+        IsPortuguese && !string.IsNullOrWhiteSpace(q.TraderPt) ? q.TraderPt : q.Trader;
+
     public static string T(string key)
     {
         if (Application.Current?.TryFindResource(key) is string s && !string.IsNullOrEmpty(s))
@@ -83,6 +92,13 @@ public static class Loc
         ["rotateReset"] = T("Map.Rotate.Reset"),
         ["rotateRight"] = T("Map.Rotate.Right"),
         ["extract"] = T("Map.Tip.Extract"),
-        ["mine"] = T("Map.Tip.Mine")
+        ["mine"] = T("Map.Tip.Mine"),
+        ["quest"] = T("Map.Tip.Quest"),
+        ["waypoint"] = T("Map.Waypoint"),
+        ["clearWaypoint"] = T("Map.ClearWaypoint"),
+        ["layerExtracts"] = T("Map.Layer.Extracts"),
+        ["layerMines"] = T("Map.Layer.Mines"),
+        ["layerQuests"] = T("Map.Layer.Quests"),
+        ["layerLabels"] = T("Map.Layer.Labels")
     };
 }
