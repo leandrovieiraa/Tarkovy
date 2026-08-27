@@ -28,6 +28,7 @@
   <a href="#usage">Usage</a> ·
   <a href="#dual-bind">Dual-bind</a> ·
   <a href="#build">Build</a> ·
+  <a href="#license--terms-of-use">License</a> ·
   <a href="#credits">Credits</a>
 </p>
 
@@ -167,6 +168,24 @@ dotnet run --project src\Tarkovy\Tarkovy.csproj
 - No loot, enemies, or continuous tracking without screenshots
 - Does not work over exclusive fullscreen
 - Does not fire PrintScreen automatically
+
+---
+
+## License / Terms of use
+
+Tarkovy is provided by **Anomaly Labs** for **personal and educational use only**.
+
+You **may**:
+- Download and run the software
+- Study the source code
+- Fork, modify, and experiment with it for learning / non-commercial projects
+
+You **may not**:
+- Sell, license, or otherwise **commercialize** Tarkovy (or modified versions)
+- Use it as part of a paid product, paid service, or commercial redistribution
+- Remove or obscure Anomaly Labs attribution in redistributed study copies
+
+Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use at your own risk.
 
 ---
 
