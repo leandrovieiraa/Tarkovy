@@ -286,5 +286,8 @@ Escape from Tarkov © Battlestate Games. Tarkovy is an independent, unofficial p
 
 ---
 
-![](docs/tarkovy-icon.png)  
-Tarkovy · by Anomaly Labs
+<p align="center">
+  <img src="docs/tarkovy-icon.png" alt="Tarkovy" width="72" />
+  <br />
+  <sub>Tarkovy · by Anomaly Labs</sub>
+</p>
