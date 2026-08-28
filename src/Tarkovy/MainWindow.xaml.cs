@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Tarkovy.Models;
 using Tarkovy.Services;
@@ -86,11 +85,12 @@ public partial class MainWindow : Window
 
         await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
         UpdateLoadingSnapshot();
-        await Task.WhenAll(PreviewMap.WarmupAsync(), Task.Delay(MinLoadingTime));
+        await Task.Delay(MinLoadingTime);
 
         PreviewMap.Visibility = Visibility.Visible;
+        SetLoading(false);
         PushMapToViews();
-        await HideLoadingAsync();
+        _ = WarmupMapAsync();
         Activate();
         StartItemScanServices();
 
@@ -123,23 +123,17 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task HideLoadingAsync()
+    private async Task WarmupMapAsync()
     {
-        var done = new TaskCompletionSource();
-        var fade = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(450))
+        try
         {
-            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-        };
-        fade.Completed += (_, _) =>
+            await PreviewMap.WarmupAsync().WaitAsync(TimeSpan.FromSeconds(45));
+            PushMapToViews();
+        }
+        catch
         {
-            LoadingOverlay.Visibility = Visibility.Collapsed;
-            LoadingOverlay.Opacity = 1;
-            LoadingSnapshot.Source = null;
-            AppChrome.IsEnabled = true;
-            done.TrySetResult();
-        };
-        LoadingOverlay.BeginAnimation(UIElement.OpacityProperty, fade);
-        await done.Task;
+            /* WebView failed — error page stays in map control */
+        }
     }
 
     private void UpdateLoadingSnapshot()
