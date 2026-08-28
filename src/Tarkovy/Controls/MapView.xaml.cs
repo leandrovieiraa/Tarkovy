@@ -25,7 +25,20 @@ public partial class MapView : UserControl
     public MapView()
     {
         InitializeComponent();
-        Loaded += async (_, _) => await InitAsync();
+        IsVisibleChanged += (_, _) =>
+        {
+            if (IsVisible)
+                _ = WarmupAsync();
+        };
+    }
+
+    private Task? _initTask;
+
+    public Task WarmupAsync()
+    {
+        if (_initTask != null) return _initTask;
+        _initTask = InitAsync();
+        return _initTask;
     }
 
     private async Task InitAsync()

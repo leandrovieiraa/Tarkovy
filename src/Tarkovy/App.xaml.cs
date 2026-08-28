@@ -14,6 +14,9 @@ public partial class App : Application
     public static LogWatcher Logs { get; private set; } = null!;
     public static ScreenshotWatcher Shots { get; private set; } = null!;
 
+    private static Task? _bootTask;
+    private static readonly object BootLock = new();
+
     protected override void OnStartup(StartupEventArgs e)
     {
         DispatcherUnhandledException += (_, args) =>
@@ -27,16 +30,41 @@ public partial class App : Application
         SanitizePlacements(Settings);
         QuestState.SanitizeTrackingList();
         Loc.Apply(Settings.UiLanguage);
-        var assets = AssetBootstrap.Ensure();
-        Maps.LoadBundled(assets);
-        ItemScan = new ItemScanService(Items);
-        _ = Items.LoadAsync();
-        Logs = new LogWatcher(Maps);
-        Shots = new ScreenshotWatcher();
-        _ = Maps.RefreshMarkersAsync();
-        if (Settings.StartWithWindows)
-            StartupRegistration.Apply(true);
-        ApplyWatchers();
+    }
+
+    public static Task EnsureInitializedAsync()
+    {
+        lock (BootLock)
+        {
+            _bootTask ??= BootAsync();
+            return _bootTask;
+        }
+    }
+
+    private static async Task BootAsync()
+    {
+        await Task.Run(() =>
+        {
+            var assets = AssetBootstrap.Ensure();
+            Maps.LoadBundled(assets);
+        }).ConfigureAwait(false);
+
+        var dispatcher = Current?.Dispatcher;
+        if (dispatcher == null) return;
+
+        await dispatcher.InvokeAsync(() =>
+        {
+            if (ItemScan != null) return;
+
+            ItemScan = new ItemScanService(Items);
+            Logs = new LogWatcher(Maps);
+            Shots = new ScreenshotWatcher();
+            _ = Items.LoadAsync();
+            _ = Maps.RefreshMarkersAsync();
+            if (Settings.StartWithWindows)
+                StartupRegistration.Apply(true);
+            ApplyWatchers();
+        });
     }
 
     private static void SanitizePlacements(AppSettings s)
@@ -88,8 +116,8 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         SettingsStore.Save(Settings);
-        Logs.Dispose();
-        Shots.Dispose();
+        Logs?.Dispose();
+        Shots?.Dispose();
         ShutdownItemScan();
         base.OnExit(e);
     }

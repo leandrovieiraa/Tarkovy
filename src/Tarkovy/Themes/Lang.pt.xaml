@@ -22,6 +22,8 @@
   <sys:String x:Key="Main.Marker.Quests.Short">MISSÕES</sys:String>
   <sys:String x:Key="Main.Section.Quests">MISSÕES DO MAPA</sys:String>
   <sys:String x:Key="Main.Quests.Hint">○ verde = concluída · □ quadrado = track no mapa. Marque manualmente ao terminar (logs não reportam conclusão).</sys:String>
+  <sys:String x:Key="Main.Quests.Search.Tooltip">Filtrar por nome da missão ou trader</sys:String>
+  <sys:String x:Key="Main.Quests.Search.Empty">Nenhuma missão corresponde à busca.</sys:String>
   <sys:String x:Key="Main.Quests.MapTooltip">Mapa: {0}</sys:String>
   <sys:String x:Key="Quest.Complete.Mark">Concluída (clique no círculo)</sys:String>
   <sys:String x:Key="Quest.Complete.Undo">Desmarcar concluída</sys:String>
@@ -42,6 +44,7 @@
   <sys:String x:Key="Main.Tooltip.OpenSettings">Configurações</sys:String>
   <sys:String x:Key="Main.Tooltip.EndRaid">Encerrar raid e limpar leftovers agora</sys:String>
   <sys:String x:Key="Main.MapPanel.Title">MAPA</sys:String>
+  <sys:String x:Key="Main.Loading">Carregando…</sys:String>
   <sys:String x:Key="Main.Footer.Tagline">TARKOVY  ·  companion local  ·  sem leitura de memória</sys:String>
 
   <!-- Status -->

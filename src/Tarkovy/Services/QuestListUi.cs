@@ -9,6 +9,24 @@ namespace Tarkovy.Services;
 
 public static class QuestListUi
 {
+    public static bool MatchesFilter(QuestDefinition quest, string filter)
+    {
+        if (string.IsNullOrWhiteSpace(filter))
+            return true;
+
+        var f = filter.Trim();
+        return ContainsIgnoreCase(Loc.QuestName(quest), f)
+               || ContainsIgnoreCase(Loc.QuestTrader(quest), f)
+               || ContainsIgnoreCase(quest.Name, f)
+               || ContainsIgnoreCase(quest.NamePt, f)
+               || ContainsIgnoreCase(quest.Trader, f)
+               || ContainsIgnoreCase(quest.TraderPt, f);
+    }
+
+    private static bool ContainsIgnoreCase(string? text, string filter) =>
+        !string.IsNullOrEmpty(text)
+        && text.Contains(filter, StringComparison.OrdinalIgnoreCase);
+
     public static UIElement BuildRow(QuestDefinition quest, Action onChanged, string? mapTooltip = null)
     {
         var slug = quest.Slug;

@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using Tarkovy.Models;
 using Tarkovy.Services;
 
@@ -9,6 +11,8 @@ namespace Tarkovy;
 
 public partial class MainWindow : Window
 {
+    private static readonly TimeSpan MinLoadingTime = TimeSpan.FromSeconds(2);
+
     private OverlayWindow? _overlay;
     private ItemLensWindow? _itemLens;
     private GlobalMouseHook? _mouseHook;
@@ -18,6 +22,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        SetLoading(true);
         NativeMethods.EnableWorkAreaMaximize(this);
         WindowPlacementHelper.Wire(this, App.Settings.MainWindowPlacement, () => SettingsStore.Save(App.Settings));
         Loaded += OnLoaded;
@@ -33,11 +38,26 @@ public partial class MainWindow : Window
         };
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e) => _ = OnLoadedAsync();
+
+    private async Task OnLoadedAsync()
     {
+        SetLoading(true);
+
         WindowPlacementHelper.Restore(this, App.Settings.MainWindowPlacement, Width, Height);
         WindowPlacementHelper.EnsureVisible(this);
-        Activate();
+
+        try
+        {
+            await App.EnsureInitializedAsync();
+        }
+        catch (Exception ex)
+        {
+            SetLoading(false);
+            MessageBox.Show(ex.Message, "Tarkovy", MessageBoxButton.OK, MessageBoxImage.Error);
+            Close();
+            return;
+        }
 
         _suppress = true;
         AppVersionLabel.Text = ProductInfo.AppVersionLabel;
@@ -61,13 +81,84 @@ public partial class MainWindow : Window
         SettingsWindow.SettingsApplied += OnSettingsApplied;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
-        WireItemScan();
-        if (App.Settings.OverlayVisible)
-            ShowOverlay();
-        if (App.Settings.ItemLensVisible)
-            ShowItemLens();
-        PushMapToViews();
+        WireItemScanEvents();
         RefreshHud();
+
+        await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
+        UpdateLoadingSnapshot();
+        await Task.WhenAll(PreviewMap.WarmupAsync(), Task.Delay(MinLoadingTime));
+
+        PreviewMap.Visibility = Visibility.Visible;
+        PushMapToViews();
+        await HideLoadingAsync();
+        Activate();
+        StartItemScanServices();
+
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (App.Settings.OverlayVisible)
+                ShowOverlay();
+            if (App.Settings.ItemLensVisible)
+                ShowItemLens();
+        }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+    }
+
+    private void SetLoading(bool loading)
+    {
+        if (loading)
+        {
+            PreviewMap.Visibility = Visibility.Collapsed;
+            AppChrome.IsEnabled = false;
+            LoadingOverlay.Opacity = 1;
+            LoadingOverlay.Visibility = Visibility.Visible;
+            UpdateLoadingSnapshot();
+        }
+        else
+        {
+            PreviewMap.Visibility = Visibility.Visible;
+            AppChrome.IsEnabled = true;
+            LoadingOverlay.Visibility = Visibility.Collapsed;
+            LoadingOverlay.Opacity = 1;
+            LoadingSnapshot.Source = null;
+        }
+    }
+
+    private async Task HideLoadingAsync()
+    {
+        var done = new TaskCompletionSource();
+        var fade = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(450))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+        };
+        fade.Completed += (_, _) =>
+        {
+            LoadingOverlay.Visibility = Visibility.Collapsed;
+            LoadingOverlay.Opacity = 1;
+            LoadingSnapshot.Source = null;
+            AppChrome.IsEnabled = true;
+            done.TrySetResult();
+        };
+        LoadingOverlay.BeginAnimation(UIElement.OpacityProperty, fade);
+        await done.Task;
+    }
+
+    private void UpdateLoadingSnapshot()
+    {
+        try
+        {
+            AppChrome.UpdateLayout();
+            var w = (int)Math.Ceiling(AppChrome.ActualWidth);
+            var h = (int)Math.Ceiling(AppChrome.ActualHeight);
+            if (w < 1 || h < 1) return;
+
+            var shot = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
+            shot.Render(AppChrome);
+            LoadingSnapshot.Source = shot;
+        }
+        catch
+        {
+            LoadingSnapshot.Source = null;
+        }
     }
 
     private void PopulateMapCombo()
@@ -201,7 +292,12 @@ public partial class MainWindow : Window
             _overlay.LayersChanged += OnOverlayLayersChanged;
         }
         MapTitle.Text = map.Name.ToUpperInvariant();
-        RebuildQuestList();
+        ScheduleRebuildQuestList();
+    }
+
+    private void ScheduleRebuildQuestList()
+    {
+        Dispatcher.BeginInvoke(RebuildQuestList, System.Windows.Threading.DispatcherPriority.Background);
     }
 
     private void PushMarkersToViews()
@@ -245,9 +341,32 @@ public partial class MainWindow : Window
             return;
         }
 
+        var filter = QuestSearchBox.Text.Trim();
         var tooltip = Loc.T("Main.Quests.MapTooltip", map.Name);
         foreach (var q in quests.OrderBy(q => q.Name, StringComparer.OrdinalIgnoreCase))
+        {
+            if (!QuestListUi.MatchesFilter(q, filter))
+                continue;
             QuestListPanel.Children.Add(QuestListUi.BuildRow(q, OnQuestStateChanged, tooltip));
+        }
+
+        if (QuestListPanel.Children.Count == 0 && quests.Count > 0 && filter.Length > 0)
+        {
+            QuestListPanel.Children.Add(new TextBlock
+            {
+                Text = Loc.T("Main.Quests.Search.Empty"),
+                FontSize = 11,
+                Foreground = (Brush)FindResource("BrushTextDim"),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 4, 0, 0)
+            });
+        }
+    }
+
+    private void QuestSearch_Changed(object sender, TextChangedEventArgs e)
+    {
+        if (_suppress) return;
+        RebuildQuestList();
     }
 
     private void OnQuestStateChanged()
@@ -549,7 +668,7 @@ public partial class MainWindow : Window
         SettingsStore.Save(App.Settings);
     }
 
-    private void WireItemScan()
+    private void WireItemScanEvents()
     {
         _mouseHook = new GlobalMouseHook();
         _mouseHook.MouseScanClick += (x, y, shift) =>
@@ -585,7 +704,10 @@ public partial class MainWindow : Window
         {
             Dispatcher.Invoke(() => _itemLens?.SetStatus(msg));
         };
+    }
 
+    private void StartItemScanServices()
+    {
         if (App.Settings.ItemScanEnabled)
             StartItemScanHook();
         _ = App.ItemScan.EnsureReadyAsync();

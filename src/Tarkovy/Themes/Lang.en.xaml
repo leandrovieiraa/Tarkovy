@@ -22,6 +22,8 @@
   <sys:String x:Key="Main.Marker.Quests.Short">QUESTS</sys:String>
   <sys:String x:Key="Main.Section.Quests">MAP QUESTS</sys:String>
   <sys:String x:Key="Main.Quests.Hint">Green ○ = complete · square □ = map tracking. Mark manually when done (logs don’t report completion).</sys:String>
+  <sys:String x:Key="Main.Quests.Search.Tooltip">Filter by quest or trader name</sys:String>
+  <sys:String x:Key="Main.Quests.Search.Empty">No quests match your search.</sys:String>
   <sys:String x:Key="Main.Quests.MapTooltip">Map: {0}</sys:String>
   <sys:String x:Key="Quest.Complete.Mark">Complete (click the circle)</sys:String>
   <sys:String x:Key="Quest.Complete.Undo">Unmark complete</sys:String>
@@ -42,6 +44,7 @@
   <sys:String x:Key="Main.Tooltip.OpenSettings">Settings</sys:String>
   <sys:String x:Key="Main.Tooltip.EndRaid">End raid and clean leftovers now</sys:String>
   <sys:String x:Key="Main.MapPanel.Title">MAP</sys:String>
+  <sys:String x:Key="Main.Loading">Loading…</sys:String>
   <sys:String x:Key="Main.Footer.Tagline">TARKOVY  ·  local companion  ·  no memory reading</sys:String>
 
   <!-- Status -->

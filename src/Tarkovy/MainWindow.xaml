@@ -20,8 +20,9 @@
                       UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
 
-    <Border BorderBrush="{StaticResource BrushAmber}" BorderThickness="1" Background="{StaticResource BrushBgDeep}">
-        <Grid>
+    <Grid>
+        <Border x:Name="AppChrome" BorderBrush="{StaticResource BrushAmber}" BorderThickness="1" Background="{StaticResource BrushBgDeep}">
+            <Grid x:Name="AppRoot">
             <Grid.RowDefinitions>
                 <RowDefinition Height="48"/>
                 <RowDefinition Height="*"/>
@@ -52,7 +53,7 @@
                         <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="10"
                                    ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
-                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.6" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.8" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
@@ -88,8 +89,9 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="16,16,16,8">
+                    <Grid Grid.Row="0" Margin="16,16,16,8" HorizontalAlignment="Stretch">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -139,13 +141,60 @@
                                           ToolTip="{DynamicResource Main.Marker.Quests}"
                                           Checked="Markers_Changed" Unchecked="Markers_Changed"/>
                             </Grid>
-
-                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Quests}"/>
-                            <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="{StaticResource BrushTextDim}" Margin="0,0,0,6"
-                                       Text="{DynamicResource Main.Quests.Hint}"/>
                         </StackPanel>
 
-                        <Border Grid.Row="1"
+                        <Grid Grid.Row="1" Margin="0,16,0,6" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" MinWidth="0"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource HudLabel}" VerticalAlignment="Center" Margin="0"
+                                           Text="{DynamicResource Main.Section.Quests}"/>
+                                <Button Style="{StaticResource ShortcutChipInfo}"
+                                        Content="i"
+                                        FontSize="11"
+                                        FontWeight="SemiBold"
+                                        Width="20"
+                                        Height="20"
+                                        Margin="6,0,0,0"
+                                        Padding="0"
+                                        VerticalAlignment="Center">
+                                    <Button.ToolTip>
+                                        <ToolTip MaxWidth="300">
+                                            <TextBlock Text="{DynamicResource Main.Quests.Hint}" TextWrapping="Wrap"/>
+                                        </ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+                            </StackPanel>
+                            <Border Grid.Column="1"
+                                    Background="{StaticResource BrushBgRaised}"
+                                    BorderBrush="{StaticResource BrushBorder}"
+                                    BorderThickness="1"
+                                    Margin="6,0,0,0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Stretch">
+                                <Grid>
+                                    <TextBlock Text="🔍"
+                                               FontSize="11"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Margin="6,0,0,0"
+                                               Foreground="{StaticResource BrushTextDim}"
+                                               IsHitTestVisible="False"/>
+                                    <TextBox x:Name="QuestSearchBox"
+                                             Padding="22,3,6,3"
+                                             FontSize="11"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             HorizontalAlignment="Stretch"
+                                             ToolTip="{DynamicResource Main.Quests.Search.Tooltip}"
+                                             TextChanged="QuestSearch_Changed"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <Border Grid.Row="2"
                                 Background="#0A0A0A"
                                 BorderBrush="{StaticResource BrushBorder}"
                                 BorderThickness="1"
@@ -206,7 +255,7 @@
                             <TextBlock x:Name="MapTitle" Text="{DynamicResource Main.MapPanel.Title}" VerticalAlignment="Center" Margin="12,0"
                                        Foreground="{StaticResource BrushAmber}" FontSize="12"/>
                         </Border>
-                        <controls:MapView x:Name="PreviewMap" Grid.Row="1"/>
+                        <controls:MapView x:Name="PreviewMap" Grid.Row="1" Visibility="Collapsed"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -221,6 +270,27 @@
                                Text="{DynamicResource Main.Footer.Tagline}"/>
                 </DockPanel>
             </Border>
+            </Grid>
+        </Border>
+
+        <Grid x:Name="LoadingOverlay" Panel.ZIndex="9999" Visibility="Visible" Background="#D9000000">
+            <Image x:Name="LoadingSnapshot"
+                   Stretch="Fill"
+                   RenderOptions.BitmapScalingMode="LowQuality">
+                <Image.Effect>
+                    <BlurEffect Radius="28" RenderingBias="Performance"/>
+                </Image.Effect>
+            </Image>
+            <Border Background="#80000000"/>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Ellipse Style="{StaticResource LoadingRing}" Width="52" Height="52" Margin="0,0,0,14"/>
+                <TextBlock Text="{DynamicResource Main.Loading}"
+                           Foreground="{StaticResource BrushAmber}"
+                           FontFamily="{StaticResource HudFont}"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
         </Grid>
-    </Border>
+    </Grid>
 </Window>

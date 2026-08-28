@@ -8,15 +8,15 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Tarkovy</AssemblyName>
     <RootNamespace>Tarkovy</RootNamespace>
-    <Version>0.1.6</Version>
-    <FileVersion>0.1.6.0</FileVersion>
-    <AssemblyVersion>0.1.6.0</AssemblyVersion>
-    <InformationalVersion>Dev 0.1.6</InformationalVersion>
-    <AssemblyTitle>Dev 0.1.6</AssemblyTitle>
-    <ApplicationVersion>0.1.6.0</ApplicationVersion>
+    <Version>0.1.8</Version>
+    <FileVersion>0.1.8.0</FileVersion>
+    <AssemblyVersion>0.1.8.0</AssemblyVersion>
+    <InformationalVersion>Dev 0.1.8</InformationalVersion>
+    <AssemblyTitle>Dev 0.1.8</AssemblyTitle>
+    <ApplicationVersion>0.1.8.0</ApplicationVersion>
     <ApplicationTitle>Tarkovy</ApplicationTitle>
     <Product>Tarkovy</Product>
-    <Title>Dev 0.1.6</Title>
+    <Title>Dev 0.1.8</Title>
     <Company>Anomaly Labs</Company>
     <Authors>Anomaly Labs</Authors>
     <Copyright>Copyright © Anomaly Labs</Copyright>
@@ -24,6 +24,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\brand\tarkovy.ico</ApplicationIcon>
     <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,10 +41,13 @@
     <PackageReference Include="System.Drawing.Common" Version="8.0.11" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(PublishSingleFile)' != 'true'">
     <Content Include="Assets\**\*" Exclude="Assets\brand\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Assets\**\*" Exclude="Assets\brand\**\*" />
     <Resource Include="Assets\brand\tarkovy.ico" />
     <Resource Include="Assets\brand\tarkovy-icon.png" />
