@@ -9,6 +9,7 @@ namespace Tarkovy;
 public partial class OverlayWindow : Window
 {
     public bool IsExpanded { get; private set; }
+    public bool IsSidePanelVisible { get; private set; }
     private bool _suppressQuest;
     private IReadOnlyList<ExtractMarker> _extracts = [];
     private IReadOnlyList<QuestDefinition> _quests = [];
@@ -87,6 +88,7 @@ public partial class OverlayWindow : Window
     {
         OverlayMap.ApplyLanguage();
         RebuildSidePanel();
+        SyncPanelToggleButton();
     }
 
     public void SetPlayer(PlayerFix? fix) => OverlayMap.SetPlayer(fix);
@@ -226,15 +228,63 @@ public partial class OverlayWindow : Window
         else ApplyExpandedLayout();
     }
 
+    public void ToggleSidePanel()
+    {
+        if (!IsExpanded)
+        {
+            ApplyExpandedLayout();
+            return;
+        }
+
+        SetSidePanelVisible(!IsSidePanelVisible);
+        OverlayMap.ResetView();
+    }
+
+    private void PanelToggle_Click(object sender, RoutedEventArgs e) => ToggleSidePanel();
+
+    private void SetSidePanelVisible(bool visible)
+    {
+        IsSidePanelVisible = visible;
+        if (visible)
+        {
+            ExtractCol.Width = new GridLength(240);
+            ExtractPanel.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            ExtractCol.Width = new GridLength(0);
+            ExtractPanel.Visibility = Visibility.Collapsed;
+        }
+        SyncPanelToggleButton();
+    }
+
+    private void SyncPanelToggleButton()
+    {
+        if (PanelToggleBtn == null) return;
+        if (!IsExpanded)
+        {
+            PanelToggleBtn.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        PanelToggleBtn.Visibility = Visibility.Visible;
+        PanelToggleBtn.Content = IsSidePanelVisible ? "«" : "»";
+        PanelToggleBtn.ToolTip = IsSidePanelVisible
+            ? Loc.T("Overlay.Tooltip.HidePanel")
+            : Loc.T("Overlay.Tooltip.ShowPanel");
+    }
+
     private bool _placedOnce;
 
     public void ApplyMiniLayout()
     {
         IsExpanded = false;
+        IsSidePanelVisible = false;
         Width = 320;
         Height = 348;
         ExtractCol.Width = new GridLength(0);
         ExtractPanel.Visibility = Visibility.Collapsed;
+        SyncPanelToggleButton();
         if (!_placedOnce)
         {
             PlaceBottomRight(16);
@@ -248,8 +298,7 @@ public partial class OverlayWindow : Window
         IsExpanded = true;
         Width = 920;
         Height = 560;
-        ExtractCol.Width = new GridLength(240);
-        ExtractPanel.Visibility = Visibility.Visible;
+        SetSidePanelVisible(true);
         NativeMethods.SetClickThrough(this, false);
     }
 

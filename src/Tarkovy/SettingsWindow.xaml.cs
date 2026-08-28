@@ -14,6 +14,7 @@ public partial class SettingsWindow : Window
     public SettingsWindow()
     {
         InitializeComponent();
+        NativeMethods.EnableWorkAreaMaximize(this);
         Loaded += (_, _) => LoadFromSettings();
     }
 

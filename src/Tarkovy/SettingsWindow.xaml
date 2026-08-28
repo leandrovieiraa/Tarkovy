@@ -64,10 +64,14 @@
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
                                Text="{DynamicResource Settings.ShowLabelsHint}"/>
 
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Map}"/>
+                    <CheckBox x:Name="FollowBox" Content="{DynamicResource Settings.FollowPlayer}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.FollowPlayerHint}"/>
+
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Overlay}"/>
                     <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Opacity}"/>
                     <Slider x:Name="OpacitySlider" Minimum="0.45" Maximum="1" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
-                    <CheckBox x:Name="FollowBox" Content="{DynamicResource Settings.FollowPlayer}"/>
                     <CheckBox x:Name="DeleteBox" Content="{DynamicResource Settings.DeleteAfterRead}"/>
                     <CheckBox x:Name="KeepLastBox" Content="{DynamicResource Settings.KeepLast}"/>
                     <CheckBox x:Name="AutoCleanupBox" Content="{DynamicResource Settings.AutoCleanup}" Margin="0,8,0,0"/>

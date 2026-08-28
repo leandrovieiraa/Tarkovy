@@ -69,6 +69,7 @@
   <sys:String x:Key="Settings.Path.Missing">PASTA NAO ENCONTRADA</sys:String>
   <sys:String x:Key="Settings.Dialog.Logs">Pasta de logs do EFT</sys:String>
   <sys:String x:Key="Settings.Dialog.Shots">Pasta de screenshots</sys:String>
+  <sys:String x:Key="Settings.Section.Map">MAPA</sys:String>
   <sys:String x:Key="Settings.Section.Markers">MARCADORES NO MAPA</sys:String>
   <sys:String x:Key="Settings.ShowExtracts">MOSTRAR EXTRAÇÕES</sys:String>
   <sys:String x:Key="Settings.ShowMines">MOSTRAR MINAS</sys:String>
@@ -77,6 +78,7 @@
   <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
   <sys:String x:Key="Settings.Opacity">OPACIDADE</sys:String>
   <sys:String x:Key="Settings.FollowPlayer">SEGUIR JOGADOR NO MINIMAPA</sys:String>
+  <sys:String x:Key="Settings.FollowPlayerHint">Desligado: o mapa fica fixo; você move e dá zoom manualmente.</sys:String>
   <sys:String x:Key="Settings.DeleteAfterRead">APAGAR PRINT APÓS LER POSIÇÃO</sys:String>
   <sys:String x:Key="Settings.KeepLast">MANTER O ÚLTIMO PRINT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">LIMPAR AUTOMÁTICO AO FIM DA RAID (LOGS)</sys:String>
@@ -92,6 +94,8 @@
   <sys:String x:Key="Overlay.Section.Quests">MISSÕES · ATIVAR</sys:String>
   <sys:String x:Key="Overlay.Quests.Empty">Sem marcas de missão neste mapa.</sys:String>
   <sys:String x:Key="Overlay.WaypointBtn">WP</sys:String>
+  <sys:String x:Key="Overlay.Tooltip.HidePanel">Ocultar painel (só minimapa)</sys:String>
+  <sys:String x:Key="Overlay.Tooltip.ShowPanel">Mostrar saídas e missões</sys:String>
 
   <!-- Map webview -->
   <sys:String x:Key="Map.Waiting">AGUARDANDO MAPA</sys:String>

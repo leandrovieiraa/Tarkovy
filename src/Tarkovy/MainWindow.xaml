@@ -52,7 +52,7 @@
                         <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="10"
                                    ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
-                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.0.3" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.0.4" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"

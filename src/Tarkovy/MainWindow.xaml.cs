@@ -16,6 +16,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        NativeMethods.EnableWorkAreaMaximize(this);
         Loaded += OnLoaded;
         StateChanged += (_, _) => UpdateMaximizeGlyph();
         Closed += (_, _) =>
@@ -473,6 +474,13 @@ public partial class MainWindow : Window
 
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
+        if (msg == NativeMethods.WmGetMinMaxInfo)
+        {
+            if (NativeMethods.TryHandleGetMinMaxInfo(hwnd, lParam))
+                handled = true;
+            return IntPtr.Zero;
+        }
+
         if (msg == NativeMethods.WmHotkey)
         {
             var id = wParam.ToInt32();

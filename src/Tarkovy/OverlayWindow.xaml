@@ -33,9 +33,26 @@
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                     <TextBlock x:Name="OverlayTitle" Text="TARKOVY" VerticalAlignment="Center"
                                FontSize="11" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                    <TextBlock x:Name="OverlayDragHint" DockPanel.Dock="Right" Text="{DynamicResource Overlay.DragHint}" Margin="0,0,8,0"
-                               VerticalAlignment="Center" FontSize="9"
-                               Foreground="#8A8A8A" HorizontalAlignment="Right"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                        <Button x:Name="PanelToggleBtn"
+                                Content="«"
+                                Width="28" Height="22"
+                                Margin="0,0,6,0"
+                                Padding="0"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                Background="Transparent"
+                                Foreground="#E8E8E8"
+                                BorderBrush="#4A4A4A"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                Visibility="Collapsed"
+                                Click="PanelToggle_Click"
+                                ToolTip="{DynamicResource Overlay.Tooltip.HidePanel}"/>
+                        <TextBlock x:Name="OverlayDragHint" Text="{DynamicResource Overlay.DragHint}"
+                                   VerticalAlignment="Center" FontSize="9"
+                                   Foreground="#8A8A8A"/>
+                    </StackPanel>
                 </DockPanel>
             </Border>
             <Grid Grid.Row="1">

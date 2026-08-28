@@ -1,11 +1,11 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.0.3
+# TARKOVY · Dev 0.0.4
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.3](https://img.shields.io/badge/version-Dev%200.0.3-111111?style=flat-square&labelColor=000000)![EFT 1.1.0](https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.3-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D)[![Buy me a beer](https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-111111?style=flat-square&labelColor=000000)](https://buymeacoffee.com/anomalylabs)
+![Dev 0.0.4](https://img.shields.io/badge/version-Dev%200.0.4-111111?style=flat-square&labelColor=000000)![EFT 1.1.0](https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.4-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400)[![Buy me a beer](https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-111111?style=flat-square&labelColor=000000)](https://buymeacoffee.com/anomalylabs)
 
 [Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
 
@@ -24,11 +24,11 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.0.3**                    |
+| **Version**      | **Dev 0.0.4**                    |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
-| **Distribution** | `Tarkovy-0.0.3.zip` (exe + assets + runtimes) |
+| **Distribution** | `Tarkovy-0.0.4.zip` (exe + assets + runtimes) |
 
 
 > **Disclaimer** — Not affiliated with Battlestate Games. Use at your own risk; BSG rules may change.
@@ -60,7 +60,7 @@ No memory reading, no injection, no client modification.
 
 ## Download
 
-Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.3.zip`), extract, and run `Tarkovy.exe`.
+Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.4.zip`), extract, and run `Tarkovy.exe`.
 
 ---
 
@@ -70,7 +70,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.3`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.4`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -108,7 +108,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 
 ## Usage
 
-1. Extract `Tarkovy-0.0.3.zip` and run `Tarkovy.exe`
+1. Extract `Tarkovy-0.0.4.zip` and run `Tarkovy.exe`
 2. Open **CONFIG** (gear in the header) and set your folders:
   - **Logs:** `<EFT install>\Logs` (example: `D:\Battlestate Games\Escape from Tarkov\Logs`)
   - **Screenshots:** `Documents\Escape from Tarkov\Screenshots`
@@ -189,7 +189,17 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.0.3` (`Tarkovy-0.0.3.zip`)
+### Release `v0.0.4` (`Tarkovy-0.0.4.zip`)
+
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy-0.0.4.zip (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.4/Tarkovy-0.0.4.zip)           |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400)             |
+| **SHA-256**    | `A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400`                                                                   |
+
+
+### Previous: `v0.0.3` (`Tarkovy-0.0.3.zip`)
 
 
 |                |                                                                                                                                      |
@@ -210,7 +220,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 Verify locally (PowerShell):
 
 ```powershell
-Get-FileHash .\Tarkovy-0.0.3.zip -Algorithm SHA256
+Get-FileHash .\Tarkovy-0.0.4.zip -Algorithm SHA256
 ```
 
 > Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
@@ -218,6 +228,13 @@ Get-FileHash .\Tarkovy-0.0.3.zip -Algorithm SHA256
 ---
 
 ## Changelog
+
+### Dev 0.0.4
+
+- Overlay: hide/show side panel (« / ») for map-only view while expanded
+- Config: follow-player toggle moved to dedicated **MAP** section with hint text
+- Fix maximized window overlapping the Windows taskbar (footer no longer clipped)
+- Follow-player default in map engine defers to saved setting (no flash on load)
 
 ### Dev 0.0.3
 
@@ -277,7 +294,7 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 |                         |                                                                                                                                                                                                     |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
-| **Product**             | Tarkovy · Dev 0.0.3                                                                                                                                                                                 |
+| **Product**             | Tarkovy · Dev 0.0.4                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
 

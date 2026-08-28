@@ -39,7 +39,7 @@
     panX: 0,
     panY: 0,
     rotation: 0,
-    follow: true,
+    follow: false,
     followPaused: false,
     followZoomApplied: false,
     followZoomMult: 3.2,

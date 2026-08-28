@@ -69,6 +69,7 @@
   <sys:String x:Key="Settings.Path.Missing">FOLDER NOT FOUND</sys:String>
   <sys:String x:Key="Settings.Dialog.Logs">EFT logs folder</sys:String>
   <sys:String x:Key="Settings.Dialog.Shots">Screenshots folder</sys:String>
+  <sys:String x:Key="Settings.Section.Map">MAP</sys:String>
   <sys:String x:Key="Settings.Section.Markers">MAP MARKERS</sys:String>
   <sys:String x:Key="Settings.ShowExtracts">SHOW EXTRACTS</sys:String>
   <sys:String x:Key="Settings.ShowMines">SHOW MINES</sys:String>
@@ -77,6 +78,7 @@
   <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
   <sys:String x:Key="Settings.Opacity">OPACITY</sys:String>
   <sys:String x:Key="Settings.FollowPlayer">FOLLOW PLAYER ON MINIMAP</sys:String>
+  <sys:String x:Key="Settings.FollowPlayerHint">Off: map stays fixed; you pan and zoom manually.</sys:String>
   <sys:String x:Key="Settings.DeleteAfterRead">DELETE SCREENSHOT AFTER READING POSITION</sys:String>
   <sys:String x:Key="Settings.KeepLast">KEEP LAST SCREENSHOT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">AUTO-CLEAN ON RAID END (LOGS)</sys:String>
@@ -92,6 +94,8 @@
   <sys:String x:Key="Overlay.Section.Quests">QUESTS · TOGGLE</sys:String>
   <sys:String x:Key="Overlay.Quests.Empty">No quest markers for this map.</sys:String>
   <sys:String x:Key="Overlay.WaypointBtn">WP</sys:String>
+  <sys:String x:Key="Overlay.Tooltip.HidePanel">Hide side panel (map only)</sys:String>
+  <sys:String x:Key="Overlay.Tooltip.ShowPanel">Show extracts &amp; quests</sys:String>
 
   <!-- Map webview -->
   <sys:String x:Key="Map.Waiting">WAITING FOR MAP</sys:String>

@@ -8,14 +8,14 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Tarkovy</AssemblyName>
     <RootNamespace>Tarkovy</RootNamespace>
-    <Version>0.0.3</Version>
-    <FileVersion>0.0.3.0</FileVersion>
-    <AssemblyVersion>0.0.3.0</AssemblyVersion>
-    <InformationalVersion>Dev 0.0.3</InformationalVersion>
-    <AssemblyTitle>Dev 0.0.3</AssemblyTitle>
+    <Version>0.0.4</Version>
+    <FileVersion>0.0.4.0</FileVersion>
+    <AssemblyVersion>0.0.4.0</AssemblyVersion>
+    <InformationalVersion>Dev 0.0.4</InformationalVersion>
+    <AssemblyTitle>Dev 0.0.4</AssemblyTitle>
     <ApplicationTitle>Tarkovy</ApplicationTitle>
     <Product>Tarkovy</Product>
-    <Title>Dev 0.0.3</Title>
+    <Title>Dev 0.0.4</Title>
     <Company>Anomaly Labs</Company>
     <Authors>Anomaly Labs</Authors>
     <Copyright>Copyright © Anomaly Labs</Copyright>
