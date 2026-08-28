@@ -35,7 +35,7 @@
                                FontSize="11" Foreground="#FFFFFF" FontWeight="SemiBold"/>
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
                         <Button x:Name="PanelToggleBtn"
-                                Content="«"
+                                Content="»"
                                 Width="28" Height="22"
                                 Margin="0,0,6,0"
                                 Padding="0"
@@ -46,9 +46,8 @@
                                 BorderBrush="#4A4A4A"
                                 BorderThickness="1"
                                 Cursor="Hand"
-                                Visibility="Collapsed"
                                 Click="PanelToggle_Click"
-                                ToolTip="{DynamicResource Overlay.Tooltip.HidePanel}"/>
+                                ToolTip="{DynamicResource Overlay.Tooltip.ShowPanel}"/>
                         <TextBlock x:Name="OverlayDragHint" Text="{DynamicResource Overlay.DragHint}"
                                    VerticalAlignment="Center" FontSize="9"
                                    Foreground="#8A8A8A"/>

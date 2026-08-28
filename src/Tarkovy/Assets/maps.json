@@ -17,7 +17,13 @@
     "svgPath": "https://assets.tarkov.dev/maps/svg/Factory.svg",
     "coordinateRotation": 90,
     "transform": [1.629, 119.9, 1.629, 139.3],
-    "bounds": [[77, -64.5], [-65.5, 67.4]]
+    "bounds": [[77, -64.5], [-65.5, 67.4]],
+    "floors": [
+      { "id": "basement", "name": "Tunnels", "namePt": "Túneis", "short": "B", "svgLayer": "Basement", "minHeight": -10000, "maxHeight": -1 },
+      { "id": "ground", "name": "Ground", "namePt": "Térreo", "short": "G", "svgLayer": "Ground_Floor", "minHeight": -1, "maxHeight": 3 },
+      { "id": "floor2", "name": "2nd Floor", "namePt": "2º andar", "short": "2", "svgLayer": "Second_Floor", "minHeight": 3, "maxHeight": 6 },
+      { "id": "floor3", "name": "3rd Floor", "namePt": "3º andar", "short": "3", "svgLayer": "Third_Floor", "minHeight": 6, "maxHeight": 10000 }
+    ]
   },
   {
     "id": "woods",
@@ -47,7 +53,12 @@
     "svgPath": "https://assets.tarkov.dev/maps/svg/Interchange.svg",
     "coordinateRotation": 180,
     "transform": [0.265, 150.6, 0.265, 134.6],
-    "bounds": [[598, -442], [-433, 426]]
+    "bounds": [[598, -442], [-433, 426]],
+    "floors": [
+      { "id": "ground", "name": "Ground", "namePt": "Térreo", "short": "G", "svgLayer": "Ground_Level", "minHeight": -1000, "maxHeight": 25 },
+      { "id": "floor2", "name": "Mall 2nd", "namePt": "Shopping 2º", "short": "2", "svgLayer": "First_Floor", "minHeight": 25, "maxHeight": 34 },
+      { "id": "floor3", "name": "Mall 3rd", "namePt": "Shopping 3º", "short": "3", "svgLayer": "Second_Floor", "minHeight": 34, "maxHeight": 1000 }
+    ]
   },
   {
     "id": "reserve",
@@ -88,7 +99,13 @@
     "svgPath": "https://assets.tarkov.dev/maps/svg/GroundZero.svg",
     "coordinateRotation": 180,
     "transform": [0.524, 167.3, 0.524, 65.1],
-    "bounds": [[249, -124], [-99, 364]]
+    "bounds": [[249, -124], [-99, 364]],
+    "floors": [
+      { "id": "garage", "name": "Garage", "namePt": "Garagem", "short": "U", "svgLayer": "Underground_Level", "minHeight": -1000, "maxHeight": 21 },
+      { "id": "ground", "name": "Ground", "namePt": "Térreo", "short": "G", "svgLayer": "Ground_Level", "minHeight": 21, "maxHeight": 28 },
+      { "id": "floor2", "name": "2nd Floor", "namePt": "2º andar", "short": "2", "svgLayer": "Second_Floor", "minHeight": 28, "maxHeight": 32.3 },
+      { "id": "floor3", "name": "3rd Floor", "namePt": "3º andar", "short": "3", "svgLayer": "Third_Floor", "minHeight": 32.3, "maxHeight": 1000 }
+    ]
   },
   {
     "id": "the-lab",

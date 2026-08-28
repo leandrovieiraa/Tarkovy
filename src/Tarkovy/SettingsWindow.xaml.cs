@@ -49,6 +49,7 @@ public partial class SettingsWindow : Window
         ShowLabelsBox.IsChecked = s.ShowMarkerLabels;
         OpacitySlider.Value = s.OverlayOpacity;
         FollowBox.IsChecked = s.FollowPlayer;
+        AutoFloorBox.IsChecked = s.AutoFloorFromHeight;
         DeleteBox.IsChecked = s.DeleteAfterRead;
         KeepLastBox.IsChecked = s.KeepLastScreenshot;
         AutoCleanupBox.IsChecked = s.AutoCleanupOnRaidEnd;
@@ -128,6 +129,7 @@ public partial class SettingsWindow : Window
         s.ShowMarkerLabels = ShowLabelsBox.IsChecked == true;
         s.OverlayOpacity = OpacitySlider.Value;
         s.FollowPlayer = FollowBox.IsChecked == true;
+        s.AutoFloorFromHeight = AutoFloorBox.IsChecked == true;
         s.DeleteAfterRead = DeleteBox.IsChecked == true;
         s.KeepLastScreenshot = KeepLastBox.IsChecked == true;
         s.AutoCleanupOnRaidEnd = AutoCleanupBox.IsChecked == true;

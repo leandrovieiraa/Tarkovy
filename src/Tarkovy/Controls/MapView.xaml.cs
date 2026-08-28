@@ -111,9 +111,14 @@ public partial class MapView : UserControl
 
     public void LoadMap(MapDefinition map, IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, IReadOnlyList<SpawnMarker>? spawns = null, bool? showLabels = null)
     {
-        Post(new { type = "loadMap", map });
+        Post(new { type = "loadMap", map = BuildMapPayload(map) });
         SetMarkers(extracts, mines, spawns, showLabels);
     }
+
+    public void SetAutoFloor(bool auto) => Post(new { type = "autoFloor", value = auto });
+
+    public void RefreshMapPayload(MapDefinition map) =>
+        Post(new { type = "loadMap", map = BuildMapPayload(map) });
 
     public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, IReadOnlyList<SpawnMarker>? spawns = null, bool? showLabels = null)
     {
@@ -194,5 +199,35 @@ public partial class MapView : UserControl
 
             Web.CoreWebView2.PostWebMessageAsJson(json);
         });
+    }
+
+    private static object BuildMapPayload(MapDefinition map)
+    {
+        object? floors = null;
+        if (map.Floors is { Count: > 0 })
+        {
+            floors = map.Floors.Select(f => new
+            {
+                id = f.Id,
+                name = Loc.IsPortuguese && !string.IsNullOrWhiteSpace(f.NamePt) ? f.NamePt : f.Name,
+                shortLabel = f.Short,
+                svgLayer = f.SvgLayer,
+                minHeight = f.MinHeight,
+                maxHeight = f.MaxHeight
+            }).ToArray();
+        }
+
+        return new
+        {
+            id = map.Id,
+            name = map.Name,
+            svgPath = map.SvgPath,
+            coordinateRotation = map.CoordinateRotation,
+            transform = map.Transform,
+            bounds = map.Bounds,
+            svgBounds = map.SvgBounds,
+            floors,
+            autoFloor = App.Settings.AutoFloorFromHeight
+        };
     }
 }

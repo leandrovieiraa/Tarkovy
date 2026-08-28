@@ -8,6 +8,10 @@ namespace Tarkovy;
 
 public partial class OverlayWindow : Window
 {
+    private const double MiniMapWidth = 320;
+    private const double PanelWidth = 240;
+    private const double MiniHeight = 348;
+
     public bool IsExpanded { get; private set; }
     public bool IsSidePanelVisible { get; private set; }
     private IReadOnlyList<ExtractMarker> _extracts = [];
@@ -82,6 +86,7 @@ public partial class OverlayWindow : Window
         OverlayMap.SetQuests(_quests, QuestState.TrackingSlugs());
         OverlayMap.SetWaypoint(App.Settings.ActiveWaypoint);
         OverlayMap.SetFollow(App.Settings.FollowPlayer);
+        OverlayMap.SetAutoFloor(App.Settings.AutoFloorFromHeight);
         OverlayMap.ResetView();
         RebuildSidePanel();
     }
@@ -96,6 +101,10 @@ public partial class OverlayWindow : Window
     public void SetPlayer(PlayerFix? fix) => OverlayMap.SetPlayer(fix);
 
     public void SetFollow(bool follow) => OverlayMap.SetFollow(follow);
+
+    public void SetAutoFloor(bool auto) => OverlayMap.SetAutoFloor(auto);
+
+    public void RefreshMapPayload(MapDefinition map) => OverlayMap.RefreshMapPayload(map);
 
     public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, IReadOnlyList<SpawnMarker>? spawns = null, bool? showLabels = null)
     {
@@ -203,20 +212,22 @@ public partial class OverlayWindow : Window
 
     public void ToggleExpanded()
     {
-        if (IsExpanded) ApplyMiniLayout();
-        else ApplyExpandedLayout();
+        if (IsSidePanelVisible)
+            ApplyMiniLayout();
+        else
+            OpenSidePanel();
+        OverlayMap.ResetView();
     }
 
-    public void ToggleSidePanel()
-    {
-        if (!IsExpanded)
-        {
-            ApplyExpandedLayout();
-            return;
-        }
+    public void ToggleSidePanel() => ToggleExpanded();
 
-        SetSidePanelVisible(!IsSidePanelVisible);
-        OverlayMap.ResetView();
+    private void OpenSidePanel()
+    {
+        IsExpanded = true;
+        Height = MiniHeight;
+        SetSidePanelVisible(true);
+        RebuildSidePanel();
+        NativeMethods.SetClickThrough(this, false);
     }
 
     private void PanelToggle_Click(object sender, RoutedEventArgs e) => ToggleSidePanel();
@@ -224,15 +235,18 @@ public partial class OverlayWindow : Window
     private void SetSidePanelVisible(bool visible)
     {
         IsSidePanelVisible = visible;
+        IsExpanded = visible;
         if (visible)
         {
-            ExtractCol.Width = new GridLength(240);
+            ExtractCol.Width = new GridLength(PanelWidth);
             ExtractPanel.Visibility = Visibility.Visible;
+            Width = MiniMapWidth + PanelWidth;
         }
         else
         {
             ExtractCol.Width = new GridLength(0);
             ExtractPanel.Visibility = Visibility.Collapsed;
+            Width = MiniMapWidth;
         }
         SyncPanelToggleButton();
     }
@@ -240,12 +254,6 @@ public partial class OverlayWindow : Window
     private void SyncPanelToggleButton()
     {
         if (PanelToggleBtn == null) return;
-        if (!IsExpanded)
-        {
-            PanelToggleBtn.Visibility = Visibility.Collapsed;
-            return;
-        }
-
         PanelToggleBtn.Visibility = Visibility.Visible;
         PanelToggleBtn.Content = IsSidePanelVisible ? "«" : "»";
         PanelToggleBtn.ToolTip = IsSidePanelVisible
@@ -258,12 +266,8 @@ public partial class OverlayWindow : Window
     public void ApplyMiniLayout()
     {
         IsExpanded = false;
-        IsSidePanelVisible = false;
-        Width = 320;
-        Height = 348;
-        ExtractCol.Width = new GridLength(0);
-        ExtractPanel.Visibility = Visibility.Collapsed;
-        SyncPanelToggleButton();
+        Height = MiniHeight;
+        SetSidePanelVisible(false);
         if (!_placedOnce)
         {
             PlaceBottomRight(16);
@@ -272,14 +276,7 @@ public partial class OverlayWindow : Window
         NativeMethods.SetClickThrough(this, false);
     }
 
-    public void ApplyExpandedLayout()
-    {
-        IsExpanded = true;
-        Width = 920;
-        Height = 560;
-        SetSidePanelVisible(true);
-        NativeMethods.SetClickThrough(this, false);
-    }
+    public void ApplyExpandedLayout() => OpenSidePanel();
 
     private void Header_Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {

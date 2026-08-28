@@ -23,6 +23,12 @@
         <button type="button" class="layer-btn active" data-layer="quests" title="Quests">QT</button>
         <button type="button" class="layer-btn active" data-layer="labels" title="Labels">LB</button>
       </div>
+      <div class="tool-sep" id="floorSep" hidden></div>
+      <div class="tool-group" id="floorTools" hidden>
+        <button type="button" id="floorUp" title="Floor up">▲</button>
+        <button type="button" id="floorLabel" class="floor-label-btn" title="Floor">☰<span id="floorShort">G</span></button>
+        <button type="button" id="floorDown" title="Floor down">▼</button>
+      </div>
       <div class="tool-sep"></div>
       <div class="tool-group" id="mapTools">
         <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise">↺</button>
@@ -30,7 +36,8 @@
         <button type="button" id="rotRight" title="Rotate 90° clockwise">↻</button>
       </div>
       <div class="tool-sep"></div>
-      <div class="tool-group">
+      <div class="tool-group" id="wpTools">
+        <button type="button" id="placeWp" title="Place waypoint">✎</button>
         <button type="button" id="clearWp" title="Clear waypoint">✕</button>
       </div>
     </div>

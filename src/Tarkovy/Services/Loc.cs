@@ -97,10 +97,17 @@ public static class Loc
         ["quest"] = T("Map.Tip.Quest"),
         ["waypoint"] = T("Map.Waypoint"),
         ["clearWaypoint"] = T("Map.ClearWaypoint"),
+        ["placeWaypoint"] = T("Map.PlaceWaypoint"),
+        ["placeWaypointActive"] = T("Map.PlaceWaypoint.Active"),
+        ["placeWaypointHint"] = T("Map.PlaceWaypoint.Hint"),
+        ["customWaypoint"] = T("Map.CustomWaypoint"),
         ["layerExtracts"] = T("Map.Layer.Extracts"),
         ["layerMines"] = T("Map.Layer.Mines"),
         ["layerSpawns"] = T("Map.Layer.Spawns"),
         ["layerQuests"] = T("Map.Layer.Quests"),
-        ["layerLabels"] = T("Map.Layer.Labels")
+        ["layerLabels"] = T("Map.Layer.Labels"),
+        ["floorUp"] = T("Map.Floor.Up"),
+        ["floorDown"] = T("Map.Floor.Down"),
+        ["floorCurrent"] = T("Map.Floor.Current")
     };
 }

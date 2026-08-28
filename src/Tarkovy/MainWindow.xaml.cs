@@ -44,7 +44,11 @@ public partial class MainWindow : Window
 
         WireRuntime();
         PreviewMap.LayerToggled += OnMapLayerToggled;
-        PreviewMap.WaypointChanged += wp => App.Settings.ActiveWaypoint = wp;
+        PreviewMap.WaypointChanged += wp =>
+        {
+            App.Settings.ActiveWaypoint = wp;
+            _overlay?.SetWaypoint(wp);
+        };
         SettingsWindow.SettingsApplied += OnSettingsApplied;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
@@ -90,6 +94,12 @@ public partial class MainWindow : Window
             RefreshEftTargetLabel();
             PreviewMap.ApplyLanguage();
             _overlay?.ApplyLanguage();
+            var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
+            if (map != null)
+            {
+                PreviewMap.RefreshMapPayload(map);
+                _overlay?.RefreshMapPayload(map);
+            }
             UpdateMaximizeGlyph();
             RebuildQuestList();
             RefreshHud();
@@ -107,7 +117,7 @@ public partial class MainWindow : Window
             PushMapToViews();
             RefreshHud();
             if (_overlay is { IsVisible: true })
-                _overlay.ApplyExpandedLayout();
+                _overlay.ApplyMiniLayout();
         });
         App.Logs.RaidStarted += () => Dispatcher.Invoke(() =>
         {
@@ -165,6 +175,7 @@ public partial class MainWindow : Window
         PreviewMap.SetQuests(quests, QuestState.TrackingSlugs());
         PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
         PreviewMap.SetFollow(App.Settings.FollowPlayer);
+        PreviewMap.SetAutoFloor(App.Settings.AutoFloorFromHeight);
         if (_overlay != null)
         {
             _overlay.QuestSelectionChanged -= OnOverlayQuestSelectionChanged;

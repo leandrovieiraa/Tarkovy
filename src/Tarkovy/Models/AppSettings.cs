@@ -12,6 +12,8 @@ public sealed class AppSettings
 
     public double OverlayOpacity { get; set; } = 0.72;
     public bool FollowPlayer { get; set; } = true;
+    /// <summary>Troca andar do SVG pela altura Y do screenshot (quando o mapa tem floors).</summary>
+    public bool AutoFloorFromHeight { get; set; } = true;
     public bool DeleteAfterRead { get; set; } = true;
     public bool KeepLastScreenshot { get; set; } = false;
     public string SelectedMapId { get; set; } = "customs";

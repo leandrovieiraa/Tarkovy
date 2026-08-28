@@ -15,6 +15,20 @@ public sealed class MapDefinition
     public double[][] Bounds { get; set; } = [[0, 0], [1, 1]];
     /// <summary>Quando presente, usado na projeção no lugar de Bounds (ex.: Reserve).</summary>
     public double[][]? SvgBounds { get; set; }
+    /// <summary>Andares SVG (tarkov.dev). Vazio = mapa plano.</summary>
+    public List<MapFloorLayer>? Floors { get; set; }
+}
+
+public sealed class MapFloorLayer
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string NamePt { get; set; } = "";
+    /// <summary>Rótulo curto no botão (G, 2, B…).</summary>
+    public string Short { get; set; } = "";
+    public string SvgLayer { get; set; } = "";
+    public double MinHeight { get; set; } = double.NegativeInfinity;
+    public double MaxHeight { get; set; } = double.PositiveInfinity;
 }
 
 public sealed class ExtractMarker

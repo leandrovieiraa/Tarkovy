@@ -30,7 +30,7 @@
   <sys:String x:Key="Main.Map.HasQuests">Quests available on this map</sys:String>
   <sys:String x:Key="Main.Section.Shortcuts">HOTKEYS</sys:String>
   <sys:String x:Key="Main.Shortcut.Overlay">F8  show / hide overlay</sys:String>
-  <sys:String x:Key="Main.Shortcut.Size">F9  minimap / expanded</sys:String>
+  <sys:String x:Key="Main.Shortcut.Size">F9  painel de saídas</sys:String>
   <sys:String x:Key="Main.Shortcut.CleanupHint">Raid end in logs cleans leftover screenshots (config)</sys:String>
   <sys:String x:Key="Main.Action.Overlay">OVERLAY</sys:String>
   <sys:String x:Key="Main.Action.Config">CONFIG</sys:String>
@@ -86,6 +86,8 @@
   <sys:String x:Key="Settings.Opacity">OPACITY</sys:String>
   <sys:String x:Key="Settings.FollowPlayer">FOLLOW PLAYER ON MINIMAP</sys:String>
   <sys:String x:Key="Settings.FollowPlayerHint">Off: map stays fixed; you pan and zoom manually.</sys:String>
+  <sys:String x:Key="Settings.AutoFloorFromHeight">AUTO FLOOR FROM SCREENSHOT HEIGHT</sys:String>
+  <sys:String x:Key="Settings.AutoFloorFromHeightHint">Uses Y from screenshots on multi-floor maps. Off: change floor with ▲▼ on the map toolbar.</sys:String>
   <sys:String x:Key="Settings.DeleteAfterRead">DELETE SCREENSHOT AFTER READING POSITION</sys:String>
   <sys:String x:Key="Settings.KeepLast">KEEP LAST SCREENSHOT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">AUTO-CLEAN ON RAID END (LOGS)</sys:String>
@@ -94,7 +96,7 @@
   <sys:String x:Key="Settings.Save">SAVE</sys:String>
 
   <!-- Overlay -->
-  <sys:String x:Key="Overlay.DragHint">F9  ·  DRAG</sys:String>
+  <sys:String x:Key="Overlay.DragHint">✎ WP  ·  F9 painel</sys:String>
   <sys:String x:Key="Overlay.ExtractPrefix">EXFIL  {0}</sys:String>
   <sys:String x:Key="Overlay.MinePrefix">MINE  {0}</sys:String>
   <sys:String x:Key="Overlay.Section.Extracts">EXTRACTS · TAP = WAYPOINT</sys:String>
@@ -117,10 +119,17 @@
   <sys:String x:Key="Map.Tip.Quest">QUEST</sys:String>
   <sys:String x:Key="Map.Waypoint">WAYPOINT</sys:String>
   <sys:String x:Key="Map.ClearWaypoint">Clear waypoint</sys:String>
+  <sys:String x:Key="Map.PlaceWaypoint">Place waypoint on map</sys:String>
+  <sys:String x:Key="Map.PlaceWaypoint.Active">Click the map to place waypoint (Esc to cancel)</sys:String>
+  <sys:String x:Key="Map.PlaceWaypoint.Hint">CLICK MAP TO PLACE WAYPOINT</sys:String>
+  <sys:String x:Key="Map.CustomWaypoint">Custom waypoint</sys:String>
   <sys:String x:Key="Map.Layer.Extracts">Extracts</sys:String>
   <sys:String x:Key="Map.Layer.Mines">Mines</sys:String>
   <sys:String x:Key="Map.Layer.Spawns">PMC Spawns</sys:String>
   <sys:String x:Key="Map.Layer.Quests">Quests</sys:String>
   <sys:String x:Key="Map.Layer.Labels">Labels</sys:String>
+  <sys:String x:Key="Map.Floor.Up">Floor up</sys:String>
+  <sys:String x:Key="Map.Floor.Down">Floor down</sys:String>
+  <sys:String x:Key="Map.Floor.Current">Floor</sys:String>
   <sys:String x:Key="Hazard.MineFallback">Mine</sys:String>
 </ResourceDictionary>
