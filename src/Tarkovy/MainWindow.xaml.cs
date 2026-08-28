@@ -14,7 +14,7 @@ public partial class MainWindow : Window
 
     private OverlayWindow? _overlay;
     private ItemLensWindow? _itemLens;
-    private GlobalMouseHook? _mouseHook;
+    private ItemScanClickWatcher? _itemScanClickWatcher;
     private HwndSource? _hotkeySource;
     private bool _suppress;
 
@@ -29,7 +29,7 @@ public partial class MainWindow : Window
         Closed += (_, _) =>
         {
             UnregisterHotkeys();
-            StopItemScanHook();
+            StopItemScanWatcher();
             SettingsWindow.SettingsApplied -= OnSettingsApplied;
             Loc.LanguageChanged -= OnLanguageChanged;
             _overlay?.Close();
@@ -90,17 +90,9 @@ public partial class MainWindow : Window
         PreviewMap.Visibility = Visibility.Visible;
         SetLoading(false);
         PushMapToViews();
-        _ = WarmupMapAsync();
         Activate();
-        StartItemScanServices();
-
-        Dispatcher.BeginInvoke(() =>
-        {
-            if (App.Settings.OverlayVisible)
-                ShowOverlay();
-            if (App.Settings.ItemLensVisible)
-                ShowItemLens();
-        }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        _ = WarmupAndPushMapAsync();
+        _ = DeferOptionalServicesAsync();
     }
 
     private void SetLoading(bool loading)
@@ -123,17 +115,32 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task WarmupMapAsync()
+    private async Task WarmupAndPushMapAsync()
     {
         try
         {
             await PreviewMap.WarmupAsync().WaitAsync(TimeSpan.FromSeconds(45));
-            PushMapToViews();
+            await Dispatcher.InvokeAsync(PushMapToViews);
         }
         catch
         {
             /* WebView failed — error page stays in map control */
         }
+    }
+
+    private static readonly TimeSpan DeferredServicesDelay = TimeSpan.FromSeconds(4);
+
+    private async Task DeferOptionalServicesAsync()
+    {
+        await Task.Delay(DeferredServicesDelay);
+        await Dispatcher.InvokeAsync(() =>
+        {
+            StartItemScanServices();
+            if (App.Settings.OverlayVisible)
+                ShowOverlay();
+            if (App.Settings.ItemLensVisible)
+                ShowItemLens();
+        });
     }
 
     private void UpdateLoadingSnapshot()
@@ -493,9 +500,9 @@ public partial class MainWindow : Window
         _suppress = false;
         _itemLens?.ApplyOpacity();
         if (App.Settings.ItemScanEnabled)
-            StartItemScanHook();
+            StartItemScanWatcher();
         else
-            StopItemScanHook();
+            StopItemScanWatcher();
         PushMapToViews();
         RefreshHud();
     }
@@ -664,22 +671,19 @@ public partial class MainWindow : Window
 
     private void WireItemScanEvents()
     {
-        _mouseHook = new GlobalMouseHook();
-        _mouseHook.MouseScanClick += (x, y, shift) =>
+        _itemScanClickWatcher = new ItemScanClickWatcher(Dispatcher);
+        _itemScanClickWatcher.ClickDetected += (x, y, shift) =>
         {
             if (!App.Settings.ItemScanEnabled) return;
-            Dispatcher.Invoke(() =>
-            {
-                if (shift)
-                    App.ItemScan.ScanIconAt(x, y);
-                else
-                    App.ItemScan.ScanNameAt(x, y);
-            });
+            if (shift)
+                App.ItemScan.ScanIconAt(x, y);
+            else
+                App.ItemScan.ScanNameAt(x, y);
         };
 
         App.ItemScan.ScanCompleted += r =>
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke(() =>
             {
                 _itemLens ??= CreateItemLens();
                 _itemLens.ShowResult(r);
@@ -692,18 +696,18 @@ public partial class MainWindow : Window
         };
         App.ItemScan.ScanFailed += msg =>
         {
-            Dispatcher.Invoke(() => _itemLens?.SetStatus(msg));
+            Dispatcher.BeginInvoke(() => _itemLens?.SetStatus(msg));
         };
         App.ItemScan.StatusChanged += msg =>
         {
-            Dispatcher.Invoke(() => _itemLens?.SetStatus(msg));
+            Dispatcher.BeginInvoke(() => _itemLens?.SetStatus(msg));
         };
     }
 
     private void StartItemScanServices()
     {
         if (App.Settings.ItemScanEnabled)
-            StartItemScanHook();
+            StartItemScanWatcher();
         _ = App.ItemScan.EnsureReadyAsync();
     }
 
@@ -751,18 +755,15 @@ public partial class MainWindow : Window
         }
     }
 
-    private void StartItemScanHook()
+    private void StartItemScanWatcher()
     {
         if (!App.Settings.ItemScanEnabled) return;
-        _mouseHook ??= new GlobalMouseHook();
-        _mouseHook.Enabled = true;
-        _mouseHook.Start();
+        _itemScanClickWatcher ??= new ItemScanClickWatcher(Dispatcher);
+        _itemScanClickWatcher.Start();
     }
 
-    private void StopItemScanHook()
+    private void StopItemScanWatcher()
     {
-        if (_mouseHook == null) return;
-        _mouseHook.Enabled = false;
-        _mouseHook.Stop();
+        _itemScanClickWatcher?.Stop();
     }
 }

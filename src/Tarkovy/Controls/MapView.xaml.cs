@@ -202,16 +202,24 @@ public partial class MapView : UserControl
     private void Post(object payload)
     {
         var json = JsonSerializer.Serialize(payload, Json);
-        Dispatcher.Invoke(() =>
+        if (Dispatcher.CheckAccess())
         {
-            if (!_ready || Web.CoreWebView2 == null)
-            {
-                _pending.Enqueue(json);
-                return;
-            }
+            PostJson(json);
+            return;
+        }
 
-            Web.CoreWebView2.PostWebMessageAsJson(json);
-        });
+        Dispatcher.BeginInvoke(() => PostJson(json));
+    }
+
+    private void PostJson(string json)
+    {
+        if (!_ready || Web.CoreWebView2 == null)
+        {
+            _pending.Enqueue(json);
+            return;
+        }
+
+        Web.CoreWebView2.PostWebMessageAsJson(json);
     }
 
     private static object BuildMapPayload(MapDefinition map)
