@@ -400,6 +400,49 @@
         <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
     </Style>
 
+    <Style x:Key="ShortcutChip" TargetType="Button">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Margin" Value="0,0,4,4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="#141414"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
+        <Setter Property="BorderBrush" Value="#4A4A4A"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{StaticResource HudFont}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            ToolTip="{TemplateBinding ToolTip}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#222222"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#FFFFFF"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#2A2A2A"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ShortcutChipInfo" TargetType="Button" BasedOn="{StaticResource ShortcutChip}">
+        <Setter Property="Cursor" Value="Help"/>
+    </Style>
+
     <!-- Minimal dark scrollbar for mission lists -->
     <SolidColorBrush x:Key="BrushScrollTrack" Color="#141414"/>
     <SolidColorBrush x:Key="BrushScrollThumb" Color="#3A3A3A"/>

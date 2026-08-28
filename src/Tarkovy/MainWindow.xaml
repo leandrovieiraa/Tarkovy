@@ -52,7 +52,7 @@
                         <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="10"
                                    ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
-                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.0.6" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.6" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
@@ -85,13 +85,13 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Margin="16,16,16,8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0">
@@ -155,20 +155,41 @@
                                 <StackPanel x:Name="QuestListPanel"/>
                             </ScrollViewer>
                         </Border>
-
-                        <StackPanel Grid.Row="2" Margin="0,12,0,0">
-                            <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Main.Section.Shortcuts}"/>
-                            <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Overlay}"/>
-                            <TextBlock FontSize="12" Foreground="{StaticResource BrushText}" Text="{DynamicResource Main.Shortcut.Size}"/>
-                            <TextBlock FontSize="12" Foreground="{StaticResource BrushTextDim}"
-                                       Text="{DynamicResource Main.Shortcut.CleanupHint}"/>
-                        </StackPanel>
                     </Grid>
 
-                    <Border Grid.Row="1" Padding="10,6" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+                    <StackPanel Grid.Row="1" Margin="16,0,16,8">
+                        <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Main.Section.Shortcuts}"/>
+                        <WrapPanel Margin="0,4,0,0">
+                            <Button Style="{StaticResource ShortcutChip}" Content="▣"
+                                    FontSize="14"
+                                    ToolTip="{DynamicResource Main.Shortcut.Overlay}"
+                                    Click="ShowOverlay_Click"/>
+                            <Button Style="{StaticResource ShortcutChip}" Content="☰"
+                                    FontSize="14"
+                                    ToolTip="{DynamicResource Main.Shortcut.Size}"
+                                    Click="ToggleOverlayPanel_Click"/>
+                            <Button Style="{StaticResource ShortcutChip}" Content="◎"
+                                    FontSize="14"
+                                    ToolTip="{DynamicResource Main.Shortcut.ItemLens}"
+                                    Click="ItemLens_Click"/>
+                            <Button Style="{StaticResource ShortcutChipInfo}" Content="▦"
+                                    FontSize="14"
+                                    ToolTip="{DynamicResource Main.Shortcut.ItemScanIcon}"/>
+                            <Button Style="{StaticResource ShortcutChipInfo}" Content="Aa"
+                                    FontSize="12" FontWeight="SemiBold"
+                                    ToolTip="{DynamicResource Main.Shortcut.ItemScanName}"/>
+                            <Button Style="{StaticResource ShortcutChipInfo}" Content="⟲"
+                                    FontSize="14"
+                                    ToolTip="{DynamicResource Main.Shortcut.CleanupHint}"/>
+                        </WrapPanel>
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Padding="10,6" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <Button Style="{StaticResource IconOnlyButton}" Content="▣" Click="ShowOverlay_Click"
                                     ToolTip="{DynamicResource Main.Tooltip.ShowOverlay}" Margin="0,0,4,0"/>
+                            <Button Style="{StaticResource IconOnlyButton}" Content="◎" Click="ItemLens_Click"
+                                    ToolTip="{DynamicResource Main.Tooltip.ItemLens}" Margin="0,0,4,0"/>
                             <Button Style="{StaticResource IconOnlyButton}" Content="⌫" Click="EndRaid_Click"
                                     ToolTip="{DynamicResource Main.Tooltip.EndRaid}"/>
                         </StackPanel>

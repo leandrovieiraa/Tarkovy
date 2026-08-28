@@ -30,7 +30,10 @@
   <sys:String x:Key="Main.Map.HasQuests">Quests available on this map</sys:String>
   <sys:String x:Key="Main.Section.Shortcuts">HOTKEYS</sys:String>
   <sys:String x:Key="Main.Shortcut.Overlay">F8  show / hide overlay</sys:String>
-  <sys:String x:Key="Main.Shortcut.Size">F9  painel de saídas</sys:String>
+  <sys:String x:Key="Main.Shortcut.Size">F9  extract panel</sys:String>
+  <sys:String x:Key="Main.Shortcut.ItemLens">F10  item lens (price panel)</sys:String>
+  <sys:String x:Key="Main.Shortcut.ItemScanIcon">Shift+click  item icon in stash / inventory</sys:String>
+  <sys:String x:Key="Main.Shortcut.ItemScanName">Click  item name when inspecting</sys:String>
   <sys:String x:Key="Main.Shortcut.CleanupHint">Raid end in logs cleans leftover screenshots (config)</sys:String>
   <sys:String x:Key="Main.Action.Overlay">OVERLAY</sys:String>
   <sys:String x:Key="Main.Action.Config">CONFIG</sys:String>
@@ -131,5 +134,29 @@
   <sys:String x:Key="Map.Floor.Up">Floor up</sys:String>
   <sys:String x:Key="Map.Floor.Down">Floor down</sys:String>
   <sys:String x:Key="Map.Floor.Current">Floor</sys:String>
+  <sys:String x:Key="Map.Tools.Show">Show map tools</sys:String>
+  <sys:String x:Key="Map.Tools.Hide">Hide map tools</sys:String>
   <sys:String x:Key="Hazard.MineFallback">Mine</sys:String>
+
+  <!-- Item Lens -->
+  <sys:String x:Key="ItemLens.Title">ITEM LENS</sys:String>
+  <sys:String x:Key="ItemLens.Hint">Shift+click an item icon in stash/inventory, or click the item name when inspecting.</sys:String>
+  <sys:String x:Key="ItemLens.Footer">Prices from tarkov.dev · first run indexes icons (may take a few minutes)</sys:String>
+  <sys:String x:Key="ItemLens.Flea">Flea · {0}</sys:String>
+  <sys:String x:Key="ItemLens.FleaUnknown">Flea · —</sys:String>
+  <sys:String x:Key="ItemLens.Trader">Trader · {0}</sys:String>
+  <sys:String x:Key="ItemLens.TraderUnknown">Trader · —</sys:String>
+  <sys:String x:Key="ItemLens.PerSlot">{0} / slot</sys:String>
+  <sys:String x:Key="ItemLens.Badge.Quest">Quest item</sys:String>
+  <sys:String x:Key="ItemLens.Badge.Hideout">Hideout</sys:String>
+  <sys:String x:Key="ItemScan.Status.Ready">Ready</sys:String>
+  <sys:String x:Key="ItemScan.Status.Indexing">Indexing item icons…</sys:String>
+  <sys:String x:Key="ItemScan.Status.IndexFailed">Icon index failed</sys:String>
+  <sys:String x:Key="ItemScan.Error.Index">Item icons not ready yet</sys:String>
+  <sys:String x:Key="ItemScan.Error.NoMatch">No item match</sys:String>
+  <sys:String x:Key="Settings.Section.ItemLens">ITEM LENS</sys:String>
+  <sys:String x:Key="Settings.ItemScanEnabled">ENABLE CLICK-TO-SCAN (RatScanner-style)</sys:String>
+  <sys:String x:Key="Settings.ItemScanEnabledHint">Shift+click item icon in stash/inventory; click item name when inspecting. No memory reading.</sys:String>
+  <sys:String x:Key="Settings.ItemLensOpacity">ITEM LENS OPACITY</sys:String>
+  <sys:String x:Key="Main.Tooltip.ItemLens">Open item lens (F10)</sys:String>
 </ResourceDictionary>

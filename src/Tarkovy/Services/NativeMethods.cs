@@ -18,6 +18,7 @@ internal static class NativeMethods
     public const int ModNorepeat = 0x4000;
     public const int VkF8 = 0x77;
     public const int VkF9 = 0x78;
+    public const int VkF10 = 0x79;
 
     private const uint MonitorDefaultToNearest = 2;
 
@@ -127,11 +128,12 @@ internal static class NativeMethods
         var helper = new WindowInteropHelper(window);
         var hwnd = helper.EnsureHandle();
         var ex = GetWindowLong(hwnd, GwlExstyle);
-        ex |= WsExToolwindow | WsExLayered | WsExNoactivate;
+        ex |= WsExToolwindow | WsExNoactivate;
+        ex &= ~WsExTransparent;
         if (clickThrough)
-            ex |= WsExTransparent;
+            ex |= WsExTransparent | WsExLayered;
         else
-            ex &= ~WsExTransparent;
+            ex &= ~WsExLayered;
         _ = SetWindowLong(hwnd, GwlExstyle, ex);
     }
 }

@@ -1,12 +1,12 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.0.6
+# TARKOVY · Dev 0.1.6
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.0.6-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.0.6"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.6-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.6"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
@@ -17,7 +17,7 @@ by **Anomaly Labs**
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
 
-[Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Support](#support) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
+[Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Support](#support) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Screenshot bind](#screenshot-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
 
@@ -34,11 +34,11 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.0.6**                    |
+| **Version**      | **Dev 0.1.6**                    |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
-| **Distribution** | `Tarkovy-0.0.6.zip` (exe + assets + runtimes) |
+| **Distribution** | `Tarkovy-0.1.6.zip` (exe + assets + runtimes) |
 
 
 > **Disclaimer** — Not affiliated with Battlestate Games. Use at your own risk; BSG rules may change.
@@ -62,6 +62,7 @@ No memory reading, no injection, no client modification.
 | ![spawn](https://img.shields.io/badge/-pmc-222?style=flat-square)     | PMC spawns           | Toggleable respawn markers (cyan triangles) per map                    |
 | ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Track missions; mark complete (○) to hide markers and stop tracking   |
 | ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | EX / MN / RS / QT / LB · floors · ✎ waypoint · rotation on minimap    |
+| ![icons](https://img.shields.io/badge/-icons-222?style=flat-square)   | Game-style markers   | tarkov.dev icons per type (PMC/Scav exfil, hazard, spawn, quest…)   |
 | ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
 | ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup   | Deletes the print after reading (and sweeps leftovers at raid end)     |
 | ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Filesystem only — no memory read / inject                              |
@@ -73,7 +74,7 @@ No memory reading, no injection, no client modification.
 
 ## Download
 
-Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.6.zip`), extract, and run `Tarkovy.exe`.
+Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.1.6.zip`), extract, and run `Tarkovy.exe`.
 
 ---
 
@@ -83,7 +84,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.6`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.6`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -133,11 +134,11 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 
 ## Usage
 
-1. Extract `Tarkovy-0.0.6.zip` and run `Tarkovy.exe`
+1. Extract `Tarkovy-0.1.6.zip` and run `Tarkovy.exe`
 2. Open **CONFIG** (gear in the header) and set your folders:
   - **Logs:** `<EFT install>\Logs` (example: `D:\Battlestate Games\Escape from Tarkov\Logs`)
   - **Screenshots:** `Documents\Escape from Tarkov\Screenshots`
-3. Set up the **dual-bind** in EFT (see below)
+3. Bind **Screenshot** in EFT (see [Screenshot bind](#screenshot-bind)) — on **EFT 1.x**, middle mouse or a quick side key works better than sharing **W**
 4. Enter a raid — the map switches automatically; each screenshot updates the arrow and the file is removed
 5. Hotkeys:
   - **F8** — show / hide minimap overlay (off by default)
@@ -148,28 +149,38 @@ On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show Smar
 
 ---
 
-## Dual-bind
+## Screenshot bind
 
-Tarkovy does **not** simulate key presses. It only reads the **filename** the game writes when taking a screenshot. To refresh position while moving, your movement key must also trigger EFT’s Screenshot action.
+Tarkovy does **not** simulate key presses. It only reads the **filename** EFT writes when you take an **in-game screenshot** (coordinates + heading).
 
 ### In Escape from Tarkov
 
 1. **Settings** → **Controls**
 2. Find **Screenshot** (not Windows Print Screen)
-3. Bind it to the **same key you use to move forward** — usually **W**
-4. Confirm that key is bound to both **forward movement** and **Screenshot**
-5. Keep the game in **Borderless Windowed**
+3. Bind it to something you can hit **while moving** without breaking gameplay
+4. Keep the game in **Borderless Windowed**
+
+### Recommended binds (EFT 1.x / Season 1)
+
+Binding Screenshot on the **same key as W** (the classic “dual-bind”) used to feel fine on older patches, but on **EFT 1.x** the screenshot toast, flash, and input handling make it **much less pleasant** — we no longer recommend it as the default.
+
+Better options:
+
+- **Middle mouse button (scroll wheel click)** — easy to tap with your index finger while holding **W**; doesn’t steal a keyboard key
+- **A dedicated key nearby** — e.g. **C**, **V**, **X**, or a thumb mouse button — whatever feels fastest for you
+- **Tap as you go** — press your screenshot bind every few steps while rotating; no perfect rhythm needed, just fresh prints when the arrow drifts
+
+Pick what fits your hand and mouse. There is no single “best” bind.
 
 ### In-raid flow
 
-`W` → EFT writes a screenshot → Tarkovy reads X/Y/Z + yaw from the filename → updates the arrow → **deletes the file** (if cleanup is enabled).
+Your bind → EFT saves a screenshot → Tarkovy reads X/Y/Z + yaw from the filename → updates the arrow → **deletes the file** (if cleanup is enabled).
 
 ### Notes
 
 - The screenshot flash/toast is from EFT, not Tarkovy
-- If it is annoying, try binding on **key press** rather than continuous hold
-- Other movement keys (A/S/D) work the same — Screenshot must share the **same** bind
 - Windows Print Screen alone will **not** work: Tarkovy needs the **in-game** screenshot filename with coordinates
+- Dual-bind on **W** is still *possible* if you tolerate the EFT 1.x feedback — but most players prefer **middle-click** or a quick side key
 
 ---
 
@@ -275,14 +286,30 @@ Get-FileHash .\Tarkovy-0.0.6.zip -Algorithm SHA256
 
 ## Changelog
 
-### Dev 0.0.6
+<details open>
+<summary><strong>Dev 0.1.6</strong> (latest)</summary>
+
+- **Item Lens** — click-to-scan like RatScanner: Shift+click stash/inventory icon, click inspect name (OCR); flea/trader/slot prices from tarkov.dev (screen capture only, no memory read)
+- **F10** — show/hide Item Lens overlay (same white border as the minimap)
+- Compact shortcut chips on the main window (tooltips for each hotkey)
+- Minimap tools eye toggle — show/hide side icons; layout adapts to window size (min **260×180**, same as Item Lens)
+- Persist main / minimap / Item Lens window position and size
+- Screenshot bind docs updated for **EFT 1.x** — prefer middle-click or a quick side key over dual-bind on **W**
+
+</details>
+
+<details>
+<summary><strong>Dev 0.0.6</strong></summary>
 
 - **Pencil waypoint (✎)** — click anywhere on the full map or compact minimap; route line to your position
 - **Compact overlay** — minimap stays small in-raid; **F9** toggles optional exits panel (no giant window)
 - **Map floors** — ▲▼ + layer label for Factory, Interchange, Ground Zero; markers filtered by floor
 - **Auto floor** — optional switch in CONFIG uses screenshot **Y** height; manual override with ▲▼
 
-### Dev 0.0.5
+</details>
+
+<details>
+<summary><strong>Dev 0.0.5</strong></summary>
 
 - **PMC spawns** — toggle layer + `RS` on minimap; cyan triangle markers from `spawns.json`
 - **Quest complete** — circle (○) marks done; tracking disabled and markers removed from map
@@ -290,14 +317,20 @@ Get-FileHash .\Tarkovy-0.0.6.zip -Algorithm SHA256
 - **Spawn pulse** — animation/glow only on the icon, not label text
 - **Window resize** — enforce minimum **1180×720** so the layout does not break (borderless fix)
 
-### Dev 0.0.4
+</details>
+
+<details>
+<summary><strong>Dev 0.0.4</strong></summary>
 
 - Overlay: hide/show side panel (« / ») for map-only view while expanded
 - Config: follow-player toggle moved to dedicated **MAP** section with hint text
 - Fix maximized window overlapping the Windows taskbar (footer no longer clipped)
 - Follow-player default in map engine defers to saved setting (no flash on load)
 
-### Dev 0.0.3
+</details>
+
+<details>
+<summary><strong>Dev 0.0.3</strong></summary>
 
 - Map quest catalog with EN/PT titles; toggle missions and show markers on the map
 - Click extracts or quest objectives to set a waypoint + route line toward the player
@@ -309,14 +342,22 @@ Get-FileHash .\Tarkovy-0.0.6.zip -Algorithm SHA256
 - Local VirusTotal upload script for dist ZIP scans
 - README: bug reports via Issues (screenshots welcome) + Buy Me a Coffee / craft beer
 
-### Dev 0.0.2
+</details>
+
+<details>
+<summary><strong>Dev 0.0.2</strong></summary>
 
 - Fixed mines toggle: populated minefield data and update markers immediately when enabling/disabling **MINES**
 - Updated branding assets (banner / logo)
 
-### Dev 0.0.1
+</details>
+
+<details>
+<summary><strong>Dev 0.0.1</strong></summary>
 
 - Initial public release
+
+</details>
 
 ---
 
@@ -356,8 +397,9 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
 | **Support**             | [anomalylabstudio@gmail.com](mailto:anomalylabstudio@gmail.com)                                                                                                                                     |
-| **Product**             | Tarkovy · Dev 0.0.6                                                                                                                                                                                 |
+| **Product**             | Tarkovy · Dev 0.1.6                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
+| **Map marker icons**    | [tarkov.dev](https://tarkov.dev) · [tarkov-dev](https://github.com/the-hideout/tarkov-dev/tree/main/public/maps/interactive)                                                                          |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
 
 

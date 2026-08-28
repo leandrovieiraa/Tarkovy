@@ -4,6 +4,7 @@
         xmlns:controls="clr-namespace:Tarkovy.Controls"
         Title="Tarkovy Overlay"
         Width="320" Height="348"
+        MinWidth="260" MinHeight="180"
         WindowStyle="None"
         AllowsTransparency="False"
         Background="#000000"

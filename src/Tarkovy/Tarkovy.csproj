@@ -2,21 +2,21 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>Tarkovy</AssemblyName>
     <RootNamespace>Tarkovy</RootNamespace>
-    <Version>0.0.6</Version>
-    <FileVersion>0.0.6.0</FileVersion>
-    <AssemblyVersion>0.0.6.0</AssemblyVersion>
-    <InformationalVersion>Dev 0.0.6</InformationalVersion>
-    <AssemblyTitle>Dev 0.0.6</AssemblyTitle>
-    <ApplicationVersion>0.0.6.0</ApplicationVersion>
+    <Version>0.1.6</Version>
+    <FileVersion>0.1.6.0</FileVersion>
+    <AssemblyVersion>0.1.6.0</AssemblyVersion>
+    <InformationalVersion>Dev 0.1.6</InformationalVersion>
+    <AssemblyTitle>Dev 0.1.6</AssemblyTitle>
+    <ApplicationVersion>0.1.6.0</ApplicationVersion>
     <ApplicationTitle>Tarkovy</ApplicationTitle>
     <Product>Tarkovy</Product>
-    <Title>Dev 0.0.6</Title>
+    <Title>Dev 0.1.6</Title>
     <Company>Anomaly Labs</Company>
     <Authors>Anomaly Labs</Authors>
     <Copyright>Copyright © Anomaly Labs</Copyright>
@@ -28,6 +28,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.11" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,8 @@ namespace Tarkovy;
 public partial class MainWindow : Window
 {
     private OverlayWindow? _overlay;
+    private ItemLensWindow? _itemLens;
+    private GlobalMouseHook? _mouseHook;
     private HwndSource? _hotkeySource;
     private bool _suppress;
 
@@ -17,19 +19,26 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         NativeMethods.EnableWorkAreaMaximize(this);
+        WindowPlacementHelper.Wire(this, App.Settings.MainWindowPlacement, () => SettingsStore.Save(App.Settings));
         Loaded += OnLoaded;
         StateChanged += (_, _) => UpdateMaximizeGlyph();
         Closed += (_, _) =>
         {
             UnregisterHotkeys();
+            StopItemScanHook();
             SettingsWindow.SettingsApplied -= OnSettingsApplied;
             Loc.LanguageChanged -= OnLanguageChanged;
             _overlay?.Close();
+            _itemLens?.Close();
         };
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
+        WindowPlacementHelper.Restore(this, App.Settings.MainWindowPlacement, Width, Height);
+        WindowPlacementHelper.EnsureVisible(this);
+        Activate();
+
         _suppress = true;
         AppVersionLabel.Text = ProductInfo.AppVersionLabel;
         RefreshEftTargetLabel();
@@ -52,8 +61,11 @@ public partial class MainWindow : Window
         SettingsWindow.SettingsApplied += OnSettingsApplied;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
+        WireItemScan();
         if (App.Settings.OverlayVisible)
             ShowOverlay();
+        if (App.Settings.ItemLensVisible)
+            ShowItemLens();
         PushMapToViews();
         RefreshHud();
     }
@@ -366,6 +378,11 @@ public partial class MainWindow : Window
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
+        _itemLens?.ApplyOpacity();
+        if (App.Settings.ItemScanEnabled)
+            StartItemScanHook();
+        else
+            StopItemScanHook();
         PushMapToViews();
         RefreshHud();
     }
@@ -381,6 +398,10 @@ public partial class MainWindow : Window
     }
 
     private void ShowOverlay_Click(object sender, RoutedEventArgs e) => ShowOverlay();
+
+    private void ToggleOverlayPanel_Click(object sender, RoutedEventArgs e) => _overlay?.ToggleExpanded();
+
+    private void ItemLens_Click(object sender, RoutedEventArgs e) => ToggleItemLens();
 
     private void EndRaid_Click(object sender, RoutedEventArgs e) => EndRaidInternal(fromLogs: false);
 
@@ -404,9 +425,10 @@ public partial class MainWindow : Window
         _overlay ??= new OverlayWindow();
         _overlay.SetGlassOpacity(App.Settings.OverlayOpacity);
         PushMapToViews();
+        if (_overlay.WindowState == WindowState.Minimized)
+            _overlay.WindowState = WindowState.Normal;
         _overlay.Show();
-        _overlay.ApplyMiniLayout();
-        NativeMethods.SetClickThrough(_overlay, clickThrough: false);
+        _overlay.RestorePlacement();
         App.Settings.OverlayVisible = true;
         SettingsStore.Save(App.Settings);
     }
@@ -446,6 +468,7 @@ public partial class MainWindow : Window
         _hotkeySource?.AddHook(WndProc);
         NativeMethods.RegisterHotKey(hwnd, 8, NativeMethods.ModNorepeat, NativeMethods.VkF8);
         NativeMethods.RegisterHotKey(hwnd, 9, NativeMethods.ModNorepeat, NativeMethods.VkF9);
+        NativeMethods.RegisterHotKey(hwnd, 10, NativeMethods.ModNorepeat, NativeMethods.VkF10);
     }
 
     private void UnregisterHotkeys()
@@ -457,6 +480,7 @@ public partial class MainWindow : Window
             {
                 NativeMethods.UnregisterHotKey(hwnd, 8);
                 NativeMethods.UnregisterHotKey(hwnd, 9);
+                NativeMethods.UnregisterHotKey(hwnd, 10);
             }
         }
         catch
@@ -489,6 +513,11 @@ public partial class MainWindow : Window
                 _overlay?.ToggleExpanded();
                 handled = true;
             }
+            else if (id == 10)
+            {
+                ToggleItemLens();
+                handled = true;
+            }
         }
 
         return IntPtr.Zero;
@@ -509,11 +538,115 @@ public partial class MainWindow : Window
         }
         else
         {
+            PushMapToViews();
+            if (_overlay.WindowState == WindowState.Minimized)
+                _overlay.WindowState = WindowState.Normal;
             _overlay.Show();
-            NativeMethods.SetClickThrough(_overlay, clickThrough: false);
+            _overlay.RestorePlacement();
             App.Settings.OverlayVisible = true;
         }
 
         SettingsStore.Save(App.Settings);
+    }
+
+    private void WireItemScan()
+    {
+        _mouseHook = new GlobalMouseHook();
+        _mouseHook.MouseScanClick += (x, y, shift) =>
+        {
+            if (!App.Settings.ItemScanEnabled) return;
+            Dispatcher.Invoke(() =>
+            {
+                if (shift)
+                    App.ItemScan.ScanIconAt(x, y);
+                else
+                    App.ItemScan.ScanNameAt(x, y);
+            });
+        };
+
+        App.ItemScan.ScanCompleted += r =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _itemLens ??= CreateItemLens();
+                _itemLens.ShowResult(r);
+                if (!_itemLens.IsVisible)
+                {
+                    _itemLens.Show();
+                    App.Settings.ItemLensVisible = true;
+                }
+            });
+        };
+        App.ItemScan.ScanFailed += msg =>
+        {
+            Dispatcher.Invoke(() => _itemLens?.SetStatus(msg));
+        };
+        App.ItemScan.StatusChanged += msg =>
+        {
+            Dispatcher.Invoke(() => _itemLens?.SetStatus(msg));
+        };
+
+        if (App.Settings.ItemScanEnabled)
+            StartItemScanHook();
+        _ = App.ItemScan.EnsureReadyAsync();
+    }
+
+    private ItemLensWindow CreateItemLens()
+    {
+        var win = new ItemLensWindow();
+        win.Closed += (_, _) =>
+        {
+            App.Settings.ItemLensVisible = false;
+            _itemLens = null;
+            SettingsStore.Save(App.Settings);
+        };
+        return win;
+    }
+
+    private void ShowItemLens()
+    {
+        _itemLens ??= CreateItemLens();
+        _itemLens.ApplyOpacity();
+        _itemLens.ShowEmpty();
+        _itemLens.Show();
+        App.Settings.ItemLensVisible = true;
+        SettingsStore.Save(App.Settings);
+        if (!App.Settings.ItemLensWindowPlacement.IsValid)
+            PlaceItemLensDefault();
+    }
+
+    private void PlaceItemLensDefault()
+    {
+        if (_itemLens == null) return;
+        var wa = SystemParameters.WorkArea;
+        _itemLens.Left = wa.Left + 16;
+        _itemLens.Top = wa.Top + 16;
+    }
+
+    private void ToggleItemLens()
+    {
+        if (_itemLens == null || !_itemLens.IsVisible)
+            ShowItemLens();
+        else
+        {
+            _itemLens.Hide();
+            App.Settings.ItemLensVisible = false;
+            SettingsStore.Save(App.Settings);
+        }
+    }
+
+    private void StartItemScanHook()
+    {
+        if (!App.Settings.ItemScanEnabled) return;
+        _mouseHook ??= new GlobalMouseHook();
+        _mouseHook.Enabled = true;
+        _mouseHook.Start();
+    }
+
+    private void StopItemScanHook()
+    {
+        if (_mouseHook == null) return;
+        _mouseHook.Enabled = false;
+        _mouseHook.Stop();
     }
 }

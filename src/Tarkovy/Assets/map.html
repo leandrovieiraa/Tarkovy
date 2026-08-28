@@ -15,30 +15,33 @@
     </div>
     <div id="viewGrid"></div>
     <div id="tip" hidden></div>
-    <div id="sideTools" aria-label="Map controls">
-      <div class="tool-group" id="layerTools">
-        <button type="button" class="layer-btn active" data-layer="extracts" title="Extracts">EX</button>
-        <button type="button" class="layer-btn active" data-layer="mines" title="Mines">MN</button>
-        <button type="button" class="layer-btn active" data-layer="spawns" title="PMC Spawns">RS</button>
-        <button type="button" class="layer-btn active" data-layer="quests" title="Quests">QT</button>
-        <button type="button" class="layer-btn active" data-layer="labels" title="Labels">LB</button>
-      </div>
-      <div class="tool-sep" id="floorSep" hidden></div>
-      <div class="tool-group" id="floorTools" hidden>
-        <button type="button" id="floorUp" title="Floor up">▲</button>
-        <button type="button" id="floorLabel" class="floor-label-btn" title="Floor">☰<span id="floorShort">G</span></button>
-        <button type="button" id="floorDown" title="Floor down">▼</button>
-      </div>
-      <div class="tool-sep"></div>
-      <div class="tool-group" id="mapTools">
-        <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise">↺</button>
-        <button type="button" id="rotReset" title="Reset rotation">0°</button>
-        <button type="button" id="rotRight" title="Rotate 90° clockwise">↻</button>
-      </div>
-      <div class="tool-sep"></div>
-      <div class="tool-group" id="wpTools">
-        <button type="button" id="placeWp" title="Place waypoint">✎</button>
-        <button type="button" id="clearWp" title="Clear waypoint">✕</button>
+    <button type="button" id="toolsToggle" class="eye-btn" title="Hide map tools" aria-expanded="true">◎</button>
+    <div id="mapToolsDock" class="layout-v tools-open">
+      <div id="sideTools" aria-label="Map controls">
+        <div class="tool-group" id="layerTools">
+          <button type="button" class="layer-btn active" data-layer="extracts" title="Extracts">EX</button>
+          <button type="button" class="layer-btn active" data-layer="mines" title="Mines">MN</button>
+          <button type="button" class="layer-btn active" data-layer="spawns" title="PMC Spawns">RS</button>
+          <button type="button" class="layer-btn active" data-layer="quests" title="Quests">QT</button>
+          <button type="button" class="layer-btn active" data-layer="labels" title="Labels">LB</button>
+        </div>
+        <div class="tool-sep" id="floorSep" hidden></div>
+        <div class="tool-group" id="floorTools" hidden>
+          <button type="button" id="floorUp" title="Floor up">▲</button>
+          <button type="button" id="floorLabel" class="floor-label-btn" title="Floor">☰<span id="floorShort">G</span></button>
+          <button type="button" id="floorDown" title="Floor down">▼</button>
+        </div>
+        <div class="tool-sep"></div>
+        <div class="tool-group" id="mapTools">
+          <button type="button" id="rotLeft" title="Rotate 90° counter-clockwise">↺</button>
+          <button type="button" id="rotReset" title="Reset rotation">0°</button>
+          <button type="button" id="rotRight" title="Rotate 90° clockwise">↻</button>
+        </div>
+        <div class="tool-sep"></div>
+        <div class="tool-group" id="wpTools">
+          <button type="button" id="placeWp" title="Place waypoint">✎</button>
+          <button type="button" id="clearWp" title="Clear waypoint">✕</button>
+        </div>
       </div>
     </div>
     <div id="wpBanner" hidden></div>

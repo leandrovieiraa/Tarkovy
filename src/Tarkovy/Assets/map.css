@@ -83,11 +83,12 @@ body::-webkit-scrollbar,
   z-index: 2;
 }
 
-.extract, .mine, .spawn-wrap {
+.extract, .mine, .spawn-wrap, .marker-wrap {
   pointer-events: auto;
   cursor: help;
 }
 
+.marker-wrap::before,
 .extract::before,
 .mine::before,
 .spawn-wrap::before {
@@ -96,137 +97,85 @@ body::-webkit-scrollbar,
   inset: -12px;
 }
 
-.extract {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 0;
-  box-shadow: 0 0 6px currentColor;
-  animation: extractPulse 2.4s ease-in-out infinite;
-  will-change: opacity, box-shadow;
-  /* Anti-zoom + anti-rotação: pin fica legível na tela */
-  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
-  transform-origin: center center;
-}
-
-.extract.pmc, .extract.any, .extract.shared, .extract.usec, .extract.bear {
-  color: #3dff7a;
-  background: #3dff7a;
-}
-.extract.scav {
-  color: #9cffb4;
-  background: #9cffb4;
-}
-
-.mine {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
-  background: #ff3b30;
-  transform: rotate(calc(45deg - var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
-  transform-origin: center center;
-  box-shadow: 0 0 8px #ff3b30;
-  animation: mineBlink 1.8s ease-in-out infinite;
-  will-change: opacity, box-shadow;
-}
-
-.spawn-wrap {
+.marker-wrap {
   position: absolute;
   width: 0;
   height: 0;
 }
 
-/* Recorta o brilho do ícone para não vazar no texto */
-.spawn-icon {
+.marker-icon-wrap {
   position: absolute;
-  left: -10px;
-  top: -14px;
-  width: 20px;
-  height: 16px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.spawn {
-  position: absolute;
-  left: 10px;
-  top: 14px;
+  left: 0;
+  top: 0;
   width: 0;
   height: 0;
-  margin: -7px 0 0 -7px;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 12px solid #4fc3f7;
-  background: transparent;
-  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
-  transform-origin: center bottom;
-  animation: spawnPulse 2.2s ease-in-out infinite;
-  will-change: opacity, border-bottom-color;
+  overflow: visible;
   pointer-events: none;
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center center;
 }
 
-.spawn-wrap .extract-label {
+.marker-icon {
   position: absolute;
-  left: 12px;
-  top: -10px;
-  z-index: 2;
-  opacity: 1;
-  filter: none;
-  animation: none;
-  box-shadow: none;
-  transform: none;
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+  pointer-events: none;
+  image-rendering: auto;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
 }
 
-.spawn-wrap:nth-child(2n) .spawn { animation-delay: 0.5s; }
-.spawn-wrap:nth-child(3n) .spawn { animation-delay: 1s; }
+.marker-wrap.extract .marker-icon { left: -14px; top: -14px; }
+.marker-wrap.mine .marker-icon { left: -15px; top: -15px; width: 30px; height: 30px; }
+.marker-wrap.spawn .marker-icon { left: -13px; top: -13px; width: 26px; height: 26px; }
+.marker-wrap.quest .marker-icon { left: -14px; top: -14px; }
+.marker-wrap.waypoint-pin-wrap .marker-icon { left: -12px; top: -12px; width: 24px; height: 24px; }
 
-.extract:nth-child(3n) { animation-delay: 0.35s; }
-.extract:nth-child(3n+1) { animation-delay: 0.7s; }
-.mine:nth-child(2n) { animation-delay: 0.45s; }
-.mine:nth-child(3n) { animation-delay: 0.9s; }
-
-@keyframes spawnPulse {
-  0%, 100% {
-    opacity: 0.72;
-    border-bottom-color: #4fc3f7;
-  }
-  50% {
-    opacity: 1;
-    border-bottom-color: #9be7ff;
-  }
+.marker-wrap.extract .marker-icon-wrap {
+  animation: markerPulseExtract 2.4s ease-in-out infinite;
 }
 
-@keyframes extractPulse {
-  0%, 100% {
-    opacity: 0.72;
-    box-shadow: 0 0 4px currentColor;
-  }
-  50% {
-    opacity: 1;
-    box-shadow: 0 0 10px currentColor, 0 0 16px currentColor;
-  }
+.marker-wrap.mine .marker-icon-wrap {
+  animation: markerPulseMine 1.8s ease-in-out infinite;
 }
 
-@keyframes mineBlink {
-  0%, 100% {
-    opacity: 0.55;
-    box-shadow: 0 0 4px #ff3b30;
-  }
-  45%, 55% {
-    opacity: 1;
-    box-shadow: 0 0 10px #ff3b30, 0 0 18px rgba(255, 59, 48, 0.7);
-  }
+.marker-wrap.spawn .marker-icon-wrap {
+  animation: markerPulseSpawn 2.2s ease-in-out infinite;
+}
+
+.marker-wrap.waypoint-pin-wrap .marker-icon-wrap {
+  animation: markerPulseWaypoint 1.6s ease-in-out infinite;
+}
+
+.marker-wrap:nth-child(3n) .marker-icon-wrap { animation-delay: 0.35s; }
+.marker-wrap:nth-child(3n+1) .marker-icon-wrap { animation-delay: 0.7s; }
+
+@keyframes markerPulseExtract {
+  0%, 100% { opacity: 0.78; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.85)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(61, 255, 122, 0.55)); }
+}
+
+@keyframes markerPulseMine {
+  0%, 100% { opacity: 0.7; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.85)); }
+  45%, 55% { opacity: 1; filter: drop-shadow(0 0 10px rgba(255, 59, 48, 0.65)); }
+}
+
+@keyframes markerPulseSpawn {
+  0%, 100% { opacity: 0.75; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.85)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(79, 195, 247, 0.55)); }
+}
+
+@keyframes markerPulseWaypoint {
+  0%, 100% { opacity: 0.85; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.85)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(255, 210, 70, 0.75)); }
 }
 
 .extract-label {
   position: absolute;
-  left: 14px;
-  top: -10px;
-  padding: 2px 6px;
-  font-size: 12px;
+  left: 11px;
+  top: -8px;
+  padding: 1px 5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -241,10 +190,25 @@ body::-webkit-scrollbar,
 .mine-label {
   color: #ffb4ae;
   border-color: rgba(255, 59, 48, 0.55);
-  transform: rotate(-45deg);
-  transform-origin: left center;
-  left: 16px;
-  top: -4px;
+}
+
+.quest-label {
+  color: #b8d9ff;
+  border-color: rgba(90, 168, 255, 0.55);
+}
+
+.marker-wrap.spawn .extract-label,
+.marker-wrap.extract .extract-label,
+.marker-wrap.quest .extract-label {
+  position: absolute;
+  left: 11px;
+  top: -8px;
+  z-index: 2;
+  opacity: 1;
+  filter: none;
+  animation: none;
+  box-shadow: none;
+  transform: none;
 }
 
 /* Nomes embutidos no SVG (Woods etc.): contraste em terreno claro */
@@ -316,7 +280,7 @@ body::-webkit-scrollbar,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .extract, .mine, .spawn-wrap .spawn {
+  .marker-wrap .marker-icon-wrap {
     animation: none;
     opacity: 1;
   }
@@ -327,17 +291,24 @@ body::-webkit-scrollbar,
   height: 0;
 }
 
-#player .chevron {
+.player-icon-wrap {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 0;
   height: 0;
-  margin-left: -8px;
-  margin-top: -14px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 18px solid #fff;
-  filter: drop-shadow(0 0 5px #fff);
-  transform-origin: 8px 14px;
+  overflow: visible;
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center center;
+}
+
+.player-icon {
+  left: -15px;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+  transform-origin: center center;
 }
 
 #hint {
@@ -355,16 +326,145 @@ body::-webkit-scrollbar,
 }
 
 #sideTools {
-  position: absolute;
-  right: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 8;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 6px;
   pointer-events: auto;
+  max-height: calc(100% - 40px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#sideTools::-webkit-scrollbar {
+  display: none;
+}
+
+#mapToolsDock {
+  position: absolute;
+  top: 36px;
+  right: 6px;
+  bottom: 6px;
+  z-index: 9;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: calc(100% - 12px);
+}
+
+#mapToolsDock > * {
+  pointer-events: auto;
+}
+
+#mapToolsDock.tools-collapsed {
+  display: none;
+}
+
+#mapToolsDock.layout-v #sideTools {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+#mapToolsDock.layout-h {
+  top: 36px;
+  bottom: auto;
+  max-height: calc(100% - 42px);
+}
+
+#mapToolsDock.layout-h #sideTools {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 3px;
+  max-width: min(220px, calc(100% - 24px));
+  max-height: none;
+}
+
+#mapToolsDock.layout-h .tool-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#mapToolsDock.layout-h .tool-sep {
+  width: 1px;
+  height: 26px;
+  margin: 0 1px;
+}
+
+#mapToolsDock.layout-grid {
+  top: 36px;
+  bottom: auto;
+}
+
+#mapToolsDock.layout-grid #sideTools {
+  display: grid;
+  grid-template-columns: repeat(2, 30px);
+  gap: 3px;
+  max-height: none;
+}
+
+#mapToolsDock.layout-grid .tool-group,
+#mapToolsDock.layout-grid .tool-sep {
+  display: contents;
+}
+
+.eye-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 11;
+  width: 30px;
+  height: 26px;
+  min-width: 30px;
+  min-height: 26px;
+  max-width: 30px;
+  max-height: 26px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #fff;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.eye-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+  color: #fff;
+}
+
+.eye-btn.tools-off {
+  color: #8a8a8a;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+#stage.pad-right {
+  padding-right: 40px;
+}
+
+#stage.pad-top {
+  padding-top: 36px;
+}
+
+#stage.pad-right #wpBanner {
+  right: 44px;
+}
+
+#stage.pad-top #wpBanner {
+  right: 8px;
+  bottom: 8px;
 }
 
 .tool-group {
@@ -487,38 +587,11 @@ body::-webkit-scrollbar,
   pointer-events: none;
 }
 
-.quest {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
-  border-radius: 50%;
-  background: #5aa8ff;
-  box-shadow: 0 0 8px #5aa8ff;
-  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
-  transform-origin: center center;
-  pointer-events: auto;
-  cursor: pointer;
+.marker-wrap.waypoint-target .marker-icon-wrap {
+  filter: drop-shadow(0 0 8px #ffd246);
 }
 
-.quest.waypoint-target,
-.extract.waypoint-target {
-  outline: 2px solid #ffd246;
-  outline-offset: 2px;
-}
-
-.waypoint-pin {
-  position: absolute;
-  width: 0;
-  height: 0;
-  margin-left: -7px;
-  margin-top: -18px;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 16px solid #ffd246;
-  filter: drop-shadow(0 0 4px #ffd246);
-  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
-  transform-origin: 7px 18px;
+.waypoint-pin-wrap {
   pointer-events: none;
   z-index: 3;
 }

@@ -39,7 +39,14 @@ public static class SettingsStore
 
     public static void Save(Models.AppSettings settings)
     {
-        Directory.CreateDirectory(AppDataDir);
-        File.WriteAllText(SettingsPath, JsonSerializer.Serialize(settings, JsonOptions));
+        try
+        {
+            Directory.CreateDirectory(AppDataDir);
+            File.WriteAllText(SettingsPath, JsonSerializer.Serialize(settings, JsonOptions));
+        }
+        catch
+        {
+            // avoid crashing when persisting window geometry
+        }
     }
 }

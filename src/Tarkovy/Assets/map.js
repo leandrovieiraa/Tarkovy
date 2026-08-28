@@ -18,6 +18,21 @@
   const floorDownBtn = document.getElementById("floorDown");
   const floorLabelBtn = document.getElementById("floorLabel");
   const floorShortEl = document.getElementById("floorShort");
+  const mapToolsDock = document.getElementById("mapToolsDock");
+  const toolsToggleBtn = document.getElementById("toolsToggle");
+  const sideToolsEl = document.getElementById("sideTools");
+
+  const MARKER_BASE = "https://tarkovy.assets/markers/";
+  const MARKER_ICONS = {
+    extractPmc: MARKER_BASE + "extract_pmc.png",
+    extractScav: MARKER_BASE + "extract_scav.png",
+    extractShared: MARKER_BASE + "extract_shared.png",
+    hazard: MARKER_BASE + "hazard.png",
+    spawnPmc: MARKER_BASE + "spawn_pmc.png",
+    quest: MARKER_BASE + "quest_objective.png",
+    waypoint: MARKER_BASE + "quest_item.png",
+    player: MARKER_BASE + "player-position.png"
+  };
 
   const strings = {
     waiting: "WAITING FOR MAP",
@@ -43,7 +58,9 @@
     layerLabels: "Labels",
     floorUp: "Floor up",
     floorDown: "Floor down",
-    floorCurrent: "Floor"
+    floorCurrent: "Floor",
+    toolsShow: "Show map tools",
+    toolsHide: "Hide map tools"
   };
 
   const BASE = 1200;
@@ -74,7 +91,8 @@
     lastY: 0,
     floorIndex: 0,
     autoFloor: true,
-    floorManual: false
+    floorManual: false,
+    toolsOpen: true
   };
 
   function applyStrings(next) {
@@ -88,6 +106,45 @@
     syncLayerButtons();
     updateFloorUi();
     updateWpBanner();
+    syncToolsToggle();
+  }
+
+  function syncToolsToggle() {
+    if (!toolsToggleBtn || !mapToolsDock) return;
+    const open = !!state.toolsOpen;
+    mapToolsDock.classList.toggle("tools-open", open);
+    mapToolsDock.classList.toggle("tools-collapsed", !open);
+    toolsToggleBtn.classList.toggle("tools-off", !open);
+    toolsToggleBtn.textContent = open ? "◎" : "◌";
+    toolsToggleBtn.title = open ? strings.toolsHide : strings.toolsShow;
+    toolsToggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    layoutToolsDock();
+  }
+
+  function layoutToolsDock() {
+    if (!mapToolsDock) return;
+    mapToolsDock.classList.remove("layout-v", "layout-h", "layout-grid");
+    stage.classList.remove("pad-right", "pad-top");
+
+    const w = Math.max(stage.clientWidth, 1);
+    const h = Math.max(stage.clientHeight, 1);
+
+    if (!state.toolsOpen) return;
+
+    if (h < 300 || w < 280) mapToolsDock.classList.add("layout-grid");
+    else if (h < 400) mapToolsDock.classList.add("layout-h");
+    else mapToolsDock.classList.add("layout-v");
+
+    if (mapToolsDock.classList.contains("layout-v")) stage.classList.add("pad-right");
+    else stage.classList.add("pad-top");
+
+    if (shouldFollow() && state.player) trackPlayer(false);
+    else fitToView();
+  }
+
+  function toggleToolsOpen() {
+    state.toolsOpen = !state.toolsOpen;
+    syncToolsToggle();
   }
 
   function syncLayerButtons() {
@@ -105,7 +162,43 @@
     });
   }
 
-  playerEl.innerHTML = '<div class="chevron"></div>';
+  playerEl.innerHTML =
+    '<div class="player-icon-wrap">' +
+    `<img class="marker-icon player-icon" src="${MARKER_ICONS.player}" alt="player" draggable="false">` +
+    "</div>";
+
+  function extractIconSrc(ex) {
+    const f = String(ex.faction || "any").toLowerCase();
+    const name = String(ex.name || "").toLowerCase();
+    if (f === "scav") return MARKER_ICONS.extractScav;
+    if (f === "shared" || name.includes("co-op") || name.includes("co op")) return MARKER_ICONS.extractShared;
+    return MARKER_ICONS.extractPmc;
+  }
+
+  function createMarkerIcon(src, alt) {
+    const img = document.createElement("img");
+    img.className = "marker-icon";
+    img.src = src;
+    img.alt = alt || "";
+    img.draggable = false;
+    return img;
+  }
+
+  function appendMarkerIcon(node, src, alt) {
+    const wrap = document.createElement("div");
+    wrap.className = "marker-icon-wrap";
+    wrap.appendChild(createMarkerIcon(src, alt));
+    node.appendChild(wrap);
+    return wrap;
+  }
+
+  function createMarkerNode(className, pctX, pctY, iconSrc, alt) {
+    const node = document.createElement("div");
+    node.className = className;
+    place(node, pctX, pctY);
+    appendMarkerIcon(node, iconSrc, alt);
+    return node;
+  }
 
   function boundsSize(map) {
     const b = map?.svgBounds || map?.bounds;
@@ -172,11 +265,11 @@
   }
 
   function updatePlayerVisual() {
-    const chev = playerEl.querySelector(".chevron");
-    if (!chev) return;
+    const icon = playerEl.querySelector(".player-icon");
+    if (!icon) return;
     const inv = state.scale > 0.0001 ? 1 / state.scale : 1;
     const yaw = state.player?.yaw || 0;
-    chev.style.transform = `rotate(${yaw}deg) scale(${inv})`;
+    icon.style.transform = `rotate(${yaw}deg) scale(${inv})`;
   }
 
   function rotMat() {
@@ -768,11 +861,15 @@
         const { pctX, pctY } = gameToPct(ex.x, ex.z, state.map);
         if (!inMap(pctX, pctY)) continue;
         const id = ex.name || `${ex.x},${ex.z}`;
-        const node = document.createElement("div");
-        node.className = "extract " + String(ex.faction || "any").toLowerCase();
-        if (isWp("extract", id)) node.classList.add("waypoint-target");
-        place(node, pctX, pctY);
         const name = ex.name || "EXFIL";
+        const node = createMarkerNode(
+          "marker-wrap extract " + String(ex.faction || "any").toLowerCase(),
+          pctX,
+          pctY,
+          extractIconSrc(ex),
+          name
+        );
+        if (isWp("extract", id)) node.classList.add("waypoint-target");
         if (state.layers.labels) {
           const lab = document.createElement("div");
           lab.className = "extract-label";
@@ -793,10 +890,8 @@
         if (!markerOnFloor(m.y)) continue;
         const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
         if (!inMap(pctX, pctY)) continue;
-        const node = document.createElement("div");
-        node.className = "mine";
-        place(node, pctX, pctY);
         const name = m.name || strings.mine;
+        const node = createMarkerNode("marker-wrap mine", pctX, pctY, MARKER_ICONS.hazard, name);
         if (state.layers.labels) {
           const lab = document.createElement("div");
           lab.className = "extract-label mine-label";
@@ -813,24 +908,16 @@
         if (!markerOnFloor(sp.y)) continue;
         const { pctX, pctY } = gameToPct(sp.x, sp.z, state.map);
         if (!inMap(pctX, pctY)) continue;
-        const wrap = document.createElement("div");
-        wrap.className = "spawn-wrap";
-        place(wrap, pctX, pctY);
-        const iconWrap = document.createElement("div");
-        iconWrap.className = "spawn-icon";
-        const icon = document.createElement("div");
-        icon.className = "spawn";
-        iconWrap.appendChild(icon);
-        wrap.appendChild(iconWrap);
         const name = sp.name || strings.spawn;
+        const node = createMarkerNode("marker-wrap spawn", pctX, pctY, MARKER_ICONS.spawnPmc, name);
         if (state.layers.labels) {
           const lab = document.createElement("div");
           lab.className = "extract-label";
           lab.textContent = name;
-          wrap.appendChild(lab);
+          node.appendChild(lab);
         }
-        bindMarkerTip(wrap, name, "spawn");
-        markers.appendChild(wrap);
+        bindMarkerTip(node, name, "spawn");
+        markers.appendChild(node);
       }
     }
 
@@ -843,14 +930,12 @@
           const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
           if (!inMap(pctX, pctY)) continue;
           const id = obj.id || `${q.slug}-${obj.x}`;
-          const node = document.createElement("div");
-          node.className = "quest";
-          if (isWp("quest", id)) node.classList.add("waypoint-target");
-          place(node, pctX, pctY);
           const name = obj.description || q.name;
+          const node = createMarkerNode("marker-wrap quest", pctX, pctY, MARKER_ICONS.quest, q.name);
+          if (isWp("quest", id)) node.classList.add("waypoint-target");
           if (state.layers.labels) {
             const lab = document.createElement("div");
-            lab.className = "extract-label";
+            lab.className = "extract-label quest-label";
             lab.textContent = q.name;
             node.appendChild(lab);
           }
@@ -867,9 +952,13 @@
     if (state.waypoint) {
       const { pctX, pctY } = gameToPct(state.waypoint.x, state.waypoint.z, state.map);
       if (inMap(pctX, pctY)) {
-        const pin = document.createElement("div");
-        pin.className = "waypoint-pin";
-        place(pin, pctX, pctY);
+        const pin = createMarkerNode(
+          "marker-wrap waypoint-pin-wrap",
+          pctX,
+          pctY,
+          MARKER_ICONS.waypoint,
+          state.waypoint.name || strings.waypoint
+        );
         markers.appendChild(pin);
       }
     }
@@ -944,7 +1033,7 @@
   stage.addEventListener("contextmenu", (e) => e.preventDefault());
 
   stage.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("#sideTools")) return;
+    if (e.target.closest("#mapToolsDock") || e.target.closest("#toolsToggle")) return;
     if (state.wpPlaceMode && e.button === 0 && !e.altKey) {
       e.preventDefault();
       placeWaypointFromPointer(e);
@@ -1025,7 +1114,13 @@
     });
   });
 
+  toolsToggleBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleToolsOpen();
+  });
+
   new ResizeObserver(() => {
+    layoutToolsDock();
     if (shouldFollow() && state.player) trackPlayer(false);
     else fitToView();
   }).observe(stage);
@@ -1071,6 +1166,7 @@
   window.addEventListener("message", (ev) => onMessage(ev.data));
 
   syncLayerButtons();
+  syncToolsToggle();
   fitToView();
   window.chrome?.webview?.postMessage({ type: "ready" });
 })();

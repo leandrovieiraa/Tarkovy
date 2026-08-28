@@ -53,6 +53,8 @@ public partial class SettingsWindow : Window
         DeleteBox.IsChecked = s.DeleteAfterRead;
         KeepLastBox.IsChecked = s.KeepLastScreenshot;
         AutoCleanupBox.IsChecked = s.AutoCleanupOnRaidEnd;
+        ItemScanBox.IsChecked = s.ItemScanEnabled;
+        ItemLensOpacitySlider.Value = s.ItemLensOpacity;
         RefreshPathBadges();
     }
 
@@ -133,6 +135,8 @@ public partial class SettingsWindow : Window
         s.DeleteAfterRead = DeleteBox.IsChecked == true;
         s.KeepLastScreenshot = KeepLastBox.IsChecked == true;
         s.AutoCleanupOnRaidEnd = AutoCleanupBox.IsChecked == true;
+        s.ItemScanEnabled = ItemScanBox.IsChecked == true;
+        s.ItemLensOpacity = ItemLensOpacitySlider.Value;
         Loc.Apply(s.UiLanguage);
         StartupRegistration.Apply(s.StartWithWindows);
         App.ApplyWatchers();

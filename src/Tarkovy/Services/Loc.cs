@@ -108,6 +108,8 @@ public static class Loc
         ["layerLabels"] = T("Map.Layer.Labels"),
         ["floorUp"] = T("Map.Floor.Up"),
         ["floorDown"] = T("Map.Floor.Down"),
-        ["floorCurrent"] = T("Map.Floor.Current")
+        ["floorCurrent"] = T("Map.Floor.Current"),
+        ["toolsShow"] = T("Map.Tools.Show"),
+        ["toolsHide"] = T("Map.Tools.Hide")
     };
 }

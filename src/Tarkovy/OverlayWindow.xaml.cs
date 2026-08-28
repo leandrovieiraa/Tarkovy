@@ -9,6 +9,8 @@ namespace Tarkovy;
 public partial class OverlayWindow : Window
 {
     private const double MiniMapWidth = 320;
+    private const double WindowMinWidth = 260;
+    private const double WindowMinHeight = 180;
     private const double PanelWidth = 240;
     private const double MiniHeight = 348;
 
@@ -24,13 +26,22 @@ public partial class OverlayWindow : Window
     public OverlayWindow()
     {
         InitializeComponent();
+        MinWidth = WindowMinWidth;
+        MinHeight = WindowMinHeight;
+        NativeMethods.EnableWorkAreaMaximize(this);
+        WindowPlacementHelper.Wire(this, App.Settings.OverlayWindowPlacement, () =>
+        {
+            App.Settings.OverlaySidePanelOpen = IsSidePanelVisible;
+            SettingsStore.Save(App.Settings);
+        });
         Loaded += (_, _) =>
         {
-            ApplyMiniLayout();
+            RestorePlacement();
             OverlayMap.ResetView();
         };
         SizeChanged += (_, e) =>
         {
+            EnforceMinSize();
             if (e.PreviousSize.Width > 0 &&
                 (Math.Abs(e.NewSize.Width - e.PreviousSize.Width) > 8 ||
                  Math.Abs(e.NewSize.Height - e.PreviousSize.Height) > 8))
@@ -42,6 +53,16 @@ public partial class OverlayWindow : Window
             WaypointRequested?.Invoke(wp);
         };
         OverlayMap.LayerToggled += OnLayerToggled;
+    }
+
+    private void EnforceMinSize()
+    {
+        var minW = WindowMinWidth + (IsSidePanelVisible ? PanelWidth : 0);
+        var minH = WindowMinHeight;
+        MinWidth = minW;
+        MinHeight = minH;
+        if (Width < MinWidth) Width = MinWidth;
+        if (Height < MinHeight) Height = MinHeight;
     }
 
     private void OnLayerToggled(string key, bool value)
@@ -213,7 +234,7 @@ public partial class OverlayWindow : Window
     public void ToggleExpanded()
     {
         if (IsSidePanelVisible)
-            ApplyMiniLayout();
+            SetSidePanelVisible(false);
         else
             OpenSidePanel();
         OverlayMap.ResetView();
@@ -224,7 +245,6 @@ public partial class OverlayWindow : Window
     private void OpenSidePanel()
     {
         IsExpanded = true;
-        Height = MiniHeight;
         SetSidePanelVisible(true);
         RebuildSidePanel();
         NativeMethods.SetClickThrough(this, false);
@@ -232,7 +252,7 @@ public partial class OverlayWindow : Window
 
     private void PanelToggle_Click(object sender, RoutedEventArgs e) => ToggleSidePanel();
 
-    private void SetSidePanelVisible(bool visible)
+    private void SetSidePanelVisible(bool visible, bool persist = true)
     {
         IsSidePanelVisible = visible;
         IsExpanded = visible;
@@ -240,15 +260,24 @@ public partial class OverlayWindow : Window
         {
             ExtractCol.Width = new GridLength(PanelWidth);
             ExtractPanel.Visibility = Visibility.Visible;
-            Width = MiniMapWidth + PanelWidth;
+            MinWidth = WindowMinWidth + PanelWidth;
+            if (Width < MinWidth) Width = MinWidth;
         }
         else
         {
             ExtractCol.Width = new GridLength(0);
             ExtractPanel.Visibility = Visibility.Collapsed;
-            Width = MiniMapWidth;
+            MinWidth = WindowMinWidth;
+            if (Width < MinWidth) Width = MinWidth;
         }
         SyncPanelToggleButton();
+        EnforceMinSize();
+        if (persist)
+        {
+            App.Settings.OverlaySidePanelOpen = visible;
+            WindowPlacementHelper.Capture(this, App.Settings.OverlayWindowPlacement);
+            SettingsStore.Save(App.Settings);
+        }
     }
 
     private void SyncPanelToggleButton()
@@ -261,18 +290,35 @@ public partial class OverlayWindow : Window
             : Loc.T("Overlay.Tooltip.ShowPanel");
     }
 
-    private bool _placedOnce;
+    public void RestorePlacement()
+    {
+        var p = App.Settings.OverlayWindowPlacement;
+        if (p.IsValid)
+        {
+            WindowPlacementHelper.Restore(this, p, MiniMapWidth, MiniHeight);
+            SetSidePanelVisible(App.Settings.OverlaySidePanelOpen, persist: false);
+            IsExpanded = IsSidePanelVisible;
+            SyncPanelToggleButton();
+        }
+        else
+            ApplyMiniLayout();
+
+        if (!WindowPlacementHelper.IsOnScreen(this))
+            ApplyMiniLayout();
+
+        WindowPlacementHelper.EnsureVisible(this);
+        WindowState = WindowState.Normal;
+        Topmost = true;
+        NativeMethods.SetClickThrough(this, false);
+    }
 
     public void ApplyMiniLayout()
     {
         IsExpanded = false;
+        SetSidePanelVisible(false, persist: false);
+        Width = MiniMapWidth;
         Height = MiniHeight;
-        SetSidePanelVisible(false);
-        if (!_placedOnce)
-        {
-            PlaceBottomRight(16);
-            _placedOnce = true;
-        }
+        PlaceBottomRight(16);
         NativeMethods.SetClickThrough(this, false);
     }
 

@@ -81,6 +81,13 @@
                     <CheckBox x:Name="AutoCleanupBox" Content="{DynamicResource Settings.AutoCleanup}" Margin="0,8,0,0"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,4,0,0"
                                Text="{DynamicResource Settings.AutoCleanupHint}"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.ItemLens}"/>
+                    <CheckBox x:Name="ItemScanBox" Content="{DynamicResource Settings.ItemScanEnabled}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanEnabledHint}"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.ItemLensOpacity}"/>
+                    <Slider x:Name="ItemLensOpacitySlider" Minimum="0.5" Maximum="1" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
                 </StackPanel>
             </ScrollViewer>
             <Border Grid.Row="2" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0" Padding="12">

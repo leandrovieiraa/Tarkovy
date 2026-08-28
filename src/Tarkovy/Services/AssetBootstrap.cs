@@ -26,9 +26,11 @@ public static class AssetBootstrap
         var bundled = Path.Combine(AppContext.BaseDirectory, "Assets");
         if (Directory.Exists(bundled))
         {
-            foreach (var file in Directory.EnumerateFiles(bundled))
+            foreach (var file in Directory.EnumerateFiles(bundled, "*", SearchOption.AllDirectories))
             {
-                var dest = Path.Combine(DirectoryPath, Path.GetFileName(file));
+                var rel = Path.GetRelativePath(bundled, file);
+                var dest = Path.Combine(DirectoryPath, rel);
+                Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
                 File.Copy(file, dest, overwrite: true);
             }
         }

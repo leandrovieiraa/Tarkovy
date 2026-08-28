@@ -1,0 +1,5 @@
+Map marker icons from the-hideout/tarkov-dev (tarkov.dev)
+https://github.com/the-hideout/tarkov-dev/tree/main/public/maps/interactive
+
+Used under the same community/open tooling spirit as tarkov.dev SVG maps.
+Escape from Tarkov © Battlestate Games.

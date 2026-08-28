@@ -22,6 +22,9 @@ public sealed class AppSettings
     public bool ShowSpawns { get; set; } = true;
     public bool StartWithWindows { get; set; } = false;
     public bool OverlayVisible { get; set; } = false;
+    public bool ItemLensVisible { get; set; } = false;
+    public bool ItemScanEnabled { get; set; } = true;
+    public double ItemLensOpacity { get; set; } = 0.88;
     /// <summary>Ao detectar fim de raid nos logs, encerra sessão e limpa leftovers.</summary>
     public bool AutoCleanupOnRaidEnd { get; set; } = true;
     /// <summary>Mostra nomes das marcações no mapa; se false, só tooltip no hover.</summary>
@@ -34,6 +37,11 @@ public sealed class AppSettings
     /// <summary>UI language: en (default) or pt.</summary>
     public string UiLanguage { get; set; } = "en";
 
+    public WindowPlacement MainWindowPlacement { get; set; } = new();
+    public WindowPlacement OverlayWindowPlacement { get; set; } = new();
+    public WindowPlacement ItemLensWindowPlacement { get; set; } = new();
+    public bool OverlaySidePanelOpen { get; set; }
+
     [JsonIgnore]
     public MapWaypoint? ActiveWaypoint { get; set; }
     [JsonIgnore]
@@ -41,4 +49,7 @@ public sealed class AppSettings
 
     [JsonIgnore]
     public string HotkeyToggleSize { get; } = "F9";
+
+    [JsonIgnore]
+    public string HotkeyToggleItemLens { get; } = "F10";
 }
