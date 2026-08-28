@@ -12,7 +12,7 @@ by **Anomaly Labs**
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/B618044EAE6E3CE737E3F23F0098D6682AE2DFDFA7316560F80EBE613393D3C3"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/86D524EFDDC02E6DE6CD3444C66EE65145F7B0446D531165B7E16B5031584C87"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -226,7 +226,17 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.0.6` (`Tarkovy-0.0.6.zip`)
+### Release `v0.1.6` (`Tarkovy-0.1.6.zip`)
+
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy-0.1.6.zip (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.6/Tarkovy-0.1.6.zip)           |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/86D524EFDDC02E6DE6CD3444C66EE65145F7B0446D531165B7E16B5031584C87)             |
+| **SHA-256**    | `86D524EFDDC02E6DE6CD3444C66EE65145F7B0446D531165B7E16B5031584C87`                                                                   |
+
+
+### Previous: `v0.0.6` (`Tarkovy-0.0.6.zip`)
 
 
 |                |                                                                                                                                      |
@@ -277,7 +287,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 Verify locally (PowerShell):
 
 ```powershell
-Get-FileHash .\Tarkovy-0.0.6.zip -Algorithm SHA256
+Get-FileHash .\Tarkovy-0.1.6.zip -Algorithm SHA256
 ```
 
 > Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
