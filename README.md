@@ -5,9 +5,19 @@
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
-![Dev 0.0.4](https://img.shields.io/badge/version-Dev%200.0.4-111111?style=flat-square&labelColor=000000)![EFT 1.1.0](https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-111111?style=flat-square&labelColor=000000)![Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-111111?style=flat-square&labelColor=000000)![.NET 8](https://img.shields.io/badge/.NET-8%20WPF-111111?style=flat-square&labelColor=000000)![Anomaly Labs](https://img.shields.io/badge/by-Anomaly%20Labs-111111?style=flat-square&labelColor=000000)[![VirusTotal](https://img.shields.io/badge/VirusTotal-scan%20v0.0.4-111111?style=flat-square&labelColor=000000)](https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400)[![Buy me a beer](https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-111111?style=flat-square&labelColor=000000)](https://buymeacoffee.com/anomalylabs)
+<p align="left">
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img src="https://img.shields.io/badge/Dev-0.0.4-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.0.4"/></a>
+  <a href="https://www.escapefromtarkov.com/"><img src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>
+  <a href="#requirements"><img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&logo=windows&logoColor=white&labelColor=111111" alt="Windows 10 / 11"/></a>
+  <a href="#build"><img src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white&labelColor=111111" alt=".NET 8 WPF"/></a>
+  <br/>
+  <a href="#credits"><img src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>
+  <a href="https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400"><img src="https://img.shields.io/badge/VirusTotal-0%20%2F%2065%20clean-228B22?style=for-the-badge&logo=virustotal&logoColor=white&labelColor=111111" alt="VirusTotal scan v0.0.4"/></a>
+  <a href="https://buymeacoffee.com/anomalylabs"><img src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>
+  <a href="mailto:anomalylabstudio@gmail.com"><img src="https://img.shields.io/badge/Support-anomalylabstudio%40gmail.com-555555?style=for-the-badge&logo=gmail&logoColor=white&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
+</p>
 
-[Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
+[Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Support](#support) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
 
 ---
 
@@ -73,6 +83,18 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.4`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
+
+For general questions or feedback (not a bug report), see **[Support](#support)**.
+
+---
+
+## Support
+
+[![Email support](https://img.shields.io/badge/email-anomalylabstudio%40gmail.com-E8A317?style=for-the-badge&logo=gmail&logoColor=white&labelColor=111111)](mailto:anomalylabstudio@gmail.com)
+
+Questions, feedback, or collaboration? Reach out at **[anomalylabstudio@gmail.com](mailto:anomalylabstudio@gmail.com)**.
+
+For bugs and crashes, prefer **[GitHub Issues](#report-a-bug)** so we can track fixes with screenshots and repro steps.
 
 ---
 
@@ -294,6 +316,7 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 |                         |                                                                                                                                                                                                     |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
+| **Support**             | [anomalylabstudio@gmail.com](mailto:anomalylabstudio@gmail.com)                                                                                                                                     |
 | **Product**             | Tarkovy · Dev 0.0.4                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
