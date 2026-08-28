@@ -17,6 +17,7 @@ public sealed class AppSettings
     public string SelectedMapId { get; set; } = "customs";
     public bool ShowExtracts { get; set; } = true;
     public bool ShowMines { get; set; } = true;
+    public bool ShowSpawns { get; set; } = true;
     public bool StartWithWindows { get; set; } = false;
     public bool OverlayVisible { get; set; } = false;
     /// <summary>Ao detectar fim de raid nos logs, encerra sessão e limpa leftovers.</summary>
@@ -26,6 +27,8 @@ public sealed class AppSettings
     public bool ShowQuests { get; set; } = true;
     /// <summary>Quest slugs enabled as active waypoints for the current character/session.</summary>
     public List<string> EnabledQuestSlugs { get; set; } = [];
+    /// <summary>Quest slugs marked complete — no longer tracked on the map.</summary>
+    public List<string> CompletedQuestSlugs { get; set; } = [];
     /// <summary>UI language: en (default) or pt.</summary>
     public string UiLanguage { get; set; } = "en";
 

@@ -21,11 +21,13 @@
     rotateRight: "Rotate 90° clockwise",
     extract: "EXTRACT",
     mine: "MINE",
+    spawn: "PMC SPAWN",
     quest: "QUEST",
     waypoint: "WAYPOINT",
     clearWaypoint: "Clear waypoint",
     layerExtracts: "Extracts",
     layerMines: "Mines",
+    layerSpawns: "PMC Spawns",
     layerQuests: "Quests",
     layerLabels: "Labels"
   };
@@ -46,9 +48,11 @@
     player: null,
     extracts: [],
     mines: [],
+    spawns: [],
     quests: [],
     enabledQuests: new Set(),
-    layers: { extracts: true, mines: true, quests: true, labels: true },
+    completedQuests: new Set(),
+    layers: { extracts: true, mines: true, spawns: true, quests: true, labels: true },
     waypoint: null,
     dragging: false,
     lastX: 0,
@@ -70,6 +74,7 @@
     const titles = {
       extracts: strings.layerExtracts,
       mines: strings.layerMines,
+      spawns: strings.layerSpawns,
       quests: strings.layerQuests,
       labels: strings.layerLabels
     };
@@ -386,8 +391,16 @@
   function showTip(name, kind, clientX, clientY) {
     const rect = stage.getBoundingClientRect();
     tip.hidden = false;
-    const kindLabel = kind === "mine" ? strings.mine : kind === "quest" ? strings.quest : strings.extract;
-    tip.className = kind === "mine" ? "mine-tip" : kind === "quest" ? "quest-tip" : "extract-tip";
+    const kindLabel =
+      kind === "mine" ? strings.mine :
+      kind === "spawn" ? strings.spawn :
+      kind === "quest" ? strings.quest :
+      strings.extract;
+    tip.className =
+      kind === "mine" ? "mine-tip" :
+      kind === "spawn" ? "spawn-tip" :
+      kind === "quest" ? "quest-tip" :
+      "extract-tip";
     tip.innerHTML =
       `<span class="tip-kind">${kindLabel}</span>` +
       `<span class="tip-name">${name || kindLabel}</span>`;
@@ -514,8 +527,34 @@
       }
     }
 
+    if (state.layers.spawns) {
+      for (const sp of state.spawns) {
+        const { pctX, pctY } = gameToPct(sp.x, sp.z, state.map);
+        if (!inMap(pctX, pctY)) continue;
+        const wrap = document.createElement("div");
+        wrap.className = "spawn-wrap";
+        place(wrap, pctX, pctY);
+        const iconWrap = document.createElement("div");
+        iconWrap.className = "spawn-icon";
+        const icon = document.createElement("div");
+        icon.className = "spawn";
+        iconWrap.appendChild(icon);
+        wrap.appendChild(iconWrap);
+        const name = sp.name || strings.spawn;
+        if (state.layers.labels) {
+          const lab = document.createElement("div");
+          lab.className = "extract-label";
+          lab.textContent = name;
+          wrap.appendChild(lab);
+        }
+        bindMarkerTip(wrap, name, "spawn");
+        markers.appendChild(wrap);
+      }
+    }
+
     if (state.layers.quests) {
       for (const q of state.quests) {
+        if (state.completedQuests.has(q.slug)) continue;
         if (!state.enabledQuests.has(q.slug)) continue;
         for (const obj of q.objectives || []) {
           const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
@@ -553,18 +592,25 @@
     }
   }
 
-  function setMarkers(extracts, mines, showLabels) {
+  function setMarkers(extracts, mines, spawns, showLabels) {
     state.extracts = Array.isArray(extracts) ? extracts : [];
     state.mines = Array.isArray(mines) ? mines : [];
+    state.spawns = Array.isArray(spawns) ? spawns : [];
     if (typeof showLabels === "boolean") state.layers.labels = showLabels;
     syncLayerButtons();
     renderMarkers();
     updateRoute();
   }
 
-  function setQuests(quests, enabledSlugs) {
+  function setQuests(quests, enabledSlugs, completedSlugs) {
     state.quests = Array.isArray(quests) ? quests : [];
-    state.enabledQuests = new Set(Array.isArray(enabledSlugs) ? enabledSlugs : []);
+    const completed = new Set(Array.isArray(completedSlugs) ? completedSlugs : []);
+    for (const q of state.quests) {
+      if (q.completed) completed.add(q.slug);
+    }
+    state.completedQuests = completed;
+    const enabled = Array.isArray(enabledSlugs) ? enabledSlugs : [];
+    state.enabledQuests = new Set(enabled.filter((s) => !completed.has(s)));
     renderMarkers();
     updateRoute();
   }
@@ -677,10 +723,10 @@
     if (!data || !data.type) return;
     if (data.type === "lang") applyStrings(data.strings);
     if (data.type === "loadMap") loadMap(data.map);
-    if (data.type === "markers") setMarkers(data.extracts, data.mines, data.showLabels);
-    if (data.type === "quests") setQuests(data.quests, data.enabled);
+    if (data.type === "markers") setMarkers(data.extracts, data.mines, data.spawns, data.showLabels);
+    if (data.type === "quests") setQuests(data.quests, data.enabled, data.completed);
     if (data.type === "layers") setLayers(data.layers);
-    if (data.type === "extracts") setMarkers(data.extracts, [], data.showLabels);
+    if (data.type === "extracts") setMarkers(data.extracts, [], [], data.showLabels);
     if (data.type === "showLabels") setShowLabels(data.value);
     if (data.type === "waypoint") {
       state.waypoint = data.waypoint || null;

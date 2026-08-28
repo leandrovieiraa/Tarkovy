@@ -93,11 +93,13 @@ public static class Loc
         ["rotateRight"] = T("Map.Rotate.Right"),
         ["extract"] = T("Map.Tip.Extract"),
         ["mine"] = T("Map.Tip.Mine"),
+        ["spawn"] = T("Map.Tip.Spawn"),
         ["quest"] = T("Map.Tip.Quest"),
         ["waypoint"] = T("Map.Waypoint"),
         ["clearWaypoint"] = T("Map.ClearWaypoint"),
         ["layerExtracts"] = T("Map.Layer.Extracts"),
         ["layerMines"] = T("Map.Layer.Mines"),
+        ["layerSpawns"] = T("Map.Layer.Spawns"),
         ["layerQuests"] = T("Map.Layer.Quests"),
         ["layerLabels"] = T("Map.Layer.Labels")
     };

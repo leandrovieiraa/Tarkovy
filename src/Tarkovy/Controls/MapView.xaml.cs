@@ -109,45 +109,53 @@ public partial class MapView : UserControl
         }
     }
 
-    public void LoadMap(MapDefinition map, IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
+    public void LoadMap(MapDefinition map, IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, IReadOnlyList<SpawnMarker>? spawns = null, bool? showLabels = null)
     {
         Post(new { type = "loadMap", map });
-        SetMarkers(extracts, mines, showLabels);
+        SetMarkers(extracts, mines, spawns, showLabels);
     }
 
-    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, bool? showLabels = null)
+    public void SetMarkers(IReadOnlyList<ExtractMarker> extracts, IReadOnlyList<HazardMarker>? mines = null, IReadOnlyList<SpawnMarker>? spawns = null, bool? showLabels = null)
     {
         Post(new
         {
             type = "markers",
             extracts,
             mines = mines ?? Array.Empty<HazardMarker>(),
+            spawns = spawns ?? Array.Empty<SpawnMarker>(),
             showLabels = showLabels ?? true
         });
     }
 
     public void SetQuests(IReadOnlyList<QuestDefinition> quests, IEnumerable<string>? enabledSlugs = null)
     {
+        var completed = new HashSet<string>(App.Settings.CompletedQuestSlugs, StringComparer.OrdinalIgnoreCase);
+        var enabled = (enabledSlugs ?? App.Settings.EnabledQuestSlugs)
+            .Where(s => !completed.Contains(s))
+            .ToArray();
+
         var payload = quests.Select(q => new
         {
             slug = q.Slug,
             name = Loc.QuestName(q),
             trader = Loc.QuestTrader(q),
-            objectives = q.Objectives
+            objectives = q.Objectives,
+            completed = completed.Contains(q.Slug)
         }).ToArray();
         Post(new
         {
             type = "quests",
             quests = payload,
-            enabled = enabledSlugs?.ToArray() ?? Array.Empty<string>()
+            enabled,
+            completed = App.Settings.CompletedQuestSlugs.ToArray()
         });
     }
 
-    public void SetLayers(bool extracts, bool mines, bool quests, bool labels) =>
+    public void SetLayers(bool extracts, bool mines, bool spawns, bool quests, bool labels) =>
         Post(new
         {
             type = "layers",
-            layers = new { extracts, mines, quests, labels }
+            layers = new { extracts, mines, spawns, quests, labels }
         });
 
     public void SetWaypoint(MapWaypoint? waypoint) =>

@@ -14,11 +14,17 @@
   <sys:String x:Key="Main.Section.Markers">MARCADORES</sys:String>
   <sys:String x:Key="Main.Marker.Extracts">EXTRAÇÕES</sys:String>
   <sys:String x:Key="Main.Marker.Mines">MINAS</sys:String>
+  <sys:String x:Key="Main.Marker.Spawns">RESPAWNS PMC</sys:String>
+  <sys:String x:Key="Main.Marker.Spawns.Short">PMC</sys:String>
   <sys:String x:Key="Main.Marker.Labels">NOMES VISÍVEIS</sys:String>
+  <sys:String x:Key="Main.Marker.Labels.Short">NOMES</sys:String>
   <sys:String x:Key="Main.Marker.Quests">MARCAS DE MISSÃO</sys:String>
+  <sys:String x:Key="Main.Marker.Quests.Short">MISSÕES</sys:String>
   <sys:String x:Key="Main.Section.Quests">MISSÕES DO MAPA</sys:String>
-  <sys:String x:Key="Main.Quests.Hint">Missões deste mapa (catálogo). O Tarkov não expõe nos logs quais missões o seu PMC tem ativas — ative manualmente as que for fazer.</sys:String>
+  <sys:String x:Key="Main.Quests.Hint">○ verde = concluída · □ quadrado = track no mapa. Marque manualmente ao terminar (logs não reportam conclusão).</sys:String>
   <sys:String x:Key="Main.Quests.MapTooltip">Mapa: {0}</sys:String>
+  <sys:String x:Key="Quest.Complete.Mark">Concluída (clique no círculo)</sys:String>
+  <sys:String x:Key="Quest.Complete.Undo">Desmarcar concluída</sys:String>
   <sys:String x:Key="Main.EftTarget">EFT {0} · {1}</sys:String>
   <sys:String x:Key="Main.Tooltip.EftTarget">Construído / validado contra Escape from Tarkov {0} ({1}). Após um patch grande, mapas, missões ou nomes de screenshot podem mudar — revise o Tarkovy.</sys:String>
   <sys:String x:Key="Main.Map.HasQuests">Missões disponíveis neste mapa</sys:String>
@@ -73,6 +79,7 @@
   <sys:String x:Key="Settings.Section.Markers">MARCADORES NO MAPA</sys:String>
   <sys:String x:Key="Settings.ShowExtracts">MOSTRAR EXTRAÇÕES</sys:String>
   <sys:String x:Key="Settings.ShowMines">MOSTRAR MINAS</sys:String>
+  <sys:String x:Key="Settings.ShowSpawns">MOSTRAR RESPAWNS PMC</sys:String>
   <sys:String x:Key="Settings.ShowLabels">NOMES SEMPRE VISÍVEIS NO MAPA</sys:String>
   <sys:String x:Key="Settings.ShowLabelsHint">Desligado: só tooltip ao passar o mouse.</sys:String>
   <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
@@ -106,11 +113,13 @@
   <sys:String x:Key="Map.Rotate.Right">Girar 90° horário</sys:String>
   <sys:String x:Key="Map.Tip.Extract">EXTRAÇÃO</sys:String>
   <sys:String x:Key="Map.Tip.Mine">MINA</sys:String>
+  <sys:String x:Key="Map.Tip.Spawn">RESPAWN PMC</sys:String>
   <sys:String x:Key="Map.Tip.Quest">MISSÃO</sys:String>
   <sys:String x:Key="Map.Waypoint">WAYPOINT</sys:String>
   <sys:String x:Key="Map.ClearWaypoint">Limpar waypoint</sys:String>
   <sys:String x:Key="Map.Layer.Extracts">Extrações</sys:String>
   <sys:String x:Key="Map.Layer.Mines">Minas</sys:String>
+  <sys:String x:Key="Map.Layer.Spawns">Respawns PMC</sys:String>
   <sys:String x:Key="Map.Layer.Quests">Missões</sys:String>
   <sys:String x:Key="Map.Layer.Labels">Nomes</sys:String>
   <sys:String x:Key="Hazard.MineFallback">Mina</sys:String>

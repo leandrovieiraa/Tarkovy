@@ -60,6 +60,7 @@
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Markers}"/>
                     <CheckBox x:Name="ShowExtractsBox" Content="{DynamicResource Settings.ShowExtracts}"/>
                     <CheckBox x:Name="ShowMinesBox" Content="{DynamicResource Settings.ShowMines}"/>
+                    <CheckBox x:Name="ShowSpawnsBox" Content="{DynamicResource Settings.ShowSpawns}"/>
                     <CheckBox x:Name="ShowLabelsBox" Content="{DynamicResource Settings.ShowLabels}"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
                                Text="{DynamicResource Settings.ShowLabelsHint}"/>

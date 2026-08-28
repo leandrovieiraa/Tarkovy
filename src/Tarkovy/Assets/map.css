@@ -83,13 +83,14 @@ body::-webkit-scrollbar,
   z-index: 2;
 }
 
-.extract, .mine {
+.extract, .mine, .spawn-wrap {
   pointer-events: auto;
   cursor: help;
 }
 
 .extract::before,
-.mine::before {
+.mine::before,
+.spawn-wrap::before {
   content: "";
   position: absolute;
   inset: -12px;
@@ -131,10 +132,72 @@ body::-webkit-scrollbar,
   will-change: opacity, box-shadow;
 }
 
+.spawn-wrap {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Recorta o brilho do ícone para não vazar no texto */
+.spawn-icon {
+  position: absolute;
+  left: -10px;
+  top: -14px;
+  width: 20px;
+  height: 16px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spawn {
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  width: 0;
+  height: 0;
+  margin: -7px 0 0 -7px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 12px solid #4fc3f7;
+  background: transparent;
+  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
+  transform-origin: center bottom;
+  animation: spawnPulse 2.2s ease-in-out infinite;
+  will-change: opacity, border-bottom-color;
+  pointer-events: none;
+}
+
+.spawn-wrap .extract-label {
+  position: absolute;
+  left: 12px;
+  top: -10px;
+  z-index: 2;
+  opacity: 1;
+  filter: none;
+  animation: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.spawn-wrap:nth-child(2n) .spawn { animation-delay: 0.5s; }
+.spawn-wrap:nth-child(3n) .spawn { animation-delay: 1s; }
+
 .extract:nth-child(3n) { animation-delay: 0.35s; }
 .extract:nth-child(3n+1) { animation-delay: 0.7s; }
 .mine:nth-child(2n) { animation-delay: 0.45s; }
 .mine:nth-child(3n) { animation-delay: 0.9s; }
+
+@keyframes spawnPulse {
+  0%, 100% {
+    opacity: 0.72;
+    border-bottom-color: #4fc3f7;
+  }
+  50% {
+    opacity: 1;
+    border-bottom-color: #9be7ff;
+  }
+}
 
 @keyframes extractPulse {
   0%, 100% {
@@ -244,8 +307,16 @@ body::-webkit-scrollbar,
   color: #5aa8ff;
 }
 
+#tip.spawn-tip {
+  border-color: #4fc3f7;
+}
+
+#tip.spawn-tip .tip-kind {
+  color: #9be7ff;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .extract, .mine {
+  .extract, .mine, .spawn-wrap .spawn {
     animation: none;
     opacity: 1;
   }

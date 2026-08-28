@@ -1,20 +1,20 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.0.4
+# TARKOVY · Dev 0.0.5
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img src="https://img.shields.io/badge/Dev-0.0.4-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.0.4"/></a>
-  <a href="https://www.escapefromtarkov.com/"><img src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>
-  <a href="#requirements"><img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&logo=windows&logoColor=white&labelColor=111111" alt="Windows 10 / 11"/></a>
-  <a href="#build"><img src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&logo=dotnet&logoColor=white&labelColor=111111" alt=".NET 8 WPF"/></a>
-  <br/>
-  <a href="#credits"><img src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>
-  <a href="https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400"><img src="https://img.shields.io/badge/VirusTotal-0%20%2F%2065%20clean-228B22?style=for-the-badge&logo=virustotal&logoColor=white&labelColor=111111" alt="VirusTotal scan v0.0.4"/></a>
-  <a href="https://buymeacoffee.com/anomalylabs"><img src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>
-  <a href="mailto:anomalylabstudio@gmail.com"><img src="https://img.shields.io/badge/Support-anomalylabstudio%40gmail.com-555555?style=for-the-badge&logo=gmail&logoColor=white&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.0.5-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.0.5"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
+  <br/><br/>
+  <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/C9F4ECD092DB921B7BC8BDD93BC90BDD5B6876ABACD5864C2C3E993162126E89"><img height="28" src="https://img.shields.io/badge/VirusTotal-0%20%2F%2065%20clean-228B22?style=for-the-badge&labelColor=111111" alt="VirusTotal scan"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
 
 [Overview](#overview) · [Features](#features) · [Download](#download) · [Report a bug](#report-a-bug) · [Support](#support) · [Buy me a beer](#buy-me-a-beer) · [Interface](#interface) · [Requirements](#requirements) · [Usage](#usage) · [Dual-bind](#dual-bind) · [Build](#build) · [Virus scan](#virus-scan) · [Changelog](#changelog) · [License](#license--terms-of-use) · [Credits](#credits)
@@ -34,11 +34,11 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.0.4**                    |
+| **Version**      | **Dev 0.0.5**                    |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
-| **Distribution** | `Tarkovy-0.0.4.zip` (exe + assets + runtimes) |
+| **Distribution** | `Tarkovy-0.0.5.zip` (exe + assets + runtimes) |
 
 
 > **Disclaimer** — Not affiliated with Battlestate Games. Use at your own risk; BSG rules may change.
@@ -57,8 +57,9 @@ No memory reading, no injection, no client modification.
 | ![follow](https://img.shields.io/badge/-follow-222?style=flat-square)  | Follow player        | Minimap zooms in and tracks you as screenshots update                  |
 | ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Corner minimap and expanded mode (`F8` / `F9`)                         |
 | ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
-| ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Enable missions per map (EN/PT names); markers + route line to waypoint |
-| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | EX / MN / QT / LB + map rotation on the minimap                        |
+| ![spawn](https://img.shields.io/badge/-pmc-222?style=flat-square)     | PMC spawns           | Toggleable respawn markers (cyan triangles) per map                    |
+| ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Track missions; mark complete (○) to hide markers and stop tracking   |
+| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | EX / MN / RS / QT / LB + map rotation on the minimap                   |
 | ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
 | ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup   | Deletes the print after reading (and sweeps leftovers at raid end)     |
 | ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Filesystem only — no memory read / inject                              |
@@ -70,7 +71,7 @@ No memory reading, no injection, no client modification.
 
 ## Download
 
-Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.4.zip`), extract, and run `Tarkovy.exe`.
+Grab the latest **ZIP** from [GitHub Releases](https://github.com/leandrovieiraa/Tarkovy/releases) (`Tarkovy-0.0.5.zip`), extract, and run `Tarkovy.exe`.
 
 ---
 
@@ -80,7 +81,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.4`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.0.5`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -130,7 +131,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 
 ## Usage
 
-1. Extract `Tarkovy-0.0.4.zip` and run `Tarkovy.exe`
+1. Extract `Tarkovy-0.0.5.zip` and run `Tarkovy.exe`
 2. Open **CONFIG** (gear in the header) and set your folders:
   - **Logs:** `<EFT install>\Logs` (example: `D:\Battlestate Games\Escape from Tarkov\Logs`)
   - **Screenshots:** `Documents\Escape from Tarkov\Screenshots`
@@ -211,7 +212,17 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.0.4` (`Tarkovy-0.0.4.zip`)
+### Release `v0.0.5` (`Tarkovy-0.0.5.zip`)
+
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy-0.0.5.zip (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.5/Tarkovy-0.0.5.zip)           |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/C9F4ECD092DB921B7BC8BDD93BC90BDD5B6876ABACD5864C2C3E993162126E89)             |
+| **SHA-256**    | `C9F4ECD092DB921B7BC8BDD93BC90BDD5B6876ABACD5864C2C3E993162126E89`                                                                   |
+
+
+### Previous: `v0.0.4` (`Tarkovy-0.0.4.zip`)
 
 
 |                |                                                                                                                                      |
@@ -242,7 +253,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 Verify locally (PowerShell):
 
 ```powershell
-Get-FileHash .\Tarkovy-0.0.4.zip -Algorithm SHA256
+Get-FileHash .\Tarkovy-0.0.5.zip -Algorithm SHA256
 ```
 
 > Prefer the **GitHub Releases** build. Rebuilds change the hash — scan that file again.
@@ -250,6 +261,14 @@ Get-FileHash .\Tarkovy-0.0.4.zip -Algorithm SHA256
 ---
 
 ## Changelog
+
+### Dev 0.0.5
+
+- **PMC spawns** — toggle layer + `RS` on minimap; cyan triangle markers from `spawns.json`
+- **Quest complete** — circle (○) marks done; tracking disabled and markers removed from map
+- **Markers UI** — compact 4-column grid (EX / MN / PMC / NOMES)
+- **Spawn pulse** — animation/glow only on the icon, not label text
+- **Window resize** — enforce minimum **1180×720** so the layout does not break (borderless fix)
 
 ### Dev 0.0.4
 
@@ -317,7 +336,7 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
 | **Support**             | [anomalylabstudio@gmail.com](mailto:anomalylabstudio@gmail.com)                                                                                                                                     |
-| **Product**             | Tarkovy · Dev 0.0.4                                                                                                                                                                                 |
+| **Product**             | Tarkovy · Dev 0.0.5                                                                                                                                                                                 |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |
 

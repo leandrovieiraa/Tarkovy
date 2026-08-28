@@ -14,11 +14,17 @@
   <sys:String x:Key="Main.Section.Markers">MARKERS</sys:String>
   <sys:String x:Key="Main.Marker.Extracts">EXTRACTS</sys:String>
   <sys:String x:Key="Main.Marker.Mines">MINES</sys:String>
+  <sys:String x:Key="Main.Marker.Spawns">PMC SPAWNS</sys:String>
+  <sys:String x:Key="Main.Marker.Spawns.Short">PMC</sys:String>
   <sys:String x:Key="Main.Marker.Labels">SHOW NAMES</sys:String>
+  <sys:String x:Key="Main.Marker.Labels.Short">NAMES</sys:String>
   <sys:String x:Key="Main.Marker.Quests">QUEST MARKERS</sys:String>
+  <sys:String x:Key="Main.Marker.Quests.Short">QUESTS</sys:String>
   <sys:String x:Key="Main.Section.Quests">MAP QUESTS</sys:String>
-  <sys:String x:Key="Main.Quests.Hint">Quests for this map (catalog). Tarkov logs don’t expose your PMC’s active quest journal — enable the ones you’re running manually.</sys:String>
+  <sys:String x:Key="Main.Quests.Hint">Green ○ = complete · square □ = map tracking. Mark manually when done (logs don’t report completion).</sys:String>
   <sys:String x:Key="Main.Quests.MapTooltip">Map: {0}</sys:String>
+  <sys:String x:Key="Quest.Complete.Mark">Complete (click the circle)</sys:String>
+  <sys:String x:Key="Quest.Complete.Undo">Unmark complete</sys:String>
   <sys:String x:Key="Main.EftTarget">EFT {0} · {1}</sys:String>
   <sys:String x:Key="Main.Tooltip.EftTarget">Built / validated against Escape from Tarkov {0} ({1}). After a major patch, maps, quests, or screenshot filenames may change — recheck Tarkovy.</sys:String>
   <sys:String x:Key="Main.Map.HasQuests">Quests available on this map</sys:String>
@@ -73,6 +79,7 @@
   <sys:String x:Key="Settings.Section.Markers">MAP MARKERS</sys:String>
   <sys:String x:Key="Settings.ShowExtracts">SHOW EXTRACTS</sys:String>
   <sys:String x:Key="Settings.ShowMines">SHOW MINES</sys:String>
+  <sys:String x:Key="Settings.ShowSpawns">SHOW PMC SPAWNS</sys:String>
   <sys:String x:Key="Settings.ShowLabels">ALWAYS SHOW NAMES ON MAP</sys:String>
   <sys:String x:Key="Settings.ShowLabelsHint">Off: tooltip on hover only.</sys:String>
   <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
@@ -106,11 +113,13 @@
   <sys:String x:Key="Map.Rotate.Right">Rotate 90° clockwise</sys:String>
   <sys:String x:Key="Map.Tip.Extract">EXTRACT</sys:String>
   <sys:String x:Key="Map.Tip.Mine">MINE</sys:String>
+  <sys:String x:Key="Map.Tip.Spawn">PMC SPAWN</sys:String>
   <sys:String x:Key="Map.Tip.Quest">QUEST</sys:String>
   <sys:String x:Key="Map.Waypoint">WAYPOINT</sys:String>
   <sys:String x:Key="Map.ClearWaypoint">Clear waypoint</sys:String>
   <sys:String x:Key="Map.Layer.Extracts">Extracts</sys:String>
   <sys:String x:Key="Map.Layer.Mines">Mines</sys:String>
+  <sys:String x:Key="Map.Layer.Spawns">PMC Spawns</sys:String>
   <sys:String x:Key="Map.Layer.Quests">Quests</sys:String>
   <sys:String x:Key="Map.Layer.Labels">Labels</sys:String>
   <sys:String x:Key="Hazard.MineFallback">Mine</sys:String>

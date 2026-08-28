@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Tarkovy.Services;
 
@@ -73,8 +74,8 @@ internal static class NativeMethods
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
 
-    /// <summary>Borderless windows must respect monitor work area when maximized (taskbar).</summary>
-    public static bool TryHandleGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
+    /// <summary>Borderless windows: work-area maximize + enforce WPF MinWidth/MinHeight on resize.</summary>
+    public static bool TryHandleGetMinMaxInfo(IntPtr hwnd, IntPtr lParam, Window? window = null)
     {
         var monitor = MonitorFromWindow(hwnd, MonitorDefaultToNearest);
         if (monitor == IntPtr.Zero) return false;
@@ -87,6 +88,16 @@ internal static class NativeMethods
         mmi.ptMaxPosition.Y = Math.Abs(info.rcWork.Top - info.rcMonitor.Top);
         mmi.ptMaxSize.X = Math.Abs(info.rcWork.Right - info.rcWork.Left);
         mmi.ptMaxSize.Y = Math.Abs(info.rcWork.Bottom - info.rcWork.Top);
+
+        if (window is { MinWidth: > 0, MinHeight: > 0 })
+        {
+            var scale = HwndSource.FromHwnd(hwnd)?.CompositionTarget?.TransformToDevice ?? Matrix.Identity;
+            var minW = (int)Math.Ceiling(window.MinWidth * scale.M11);
+            var minH = (int)Math.Ceiling(window.MinHeight * scale.M22);
+            if (minW > mmi.ptMinTrackSize.X) mmi.ptMinTrackSize.X = minW;
+            if (minH > mmi.ptMinTrackSize.Y) mmi.ptMinTrackSize.Y = minH;
+        }
+
         Marshal.StructureToPtr(mmi, lParam, true);
         return true;
     }
@@ -97,20 +108,18 @@ internal static class NativeMethods
         {
             window.SourceInitialized -= OnSourceInitialized;
             if (PresentationSource.FromVisual(window) is HwndSource source)
-                source.AddHook(WorkAreaHook);
+                source.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+                {
+                    if (msg == WmGetMinMaxInfo && TryHandleGetMinMaxInfo(hwnd, lParam, window))
+                        handled = true;
+                    return IntPtr.Zero;
+                });
         }
 
         if (window.IsLoaded)
             OnSourceInitialized(window, EventArgs.Empty);
         else
             window.SourceInitialized += OnSourceInitialized;
-    }
-
-    private static IntPtr WorkAreaHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-    {
-        if (msg == WmGetMinMaxInfo && TryHandleGetMinMaxInfo(hwnd, lParam))
-            handled = true;
-        return IntPtr.Zero;
     }
 
     public static void SetClickThrough(Window window, bool clickThrough)

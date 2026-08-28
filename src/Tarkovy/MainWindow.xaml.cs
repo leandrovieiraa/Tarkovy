@@ -37,6 +37,7 @@ public partial class MainWindow : Window
         SelectMapId(App.Settings.SelectedMapId);
         ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
         ShowMinesBox.IsChecked = App.Settings.ShowMines;
+        ShowSpawnsBox.IsChecked = App.Settings.ShowSpawns;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
@@ -151,15 +152,17 @@ public partial class MainWindow : Window
         App.Raid.SetMap(map);
         var extracts = App.Maps.ExtractsFor(map.Id);
         var mines = App.Maps.MinesFor(map.Id);
+        var spawns = App.Maps.SpawnsFor(map.Id);
         var quests = App.Maps.QuestsFor(map.Id);
         var labels = App.Settings.ShowMarkerLabels;
-        PreviewMap.LoadMap(map, extracts, mines, labels);
+        PreviewMap.LoadMap(map, extracts, mines, spawns, labels);
         PreviewMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
+            App.Settings.ShowSpawns,
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
-        PreviewMap.SetQuests(quests, App.Settings.EnabledQuestSlugs);
+        PreviewMap.SetQuests(quests, QuestState.TrackingSlugs());
         PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
         PreviewMap.SetFollow(App.Settings.FollowPlayer);
         if (_overlay != null)
@@ -167,7 +170,7 @@ public partial class MainWindow : Window
             _overlay.QuestSelectionChanged -= OnOverlayQuestSelectionChanged;
             _overlay.WaypointRequested -= OnOverlayWaypointRequested;
             _overlay.LayersChanged -= OnOverlayLayersChanged;
-            _overlay.LoadMap(map, extracts, mines, labels, quests);
+            _overlay.LoadMap(map, extracts, mines, spawns, labels, quests);
             _overlay.SetFollow(App.Settings.FollowPlayer);
             _overlay.SetGlassOpacity(App.Settings.OverlayOpacity);
             _overlay.QuestSelectionChanged += OnOverlayQuestSelectionChanged;
@@ -184,24 +187,19 @@ public partial class MainWindow : Window
         if (map == null) return;
         var extracts = App.Maps.ExtractsFor(map.Id);
         var mines = App.Maps.MinesFor(map.Id);
+        var spawns = App.Maps.SpawnsFor(map.Id);
         var quests = App.Maps.QuestsFor(map.Id);
         var labels = App.Settings.ShowMarkerLabels;
-        PreviewMap.SetMarkers(extracts, mines, labels);
+        PreviewMap.SetMarkers(extracts, mines, spawns, labels);
         PreviewMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
+            App.Settings.ShowSpawns,
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
-        PreviewMap.SetQuests(quests, App.Settings.EnabledQuestSlugs);
-        _overlay?.SetMarkers(extracts, mines, labels);
+        PreviewMap.SetQuests(quests, QuestState.TrackingSlugs());
+        _overlay?.SetMarkers(extracts, mines, spawns, labels);
         _overlay?.SetQuests(quests);
-    }
-
-    private sealed class QuestRowTag
-    {
-        public required string MapId { get; init; }
-        public required string MapName { get; init; }
-        public required string Slug { get; init; }
     }
 
     private void RebuildQuestList()
@@ -224,44 +222,19 @@ public partial class MainWindow : Window
             return;
         }
 
-        var enabled = new HashSet<string>(App.Settings.EnabledQuestSlugs, StringComparer.OrdinalIgnoreCase);
+        var tooltip = Loc.T("Main.Quests.MapTooltip", map.Name);
         foreach (var q in quests.OrderBy(q => q.Name, StringComparer.OrdinalIgnoreCase))
-        {
-            var label = string.IsNullOrWhiteSpace(Loc.QuestTrader(q))
-                ? Loc.QuestName(q)
-                : $"{Loc.QuestName(q)}  ·  {Loc.QuestTrader(q)}";
-            var box = new CheckBox
-            {
-                Content = label,
-                IsChecked = enabled.Contains(q.Slug),
-                Margin = new Thickness(0, 0, 0, 4),
-                ToolTip = Loc.T("Main.Quests.MapTooltip", map.Name),
-                Tag = new QuestRowTag { MapId = map.Id, MapName = map.Name, Slug = q.Slug }
-            };
-            box.Checked += QuestToggle_Changed;
-            box.Unchecked += QuestToggle_Changed;
-            QuestListPanel.Children.Add(box);
-        }
+            QuestListPanel.Children.Add(QuestListUi.BuildRow(q, OnQuestStateChanged, tooltip));
     }
 
-    private void QuestToggle_Changed(object sender, RoutedEventArgs e)
+    private void OnQuestStateChanged()
     {
-        if (_suppress || sender is not CheckBox { Tag: QuestRowTag tag } box) return;
-        if (!string.Equals(tag.MapId, App.Settings.SelectedMapId, StringComparison.OrdinalIgnoreCase))
-            return;
-
-        var list = App.Settings.EnabledQuestSlugs;
-        if (box.IsChecked == true)
-        {
-            if (!list.Contains(tag.Slug, StringComparer.OrdinalIgnoreCase))
-                list.Add(tag.Slug);
-        }
-        else
-        {
-            list.RemoveAll(s => string.Equals(s, tag.Slug, StringComparison.OrdinalIgnoreCase));
-        }
-        SettingsStore.Save(App.Settings);
+        if (_suppress) return;
         PushMarkersToViews();
+        PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
+        RebuildQuestList();
+        _overlay?.RefreshQuestList();
+        _overlay?.SetWaypoint(App.Settings.ActiveWaypoint);
     }
 
     private void OnOverlayQuestSelectionChanged()
@@ -269,7 +242,7 @@ public partial class MainWindow : Window
         RebuildQuestList();
         var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
         if (map == null) return;
-        PreviewMap.SetQuests(App.Maps.QuestsFor(map.Id), App.Settings.EnabledQuestSlugs);
+        PreviewMap.SetQuests(App.Maps.QuestsFor(map.Id), QuestState.TrackingSlugs());
     }
 
     private void OnOverlayWaypointRequested(MapWaypoint? wp)
@@ -283,12 +256,14 @@ public partial class MainWindow : Window
         _suppress = true;
         ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
         ShowMinesBox.IsChecked = App.Settings.ShowMines;
+        ShowSpawnsBox.IsChecked = App.Settings.ShowSpawns;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
         PreviewMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
+            App.Settings.ShowSpawns,
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
     }
@@ -307,6 +282,12 @@ public partial class MainWindow : Window
                 App.Settings.ShowMines = value;
                 _suppress = true;
                 ShowMinesBox.IsChecked = value;
+                _suppress = false;
+                break;
+            case "spawns":
+                App.Settings.ShowSpawns = value;
+                _suppress = true;
+                ShowSpawnsBox.IsChecked = value;
                 _suppress = false;
                 break;
             case "quests":
@@ -328,6 +309,7 @@ public partial class MainWindow : Window
         _overlay?.SetMarkers(
             App.Maps.ExtractsFor(App.Settings.SelectedMapId),
             App.Maps.MinesFor(App.Settings.SelectedMapId),
+            App.Maps.SpawnsFor(App.Settings.SelectedMapId),
             App.Settings.ShowMarkerLabels);
     }
 
@@ -351,6 +333,7 @@ public partial class MainWindow : Window
         if (_suppress || !IsLoaded) return;
         App.Settings.ShowExtracts = ShowExtractsBox.IsChecked == true;
         App.Settings.ShowMines = ShowMinesBox.IsChecked == true;
+        App.Settings.ShowSpawns = ShowSpawnsBox.IsChecked == true;
         App.Settings.ShowMarkerLabels = ShowLabelsBox.IsChecked == true;
         App.Settings.ShowQuests = ShowQuestsBox.IsChecked == true;
         SettingsStore.Save(App.Settings);
@@ -368,6 +351,7 @@ public partial class MainWindow : Window
         _suppress = true;
         ShowExtractsBox.IsChecked = App.Settings.ShowExtracts;
         ShowMinesBox.IsChecked = App.Settings.ShowMines;
+        ShowSpawnsBox.IsChecked = App.Settings.ShowSpawns;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
@@ -476,7 +460,7 @@ public partial class MainWindow : Window
     {
         if (msg == NativeMethods.WmGetMinMaxInfo)
         {
-            if (NativeMethods.TryHandleGetMinMaxInfo(hwnd, lParam))
+            if (NativeMethods.TryHandleGetMinMaxInfo(hwnd, lParam, this))
                 handled = true;
             return IntPtr.Zero;
         }

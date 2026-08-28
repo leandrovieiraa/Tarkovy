@@ -11,6 +11,7 @@ public sealed class MapCatalog
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(12) };
     private readonly Dictionary<string, List<ExtractMarker>> _extracts = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<HazardMarker>> _mines = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, List<SpawnMarker>> _spawns = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<QuestDefinition>> _quests = new(StringComparer.OrdinalIgnoreCase);
 
     public IReadOnlyList<MapDefinition> Maps { get; private set; } = [];
@@ -40,6 +41,9 @@ public sealed class MapCatalog
     public IReadOnlyList<HazardMarker> MinesFor(string mapId) =>
         _mines.TryGetValue(mapId, out var list) ? list : [];
 
+    public IReadOnlyList<SpawnMarker> SpawnsFor(string mapId) =>
+        _spawns.TryGetValue(mapId, out var list) ? list : [];
+
     public IReadOnlyList<QuestDefinition> QuestsFor(string mapId) =>
         _quests.TryGetValue(mapId, out var list) ? list : [];
 
@@ -62,6 +66,10 @@ public sealed class MapCatalog
         if (File.Exists(minesPath))
             MergeMinesFile(File.ReadAllText(minesPath));
 
+        var spawnsPath = Path.Combine(assetsDir, "spawns.json");
+        if (File.Exists(spawnsPath))
+            MergeSpawnsFile(File.ReadAllText(spawnsPath));
+
         var questsPath = Path.Combine(assetsDir, "quests.json");
         if (File.Exists(questsPath))
             MergeQuestsFile(File.ReadAllText(questsPath));
@@ -73,6 +81,22 @@ public sealed class MapCatalog
         var extractsOnly = """{"query":"{ maps { normalizedName extracts { name faction position { x y z } } } }"}""";
         if (!await TryFetchAsync(withHazards, ct).ConfigureAwait(false))
             await TryFetchAsync(extractsOnly, ct).ConfigureAwait(false);
+        await RefreshSpawnsAsync(ct).ConfigureAwait(false);
+    }
+
+    public async Task RefreshSpawnsAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            using var resp = await Http.GetAsync("https://json.tarkov.dev/regular/maps", ct).ConfigureAwait(false);
+            if (!resp.IsSuccessStatusCode) return;
+            var json = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+            MergeSpawnsFromTarkovJson(json);
+        }
+        catch
+        {
+            /* keep bundled spawns.json */
+        }
     }
 
     private async Task<bool> TryFetchAsync(string body, CancellationToken ct)
@@ -127,6 +151,138 @@ public sealed class MapCatalog
                 _mines[kv.Key] = kv.Value;
         }
         catch { /* ignore */ }
+    }
+
+    private void MergeSpawnsFile(string json)
+    {
+        try
+        {
+            var dict = JsonSerializer.Deserialize<Dictionary<string, List<SpawnMarker>>>(json, JsonOptions());
+            if (dict == null) return;
+            foreach (var kv in dict)
+                _spawns[kv.Key] = kv.Value;
+        }
+        catch { /* ignore */ }
+    }
+
+    private void MergeSpawnsFromTarkovJson(string json)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (!doc.RootElement.TryGetProperty("data", out var data)) return;
+            if (!data.TryGetProperty("maps", out var mapsEl)) return;
+
+            var byNorm = Maps.ToDictionary(m => m.Id, m => m, StringComparer.OrdinalIgnoreCase);
+            var normToId = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["customs"] = "customs",
+                ["factory"] = "factory",
+                ["night-factory"] = "factory",
+                ["woods"] = "woods",
+                ["shoreline"] = "shoreline",
+                ["interchange"] = "interchange",
+                ["reserve"] = "reserve",
+                ["lighthouse"] = "lighthouse",
+                ["streets-of-tarkov"] = "streets-of-tarkov",
+                ["ground-zero"] = "ground-zero",
+                ["ground-zero-21"] = "ground-zero",
+                ["the-lab"] = "the-lab",
+                ["the-lab-dark"] = "the-lab",
+                ["terminal"] = "terminal",
+                ["the-labyrinth"] = "the-labyrinth"
+            };
+
+            var collected = new Dictionary<string, List<(double x, double y, double z)>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var mapProp in mapsEl.EnumerateObject())
+            {
+                var map = mapProp.Value;
+                if (!map.TryGetProperty("normalizedName", out var normEl)) continue;
+                var norm = normEl.GetString();
+                if (string.IsNullOrWhiteSpace(norm) || !normToId.TryGetValue(norm, out var mapId)) continue;
+                if (!byNorm.ContainsKey(mapId)) continue;
+                if (!map.TryGetProperty("spawns", out var spawnsEl) || spawnsEl.ValueKind != JsonValueKind.Array)
+                    continue;
+
+                foreach (var spawn in spawnsEl.EnumerateArray())
+                {
+                    if (!IsPmcPlayerSpawn(spawn)) continue;
+                    if (!TryPos(spawn, "position", out var x, out var y, out var z)) continue;
+                    if (!collected.TryGetValue(mapId, out var list))
+                    {
+                        list = [];
+                        collected[mapId] = list;
+                    }
+                    list.Add((x, y, z));
+                }
+            }
+
+            foreach (var (mapId, points) in collected)
+            {
+                var clustered = ClusterSpawnPoints(points);
+                if (clustered.Count > 0)
+                    _spawns[mapId] = clustered;
+            }
+
+            MarkersUpdated?.Invoke();
+        }
+        catch { /* ignore */ }
+    }
+
+    private static bool IsPmcPlayerSpawn(JsonElement spawn)
+    {
+        if (!spawn.TryGetProperty("categories", out var cats) || cats.ValueKind != JsonValueKind.Array)
+            return false;
+        var hasPlayer = false;
+        foreach (var c in cats.EnumerateArray())
+        {
+            if (string.Equals(c.GetString(), "player", StringComparison.OrdinalIgnoreCase))
+                hasPlayer = true;
+        }
+        if (!hasPlayer) return false;
+
+        if (!spawn.TryGetProperty("sides", out var sides) || sides.ValueKind != JsonValueKind.Array)
+            return false;
+        foreach (var s in sides.EnumerateArray())
+        {
+            var side = s.GetString()?.ToLowerInvariant();
+            if (side is "pmc" or "all") return true;
+        }
+        return false;
+    }
+
+    private static List<SpawnMarker> ClusterSpawnPoints(List<(double x, double y, double z)> points, double cell = 55)
+    {
+        var buckets = new Dictionary<(long, long), List<(double x, double y, double z)>>();
+        foreach (var (x, y, z) in points)
+        {
+            var key = ((long)Math.Round(x / cell), (long)Math.Round(z / cell));
+            if (!buckets.TryGetValue(key, out var list))
+            {
+                list = [];
+                buckets[key] = list;
+            }
+            list.Add((x, y, z));
+        }
+
+        var result = new List<SpawnMarker>();
+        var idx = 1;
+        foreach (var pts in buckets.Values)
+        {
+            var cx = pts.Average(p => p.x);
+            var cy = pts.Average(p => p.y);
+            var cz = pts.Average(p => p.z);
+            result.Add(new SpawnMarker
+            {
+                Name = buckets.Count == 1 ? "PMC Spawn" : $"PMC Spawn {idx}",
+                X = cx,
+                Y = cy,
+                Z = cz
+            });
+            idx++;
+        }
+        return result;
     }
 
     private void MergeQuestsFile(string json)

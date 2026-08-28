@@ -45,6 +45,7 @@ public partial class SettingsWindow : Window
         ShotsPathBox.Text = s.ScreenshotsFolder;
         ShowExtractsBox.IsChecked = s.ShowExtracts;
         ShowMinesBox.IsChecked = s.ShowMines;
+        ShowSpawnsBox.IsChecked = s.ShowSpawns;
         ShowLabelsBox.IsChecked = s.ShowMarkerLabels;
         OpacitySlider.Value = s.OverlayOpacity;
         FollowBox.IsChecked = s.FollowPlayer;
@@ -123,6 +124,7 @@ public partial class SettingsWindow : Window
         s.ScreenshotsFolder = ShotsPathBox.Text.Trim();
         s.ShowExtracts = ShowExtractsBox.IsChecked == true;
         s.ShowMines = ShowMinesBox.IsChecked == true;
+        s.ShowSpawns = ShowSpawnsBox.IsChecked == true;
         s.ShowMarkerLabels = ShowLabelsBox.IsChecked == true;
         s.OverlayOpacity = OpacitySlider.Value;
         s.FollowPlayer = FollowBox.IsChecked == true;

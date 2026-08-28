@@ -35,6 +35,14 @@ public sealed class HazardMarker
     public double Z { get; set; }
 }
 
+public sealed class SpawnMarker
+{
+    public string Name { get; set; } = "PMC Spawn";
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+}
+
 public sealed class PlayerFix
 {
     public double X { get; set; }

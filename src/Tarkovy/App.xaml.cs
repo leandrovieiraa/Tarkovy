@@ -16,6 +16,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         Settings = SettingsStore.Load();
+        QuestState.SanitizeTrackingList();
         Loc.Apply(Settings.UiLanguage);
         var assets = AssetBootstrap.Ensure();
         Maps.LoadBundled(assets);
