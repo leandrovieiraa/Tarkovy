@@ -234,9 +234,10 @@ copy tools\vt.local.env.example tools\vt.local.env
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/86D524EFDDC02E6DE6CD3444C66EE65145F7B0446D531165B7E16B5031584C87)             |
 | **SHA-256**    | `86D524EFDDC02E6DE6CD3444C66EE65145F7B0446D531165B7E16B5031584C87`                                                                   |
 
+<details>
+<summary><strong>Previous releases</strong></summary>
 
-### Previous: `v0.0.6` (`Tarkovy-0.0.6.zip`)
-
+### `v0.0.6` (`Tarkovy-0.0.6.zip`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -244,9 +245,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/B618044EAE6E3CE737E3F23F0098D6682AE2DFDFA7316560F80EBE613393D3C3)             |
 | **SHA-256**    | `B618044EAE6E3CE737E3F23F0098D6682AE2DFDFA7316560F80EBE613393D3C3`                                                                   |
 
-
-### Previous: `v0.0.5` (`Tarkovy-0.0.5.zip`)
-
+### `v0.0.5` (`Tarkovy-0.0.5.zip`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -254,9 +253,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/C9F4ECD092DB921B7BC8BDD93BC90BDD5B6876ABACD5864C2C3E993162126E89)             |
 | **SHA-256**    | `C9F4ECD092DB921B7BC8BDD93BC90BDD5B6876ABACD5864C2C3E993162126E89`                                                                   |
 
-
-### Previous: `v0.0.4` (`Tarkovy-0.0.4.zip`)
-
+### `v0.0.4` (`Tarkovy-0.0.4.zip`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -264,9 +261,7 @@ copy tools\vt.local.env.example tools\vt.local.env
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400)             |
 | **SHA-256**    | `A920FD6B30904039743F258A5B8F5EE40BF9CC31ECF8F362048C752F4337A400`                                                                   |
 
-
-### Previous: `v0.0.3` (`Tarkovy-0.0.3.zip`)
-
+### `v0.0.3` (`Tarkovy-0.0.3.zip`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -274,14 +269,15 @@ copy tools\vt.local.env.example tools\vt.local.env
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D)             |
 | **SHA-256**    | `10828E02BC0806C32E32181ECD86394BEE678AB23EC0B5F7A2D1F3D336B2DA1D`                                                                   |
 
-
-### Previous: `v0.0.2` (`Tarkovy.exe`)
+### `v0.0.2` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.0.2/Tarkovy.exe)                       |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/46f5026d6bfbfaee7f2510edb3a78fa3323c0828341c4d296b07558874655f35) |
 | **SHA-256**    | `F36744FE4E6EC06F83191B294B58E182CAD8C6B81946A9A66103FE9E63F78D69`                                                                   |
+
+</details>
 
 Verify locally (PowerShell):
 
