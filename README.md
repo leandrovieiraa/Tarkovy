@@ -55,17 +55,19 @@ No memory reading, no injection, no client modification.
 | ![map](https://img.shields.io/badge/-map-222?style=flat-square)        | Map detection        | Reads `application.log` and swaps the SVG automatically                |
 | ![pos](https://img.shields.io/badge/-position-222?style=flat-square)   | Position + heading   | Parses the EFT screenshot filename                                     |
 | ![follow](https://img.shields.io/badge/-follow-222?style=flat-square)  | Follow player        | Minimap zooms in and tracks you as screenshots update                  |
-| ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Compact minimap (`F8`); optional exits panel (`F9`)                  |
+| ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Compact minimap (`F8`, off by default); optional exits panel (`F9`); min **260×180** |
+| ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | RatScanner-style click scan: **Shift+click** stash/inventory icon, **click** inspect name (OCR); flea/trader/slot prices from tarkov.dev — **F10** |
 | ![wp](https://img.shields.io/badge/-waypoint-222?style=flat-square)   | Pencil waypoint      | ✎ click anywhere on map or minimap — route line to your position      |
 | ![floor](https://img.shields.io/badge/-floors-222?style=flat-square)  | Map floors           | ▲▼ layer switch (Factory, Interchange, Ground Zero); auto from Y      |
 | ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
 | ![spawn](https://img.shields.io/badge/-pmc-222?style=flat-square)     | PMC spawns           | Toggleable respawn markers (cyan triangles) per map                    |
 | ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Track missions; mark complete (○) to hide markers and stop tracking   |
-| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | EX / MN / RS / QT / LB · floors · ✎ waypoint · rotation on minimap    |
+| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | **◎** eye toggle · EX / MN / RS / QT / LB · floors · ✎ waypoint · rotation — layout adapts to window size |
 | ![icons](https://img.shields.io/badge/-icons-222?style=flat-square)   | Game-style markers   | tarkov.dev icons per type (PMC/Scav exfil, hazard, spawn, quest…)   |
+| ![layout](https://img.shields.io/badge/-layout-222?style=flat-square)  | Window layout        | Remembers position and size for main window, minimap, and Item Lens    |
 | ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
 | ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup   | Deletes the print after reading (and sweeps leftovers at raid end)     |
-| ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Filesystem only — no memory read / inject                              |
+| ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Logs, screenshots, and screen capture only — no memory read / inject   |
 
 
 > Quests are a **map catalog** you toggle manually. Tarkov logs do not expose your live PMC journal.
@@ -138,12 +140,14 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 2. Open **CONFIG** (gear in the header) and set your folders:
   - **Logs:** `<EFT install>\Logs` (example: `D:\Battlestate Games\Escape from Tarkov\Logs`)
   - **Screenshots:** `Documents\Escape from Tarkov\Screenshots`
-3. Bind **Screenshot** in EFT (see [Screenshot bind](#screenshot-bind)) — on **EFT 1.x**, middle mouse or a quick side key works better than sharing **W**
+3. Bind **Screenshot** in EFT (see [Screenshot bind](#screenshot-bind)) — middle mouse or a quick side key works well
 4. Enter a raid — the map switches automatically; each screenshot updates the arrow and the file is removed
 5. Hotkeys:
   - **F8** — show / hide minimap overlay (off by default)
   - **F9** — toggle optional exits/quests side panel on the minimap (stays compact)
-6. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
+  - **F10** — show / hide Item Lens
+6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** item icon in stash/inventory → **click** item name when inspecting → prices panel opens (first run indexes icons from tarkov.dev)
+7. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
 
 On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show SmartScreen: *More info* → *Run anyway*.
 
@@ -160,17 +164,13 @@ Tarkovy does **not** simulate key presses. It only reads the **filename** EFT wr
 3. Bind it to something you can hit **while moving** without breaking gameplay
 4. Keep the game in **Borderless Windowed**
 
-### Recommended binds (EFT 1.x / Season 1)
+### Suggested binds
 
-Binding Screenshot on the **same key as W** (the classic “dual-bind”) used to feel fine on older patches, but on **EFT 1.x** the screenshot toast, flash, and input handling make it **much less pleasant** — we no longer recommend it as the default.
-
-Better options:
-
-- **Middle mouse button (scroll wheel click)** — easy to tap with your index finger while holding **W**; doesn’t steal a keyboard key
+- **Middle mouse button (scroll wheel click)** — easy to tap while holding **W**; doesn’t steal a keyboard key
 - **A dedicated key nearby** — e.g. **C**, **V**, **X**, or a thumb mouse button — whatever feels fastest for you
 - **Tap as you go** — press your screenshot bind every few steps while rotating; no perfect rhythm needed, just fresh prints when the arrow drifts
 
-Pick what fits your hand and mouse. There is no single “best” bind.
+Pick what fits your hand and mouse.
 
 ### In-raid flow
 
@@ -180,7 +180,6 @@ Your bind → EFT saves a screenshot → Tarkovy reads X/Y/Z + yaw from the file
 
 - The screenshot flash/toast is from EFT, not Tarkovy
 - Windows Print Screen alone will **not** work: Tarkovy needs the **in-game** screenshot filename with coordinates
-- Dual-bind on **W** is still *possible* if you tolerate the EFT 1.x feedback — but most players prefer **middle-click** or a quick side key
 
 ---
 
@@ -304,7 +303,7 @@ Get-FileHash .\Tarkovy-0.1.6.zip -Algorithm SHA256
 - Compact shortcut chips on the main window (tooltips for each hotkey)
 - Minimap tools eye toggle — show/hide side icons; layout adapts to window size (min **260×180**, same as Item Lens)
 - Persist main / minimap / Item Lens window position and size
-- Screenshot bind docs updated for **EFT 1.x** — prefer middle-click or a quick side key over dual-bind on **W**
+- Screenshot bind docs — middle-click or a quick side key while moving
 
 </details>
 
