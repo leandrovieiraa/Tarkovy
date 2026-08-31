@@ -69,6 +69,9 @@ public static class Loc
     public static string QuestTrader(QuestDefinition q) =>
         IsPortuguese && !string.IsNullOrWhiteSpace(q.TraderPt) ? q.TraderPt : q.Trader;
 
+    public static string QuestObjectiveDescription(QuestObjective o) =>
+        IsPortuguese && !string.IsNullOrWhiteSpace(o.DescriptionPt) ? o.DescriptionPt : o.Description;
+
     public static string T(string key)
     {
         if (Application.Current?.TryFindResource(key) is string s && !string.IsNullOrEmpty(s))

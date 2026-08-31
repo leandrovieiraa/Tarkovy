@@ -1,18 +1,9 @@
-<Window x:Class="Tarkovy.SettingsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="{DynamicResource Settings.Title}"
-        Height="720" Width="520"
-        WindowStartupLocation="CenterOwner"
-        WindowStyle="None"
-        ResizeMode="CanResize"
-        Background="{StaticResource BrushBgDeep}"
-        Foreground="{StaticResource BrushText}"
-        Icon="pack://application:,,,/Assets/brand/tarkovy.ico">
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="42" ResizeBorderThickness="6" GlassFrameThickness="0"/>
-    </WindowChrome.WindowChrome>
-    <Border BorderBrush="{StaticResource BrushAmber}" BorderThickness="1">
+<UserControl x:Class="Tarkovy.SettingsWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BrushBgDeep}"
+             Foreground="{StaticResource BrushText}">
+    <Border BorderBrush="{StaticResource BrushAmber}" BorderThickness="0">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="42"/>
@@ -31,11 +22,12 @@
                     </StackPanel>
                     <Button DockPanel.Dock="Right" Content="✕" Width="36" Height="28" Click="Close_Click"
                             Background="Transparent" Foreground="{StaticResource BrushTextDim}" BorderThickness="0"
-                            WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" HorizontalAlignment="Right"
+                            Cursor="Hand" HorizontalAlignment="Right"
                             ToolTip="{DynamicResource Main.Tooltip.Close}"/>
                 </DockPanel>
             </Border>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Padding="18">
+            <ScrollViewer Grid.Row="1" Style="{StaticResource DarkQuestScrollViewer}"
+                          VerticalScrollBarVisibility="Auto" Padding="18">
                 <StackPanel>
                     <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Section.Language}"/>
                     <ComboBox x:Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
@@ -88,6 +80,30 @@
                                Text="{DynamicResource Settings.ItemScanEnabledHint}"/>
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.ItemLensOpacity}"/>
                     <Slider x:Name="ItemLensOpacitySlider" Minimum="0.5" Maximum="1" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,14,0,4" Text="{DynamicResource Settings.ItemScanSlotSize}"/>
+                    <ComboBox x:Name="ItemScanSlotCombo"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanSlotSizeHint}"/>
+
+                    <CheckBox x:Name="ItemScanDebugBox" Content="{DynamicResource Settings.ItemScanDebug}" Margin="0,14,0,0"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanDebugHint}"/>
+                    <DockPanel Margin="0,6,0,0" LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SlotButton}" Content="…" Width="40" Margin="8,0,0,0" Click="OpenItemScanDebug_Click"/>
+                        <TextBox x:Name="ItemScanDebugPathBox" IsReadOnly="True"/>
+                    </DockPanel>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.ItemScanAi}"/>
+                    <CheckBox x:Name="ItemScanAiBox" Content="{DynamicResource Settings.ItemScanAiEnabled}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanAiHint}"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.ItemScanAiProvider}"/>
+                    <ComboBox x:Name="ItemScanAiProviderCombo" SelectionChanged="ItemScanAiProviderCombo_SelectionChanged"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.ItemScanAiKey}"/>
+                    <PasswordBox x:Name="ItemScanAiKeyBox"/>
+                    <TextBlock x:Name="ItemScanAiKeyHintText" FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanAiKeyHint}"/>
                 </StackPanel>
             </ScrollViewer>
             <Border Grid.Row="2" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0" Padding="12">
@@ -103,4 +119,4 @@
             </Border>
         </Grid>
     </Border>
-</Window>
+</UserControl>

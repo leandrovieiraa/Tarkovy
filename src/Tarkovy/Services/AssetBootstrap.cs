@@ -4,6 +4,15 @@ namespace Tarkovy.Services;
 
 public static class AssetBootstrap
 {
+    private static readonly string[] VersionedDataFiles =
+    [
+        "quests.json",
+        "maps.json",
+        "extracts.json",
+        "mines.json",
+        "spawns.json"
+    ];
+
     public static string DirectoryPath => Path.Combine(SettingsStore.AppDataDir, "assets");
 
     public static string Ensure()
@@ -12,11 +21,38 @@ public static class AssetBootstrap
 
         var bundled = Path.Combine(AppContext.BaseDirectory, "Assets");
         if (Directory.Exists(bundled))
+        {
             CopyTreeIfNewer(bundled, DirectoryPath);
+            RefreshVersionedData(bundled, DirectoryPath);
+        }
         else
             ExtractEmbeddedResources();
 
         return DirectoryPath;
+    }
+
+    private static void RefreshVersionedData(string bundled, string destRoot)
+    {
+        var stamp = Path.Combine(destRoot, ".assets-version");
+        var version = ProductInfo.AppVersion;
+        if (File.Exists(stamp) && string.Equals(File.ReadAllText(stamp).Trim(), version, StringComparison.Ordinal))
+            return;
+
+        foreach (var file in VersionedDataFiles)
+        {
+            var src = Path.Combine(bundled, file);
+            if (File.Exists(src))
+                ForceCopy(src, Path.Combine(destRoot, file));
+        }
+
+        Directory.CreateDirectory(destRoot);
+        File.WriteAllText(stamp, version);
+    }
+
+    private static void ForceCopy(string source, string dest)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+        File.Copy(source, dest, overwrite: true);
     }
 
     private static void CopyTreeIfNewer(string sourceRoot, string destRoot)

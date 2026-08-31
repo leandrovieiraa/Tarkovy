@@ -24,6 +24,15 @@ public sealed class AppSettings
     public bool OverlayVisible { get; set; } = false;
     public bool ItemLensVisible { get; set; } = false;
     public bool ItemScanEnabled { get; set; } = true;
+    /// <summary>Save scan captures + JSON report to AppData item-scan-debug.</summary>
+    public bool ItemScanDebugEnabled { get; set; } = false;
+    /// <summary>Optional vision fallback: Claude / ChatGPT / Gemini identify the highlight against the local catalog.</summary>
+    public bool ItemScanAiEnabled { get; set; }
+    /// <summary>claude | openai | gemini</summary>
+    public string ItemScanAiProvider { get; set; } = "claude";
+    public string ItemScanAiApiKey { get; set; } = "";
+    /// <summary>0 = auto from screen height; else 63/84/126 for 1080p/1440p/4K.</summary>
+    public int ItemScanSlotPx { get; set; } = 0;
     public double ItemLensOpacity { get; set; } = 0.88;
     /// <summary>Ao detectar fim de raid nos logs, encerra sessão e limpa leftovers.</summary>
     public bool AutoCleanupOnRaidEnd { get; set; } = true;

@@ -76,6 +76,13 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="LoadingRingSmall" TargetType="Ellipse" BasedOn="{StaticResource LoadingRing}">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="StrokeDashArray" Value="16 6"/>
+    </Style>
+
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource BrushBgRaised}"/>
         <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
@@ -89,6 +96,16 @@
                 <Setter Property="BorderBrush" Value="{StaticResource BrushAmber}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="PasswordBox">
+        <Setter Property="Background" Value="{StaticResource BrushBgRaised}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{StaticResource BrushAmber}"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="FontFamily" Value="{StaticResource HudFont}"/>
     </Style>
 
     <Style TargetType="ComboBoxItem">
@@ -469,9 +486,9 @@
     </Style>
 
     <!-- Minimal dark scrollbar for mission lists -->
-    <SolidColorBrush x:Key="BrushScrollTrack" Color="#141414"/>
-    <SolidColorBrush x:Key="BrushScrollThumb" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="BrushScrollThumbHover" Color="#555555"/>
+    <SolidColorBrush x:Key="BrushScrollTrack" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="BrushScrollThumb" Color="#4A4A4A"/>
+    <SolidColorBrush x:Key="BrushScrollThumbHover" Color="#6A6A6A"/>
 
     <Style x:Key="DarkScrollBarThumb" TargetType="Thumb">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -481,8 +498,8 @@
                 <ControlTemplate TargetType="Thumb">
                     <Border x:Name="thumb"
                             Background="{StaticResource BrushScrollThumb}"
-                            CornerRadius="3"
-                            Margin="1"/>
+                            CornerRadius="2"
+                            Margin="1,2"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="thumb" Property="Background" Value="{StaticResource BrushScrollThumbHover}"/>
@@ -498,13 +515,13 @@
 
     <Style x:Key="DarkScrollBar" TargetType="ScrollBar">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Width" Value="8"/>
-        <Setter Property="MinWidth" Value="8"/>
+        <Setter Property="Width" Value="6"/>
+        <Setter Property="MinWidth" Value="6"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollBar">
-                    <Grid Background="{StaticResource BrushScrollTrack}" Width="8">
+                    <Grid Background="{StaticResource BrushScrollTrack}" Width="6">
                         <Track x:Name="PART_Track" IsDirectionReversed="True">
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton Height="0" Opacity="0" IsTabStop="False" Command="ScrollBar.PageUpCommand"/>
@@ -523,12 +540,12 @@
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Width" Value="Auto"/>
-                <Setter Property="Height" Value="8"/>
-                <Setter Property="MinHeight" Value="8"/>
+                <Setter Property="Height" Value="6"/>
+                <Setter Property="MinHeight" Value="6"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ScrollBar">
-                            <Grid Background="{StaticResource BrushScrollTrack}" Height="8">
+                            <Grid Background="{StaticResource BrushScrollTrack}" Height="6">
                                 <Track x:Name="PART_Track" IsDirectionReversed="False">
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton Width="0" Opacity="0" IsTabStop="False" Command="ScrollBar.PageLeftCommand"/>

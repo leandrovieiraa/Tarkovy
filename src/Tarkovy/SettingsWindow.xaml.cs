@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,18 +8,17 @@ using Tarkovy.Services;
 
 namespace Tarkovy;
 
-public partial class SettingsWindow : Window
+public partial class SettingsWindow : UserControl
 {
     private bool _suppressLang;
+    private string _langWhenOpened = Loc.English;
 
     public SettingsWindow()
     {
         InitializeComponent();
-        NativeMethods.EnableWorkAreaMaximize(this);
-        Loaded += (_, _) => LoadFromSettings();
     }
 
-    private void LoadFromSettings()
+    public void LoadFromSettings()
     {
         var s = App.Settings;
         _suppressLang = true;
@@ -40,7 +40,8 @@ public partial class SettingsWindow : Window
         LanguageCombo.SelectedIndex = Loc.Normalize(s.UiLanguage) == Loc.Portuguese ? 1 : 0;
         _suppressLang = false;
 
-        StartWindowsBox.IsChecked = s.StartWithWindows || StartupRegistration.IsEnabled();
+        _langWhenOpened = Loc.Normalize(s.UiLanguage);
+        StartWindowsBox.IsChecked = s.StartWithWindows;
         LogsPathBox.Text = s.LogsFolder;
         ShotsPathBox.Text = s.ScreenshotsFolder;
         ShowExtractsBox.IsChecked = s.ShowExtracts;
@@ -55,8 +56,68 @@ public partial class SettingsWindow : Window
         AutoCleanupBox.IsChecked = s.AutoCleanupOnRaidEnd;
         ItemScanBox.IsChecked = s.ItemScanEnabled;
         ItemLensOpacitySlider.Value = s.ItemLensOpacity;
+        ItemScanDebugBox.IsChecked = s.ItemScanDebugEnabled;
+        ItemScanDebugPathBox.Text = ItemScanDebug.RootDir;
+        ItemScanAiBox.IsChecked = s.ItemScanAiEnabled;
+        ItemScanAiKeyBox.Password = s.ItemScanAiApiKey ?? "";
+        PopulateItemScanAiProviderCombo(s.ItemScanAiProvider);
+        PopulateItemScanSlotCombo(s.ItemScanSlotPx);
         RefreshPathBadges();
     }
+
+    private void PopulateItemScanSlotCombo(int selectedPx)
+    {
+        ItemScanSlotCombo.Items.Clear();
+        ItemScanSlotCombo.Items.Add(MakeSlotItem(Loc.T("Settings.ItemScanSlot.Auto"), 0));
+        ItemScanSlotCombo.Items.Add(MakeSlotItem(Loc.T("Settings.ItemScanSlot.1080"), 63));
+        ItemScanSlotCombo.Items.Add(MakeSlotItem(Loc.T("Settings.ItemScanSlot.1440"), 84));
+        ItemScanSlotCombo.Items.Add(MakeSlotItem(Loc.T("Settings.ItemScanSlot.4k"), 126));
+        ItemScanSlotCombo.SelectedIndex = selectedPx switch
+        {
+            63 => 1,
+            84 => 2,
+            126 => 3,
+            _ => 0
+        };
+    }
+
+    private void PopulateItemScanAiProviderCombo(string? selected)
+    {
+        var tag = (selected ?? "claude").Trim().ToLowerInvariant();
+        ItemScanAiProviderCombo.Items.Clear();
+        ItemScanAiProviderCombo.Items.Add(MakeAiProvider(Loc.T("Settings.ItemScanAi.Claude"), "claude"));
+        ItemScanAiProviderCombo.Items.Add(MakeAiProvider(Loc.T("Settings.ItemScanAi.Cursor"), "cursor"));
+        ItemScanAiProviderCombo.Items.Add(MakeAiProvider(Loc.T("Settings.ItemScanAi.OpenAi"), "openai"));
+        ItemScanAiProviderCombo.Items.Add(MakeAiProvider(Loc.T("Settings.ItemScanAi.Gemini"), "gemini"));
+        ItemScanAiProviderCombo.SelectedIndex = tag switch
+        {
+            "cursor" => 1,
+            "openai" => 2,
+            "gemini" => 3,
+            _ => 0
+        };
+        RefreshAiKeyHint();
+    }
+
+    private void ItemScanAiProviderCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        RefreshAiKeyHint();
+    }
+
+    private void RefreshAiKeyHint()
+    {
+        var tag = ItemScanAiProviderCombo.SelectedItem is ComboBoxItem item && item.Tag is string t ? t : "claude";
+        ItemScanAiKeyHintText.Text = tag == "cursor"
+            ? Loc.T("Settings.ItemScanAiKeyHint.Cursor")
+            : Loc.T("Settings.ItemScanAiKeyHint");
+    }
+
+    private static ComboBoxItem MakeAiProvider(string label, string tag) =>
+        new() { Content = label, Tag = tag };
+
+    private static ComboBoxItem MakeSlotItem(string label, int px) =>
+        new() { Content = label, Tag = px };
 
     private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -83,8 +144,11 @@ public partial class SettingsWindow : Window
         });
         LanguageCombo.SelectedIndex = idx;
         _suppressLang = false;
-        Title = Loc.T("Settings.Title");
+        PopulateItemScanSlotCombo(App.Settings.ItemScanSlotPx);
+        PopulateItemScanAiProviderCombo(App.Settings.ItemScanAiProvider);
+        RefreshAiKeyHint();
         RefreshPathBadges();
+        _ = ItemLocalizedNames.ReloadAsync();
     }
 
     private void RefreshPathBadges()
@@ -137,15 +201,37 @@ public partial class SettingsWindow : Window
         s.AutoCleanupOnRaidEnd = AutoCleanupBox.IsChecked == true;
         s.ItemScanEnabled = ItemScanBox.IsChecked == true;
         s.ItemLensOpacity = ItemLensOpacitySlider.Value;
+        s.ItemScanDebugEnabled = ItemScanDebugBox.IsChecked == true;
+        s.ItemScanAiEnabled = ItemScanAiBox.IsChecked == true;
+        s.ItemScanAiApiKey = ItemScanAiKeyBox.Password?.Trim() ?? "";
+        if (ItemScanAiProviderCombo.SelectedItem is ComboBoxItem aiItem && aiItem.Tag is string provider)
+            s.ItemScanAiProvider = provider;
+        if (ItemScanSlotCombo.SelectedItem is ComboBoxItem slotItem && slotItem.Tag is int slotPx)
+            s.ItemScanSlotPx = slotPx;
+        var langChanged = Loc.Normalize(s.UiLanguage) != _langWhenOpened;
         Loc.Apply(s.UiLanguage);
-        StartupRegistration.Apply(s.StartWithWindows);
+        if (langChanged)
+            _ = ItemLocalizedNames.ReloadAsync();
+        _ = Task.Run(() => StartupRegistration.Apply(s.StartWithWindows));
         App.ApplyWatchers();
         SettingsStore.Save(s);
         SettingsApplied?.Invoke();
-        Close();
+        Closed?.Invoke();
     }
 
     public static event Action? SettingsApplied;
+    public event Action? Closed;
 
-    private void Close_Click(object sender, RoutedEventArgs e) => Close();
+    private void OpenItemScanDebug_Click(object sender, RoutedEventArgs e)
+    {
+        var dir = ItemScanDebug.RootDir;
+        Directory.CreateDirectory(dir);
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = dir,
+            UseShellExecute = true
+        });
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e) => Closed?.Invoke();
 }

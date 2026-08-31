@@ -17,6 +17,8 @@ public sealed class QuestObjective
 {
     public string Id { get; set; } = "";
     public string Description { get; set; } = "";
+    /// <summary>Portuguese objective text when available.</summary>
+    public string DescriptionPt { get; set; } = "";
     public string Category { get; set; } = "quest";
     public double X { get; set; }
     public double Y { get; set; }

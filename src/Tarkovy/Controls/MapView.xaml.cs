@@ -22,6 +22,15 @@ public partial class MapView : UserControl
     public event Action<string, bool>? LayerToggled;
     public event Action<MapWaypoint?>? WaypointChanged;
 
+    /// <summary>
+    /// WebView2 is an HWND host — it paints over every WPF overlay. Hide it
+    /// while a modal drawer is open so Config/scrim can sit on top.
+    /// </summary>
+    public void SetHwndHidden(bool hidden)
+    {
+        Web.Visibility = hidden ? Visibility.Collapsed : Visibility.Visible;
+    }
+
     public MapView()
     {
         InitializeComponent();
@@ -157,7 +166,15 @@ public partial class MapView : UserControl
             slug = q.Slug,
             name = Loc.QuestName(q),
             trader = Loc.QuestTrader(q),
-            objectives = q.Objectives,
+            objectives = q.Objectives.Select(o => new
+            {
+                o.Id,
+                description = Loc.QuestObjectiveDescription(o),
+                o.Category,
+                o.X,
+                o.Y,
+                o.Z
+            }).ToArray(),
             completed = completed.Contains(q.Slug)
         }).ToArray();
         Post(new

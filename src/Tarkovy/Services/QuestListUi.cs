@@ -14,18 +14,26 @@ public static class QuestListUi
         if (string.IsNullOrWhiteSpace(filter))
             return true;
 
-        var f = filter.Trim();
-        return ContainsIgnoreCase(Loc.QuestName(quest), f)
-               || ContainsIgnoreCase(Loc.QuestTrader(quest), f)
-               || ContainsIgnoreCase(quest.Name, f)
-               || ContainsIgnoreCase(quest.NamePt, f)
-               || ContainsIgnoreCase(quest.Trader, f)
-               || ContainsIgnoreCase(quest.TraderPt, f);
+        var f = NormalizeSearch(filter);
+        return ContainsIgnoreCase(NormalizeSearch(Loc.QuestName(quest)), f)
+               || ContainsIgnoreCase(NormalizeSearch(Loc.QuestTrader(quest)), f)
+               || ContainsIgnoreCase(NormalizeSearch(quest.Name), f)
+               || ContainsIgnoreCase(NormalizeSearch(quest.NamePt), f)
+               || ContainsIgnoreCase(NormalizeSearch(quest.Trader), f)
+               || ContainsIgnoreCase(NormalizeSearch(quest.TraderPt), f);
     }
 
     private static bool ContainsIgnoreCase(string? text, string filter) =>
         !string.IsNullOrEmpty(text)
         && text.Contains(filter, StringComparison.OrdinalIgnoreCase);
+
+    private static string NormalizeSearch(string value)
+    {
+        var formD = value.Trim().Normalize(System.Text.NormalizationForm.FormD);
+        var chars = formD.Where(c => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c)
+            != System.Globalization.UnicodeCategory.NonSpacingMark);
+        return new string(chars.ToArray()).Normalize(System.Text.NormalizationForm.FormC);
+    }
 
     public static UIElement BuildRow(QuestDefinition quest, Action onChanged, string? mapTooltip = null)
     {

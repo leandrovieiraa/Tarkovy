@@ -1,7 +1,9 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Tarkovy.Models;
 using Tarkovy.Services;
@@ -10,21 +12,33 @@ namespace Tarkovy;
 
 public partial class MainWindow : Window
 {
-    private static readonly TimeSpan MinLoadingTime = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan MinLoadingTime = TimeSpan.FromSeconds(3);
 
     private OverlayWindow? _overlay;
     private ItemLensWindow? _itemLens;
+    private bool _itemLensReady;
     private ItemScanClickWatcher? _itemScanClickWatcher;
     private HwndSource? _hotkeySource;
     private bool _suppress;
+    private bool _bootStarted;
+    private LoadingTerminal? _loadingTerminal;
+    private int _itemScanGeneration;
+    private int _itemLensOpenGeneration;
+    private DateTime _itemScanStartedUtc;
+    private bool _shiftScanPending;
+    private static readonly TimeSpan MinItemScanLoading = TimeSpan.FromMilliseconds(280);
+    private static readonly TimeSpan MinItemLensOpenLoading = TimeSpan.FromMilliseconds(1200);
+    private bool _itemLensOpening;
+    private bool _itemLensAcceptsScans;
 
     public MainWindow()
     {
         InitializeComponent();
-        SetLoading(true);
+        _loadingTerminal = new LoadingTerminal(LoadingTerminalText);
+        ShowLoadingOverlay();
         NativeMethods.EnableWorkAreaMaximize(this);
         WindowPlacementHelper.Wire(this, App.Settings.MainWindowPlacement, () => SettingsStore.Save(App.Settings));
-        Loaded += OnLoaded;
+        ContentRendered += OnContentRendered;
         StateChanged += (_, _) => UpdateMaximizeGlyph();
         Closed += (_, _) =>
         {
@@ -33,26 +47,55 @@ public partial class MainWindow : Window
             SettingsWindow.SettingsApplied -= OnSettingsApplied;
             Loc.LanguageChanged -= OnLanguageChanged;
             _overlay?.Close();
-            _itemLens?.Close();
+            _itemLens?.ForceClose();
+            _itemLens = null;
+            App.ShutdownItemScan();
         };
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) => _ = OnLoadedAsync();
+    private void OnContentRendered(object? sender, EventArgs e)
+    {
+        if (_bootStarted) return;
+        _bootStarted = true;
+        Dispatcher.BeginInvoke(WarmItemLensWindow, System.Windows.Threading.DispatcherPriority.Background);
+        _ = BootAsyncSafe();
+    }
+
+    private async Task BootAsyncSafe()
+    {
+        try
+        {
+            await OnLoadedAsync();
+        }
+        catch (Exception ex)
+        {
+            HideLoadingOverlay();
+            MessageBox.Show(ex.Message, "Tarkovy", MessageBoxButton.OK, MessageBoxImage.Error);
+            Close();
+        }
+    }
 
     private async Task OnLoadedAsync()
     {
-        SetLoading(true);
+        var bootStart = DateTime.UtcNow;
+        _loadingTerminal ??= new LoadingTerminal(LoadingTerminalText);
+        _loadingTerminal.Seed();
 
         WindowPlacementHelper.Restore(this, App.Settings.MainWindowPlacement, Width, Height);
         WindowPlacementHelper.EnsureVisible(this);
 
         try
         {
-            await App.EnsureInitializedAsync();
+            var initTask = App.EnsureInitializedAsync();
+            await _loadingTerminal.TypeLineAsync("Loading.Term.Api");
+            await _loadingTerminal.TypeLineAsync("Loading.Term.Assets");
+            await _loadingTerminal.TypeLineAsync("Loading.Term.Items");
+            await _loadingTerminal.TypeLineAsync("Loading.Term.Quests");
+            await initTask;
         }
         catch (Exception ex)
         {
-            SetLoading(false);
+            HideLoadingOverlay();
             MessageBox.Show(ex.Message, "Tarkovy", MessageBoxButton.OK, MessageBoxImage.Error);
             Close();
             return;
@@ -78,41 +121,59 @@ public partial class MainWindow : Window
             _overlay?.SetWaypoint(wp);
         };
         SettingsWindow.SettingsApplied += OnSettingsApplied;
+        SettingsHost.Closed += HideSettingsDrawer;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
         WireItemScanEvents();
         RefreshHud();
 
+        await _loadingTerminal.TypeLineAsync("Loading.Term.Markers");
+        await _loadingTerminal.TypeLineAsync("Loading.Term.ItemLens");
+        WarmItemLensWindow();
         await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
         UpdateLoadingSnapshot();
-        await Task.Delay(MinLoadingTime);
+        await _loadingTerminal.TypeLineAsync("Loading.Term.Ui");
+        await _loadingTerminal.TypeLineAsync("Loading.Term.Ready");
+        _loadingTerminal.Complete();
+
+        var bootElapsed = DateTime.UtcNow - bootStart;
+        if (bootElapsed < MinLoadingTime)
+            await Task.Delay(MinLoadingTime - bootElapsed);
 
         PreviewMap.Visibility = Visibility.Visible;
-        SetLoading(false);
+        HideLoadingOverlay();
         PushMapToViews();
         Activate();
         _ = WarmupAndPushMapAsync();
         _ = DeferOptionalServicesAsync();
     }
 
+    private void ShowLoadingOverlay()
+    {
+        PreviewMap.Visibility = Visibility.Collapsed;
+        AppChrome.IsEnabled = false;
+        LoadingOverlay.Opacity = 1;
+        LoadingOverlay.Visibility = Visibility.Visible;
+        LoadingTerminalPanel.Visibility = Visibility.Visible;
+        _loadingTerminal?.Seed();
+    }
+
+    private void HideLoadingOverlay()
+    {
+        PreviewMap.Visibility = Visibility.Visible;
+        AppChrome.IsEnabled = true;
+        LoadingOverlay.Visibility = Visibility.Collapsed;
+        LoadingOverlay.Opacity = 1;
+        LoadingSnapshot.Source = null;
+        LoadingTerminalText.Text = "";
+    }
+
     private void SetLoading(bool loading)
     {
         if (loading)
-        {
-            PreviewMap.Visibility = Visibility.Collapsed;
-            AppChrome.IsEnabled = false;
-            LoadingOverlay.Opacity = 1;
-            LoadingOverlay.Visibility = Visibility.Visible;
-            UpdateLoadingSnapshot();
-        }
+            ShowLoadingOverlay();
         else
-        {
-            PreviewMap.Visibility = Visibility.Visible;
-            AppChrome.IsEnabled = true;
-            LoadingOverlay.Visibility = Visibility.Collapsed;
-            LoadingOverlay.Opacity = 1;
-            LoadingSnapshot.Source = null;
-        }
+            HideLoadingOverlay();
     }
 
     private async Task WarmupAndPushMapAsync()
@@ -139,8 +200,18 @@ public partial class MainWindow : Window
             if (App.Settings.OverlayVisible)
                 ShowOverlay();
             if (App.Settings.ItemLensVisible)
-                ShowItemLens();
+                OpenItemLensImmediate();
         });
+    }
+
+    private void WarmItemLensWindow()
+    {
+        if (_itemLensReady && _itemLens != null) return;
+        _itemLens = CreateItemLens();
+        _itemLens.ApplyOpacity();
+        _itemLens.ApplyPlacement();
+        _itemLens.PrepareHidden();
+        _itemLensReady = true;
     }
 
     private void UpdateLoadingSnapshot()
@@ -203,7 +274,9 @@ public partial class MainWindow : Window
             {
                 PreviewMap.RefreshMapPayload(map);
                 _overlay?.RefreshMapPayload(map);
+                PushMarkersToViews();
             }
+            _overlay?.RefreshQuestList();
             UpdateMaximizeGlyph();
             RebuildQuestList();
             RefreshHud();
@@ -344,7 +417,7 @@ public partial class MainWindow : Window
 
         var filter = QuestSearchBox.Text.Trim();
         var tooltip = Loc.T("Main.Quests.MapTooltip", map.Name);
-        foreach (var q in quests.OrderBy(q => q.Name, StringComparer.OrdinalIgnoreCase))
+        foreach (var q in quests.OrderBy(q => Loc.QuestName(q), StringComparer.OrdinalIgnoreCase))
         {
             if (!QuestListUi.MatchesFilter(q, filter))
                 continue;
@@ -483,10 +556,66 @@ public partial class MainWindow : Window
         PushMarkersToViews();
     }
 
-    private void Settings_Click(object sender, RoutedEventArgs e)
+    private async void Settings_Click(object sender, RoutedEventArgs e)
     {
-        var win = new SettingsWindow { Owner = this };
-        win.ShowDialog();
+        PreviewMap.SetHwndHidden(true);
+        await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
+        CaptureSettingsBlur();
+        SettingsHost.LoadFromSettings();
+        SettingsOverlay.Visibility = Visibility.Visible;
+        var anim = new DoubleAnimation(440, 0, TimeSpan.FromMilliseconds(180))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+        };
+        SettingsDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
+    }
+
+    private void CaptureSettingsBlur()
+    {
+        try
+        {
+            AppChrome.UpdateLayout();
+            var w = (int)Math.Ceiling(AppChrome.ActualWidth);
+            var h = (int)Math.Ceiling(AppChrome.ActualHeight);
+            if (w < 1 || h < 1)
+            {
+                SettingsBlurShot.Source = null;
+                return;
+            }
+
+            var shot = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
+            shot.Render(AppChrome);
+            shot.Freeze();
+            SettingsBlurShot.Source = shot;
+        }
+        catch
+        {
+            SettingsBlurShot.Source = null;
+        }
+    }
+
+    private void SettingsScrim_Click(object sender, MouseButtonEventArgs e)
+    {
+        HideSettingsDrawer();
+        e.Handled = true;
+    }
+
+    private void SettingsDrawer_MouseDown(object sender, MouseButtonEventArgs e) => e.Handled = true;
+
+    private void HideSettingsDrawer()
+    {
+        if (SettingsOverlay.Visibility != Visibility.Visible) return;
+        var anim = new DoubleAnimation(0, 440, TimeSpan.FromMilliseconds(140))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+        };
+        anim.Completed += (_, _) =>
+        {
+            SettingsOverlay.Visibility = Visibility.Collapsed;
+            SettingsBlurShot.Source = null;
+            PreviewMap.SetHwndHidden(false);
+        };
+        SettingsDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
     }
 
     private void OnSettingsApplied()
@@ -635,7 +764,7 @@ public partial class MainWindow : Window
             }
             else if (id == 10)
             {
-                ToggleItemLens();
+                Dispatcher.BeginInvoke(ToggleItemLensCore, System.Windows.Threading.DispatcherPriority.Input);
                 handled = true;
             }
         }
@@ -675,33 +804,127 @@ public partial class MainWindow : Window
         _itemScanClickWatcher.ClickDetected += (x, y, shift) =>
         {
             if (!App.Settings.ItemScanEnabled) return;
-            if (shift)
-                App.ItemScan.ScanIconAt(x, y);
-            else
-                App.ItemScan.ScanNameAt(x, y);
+            if (!shift) return;
+
+            BeginItemLensScan();
+            App.ItemScan.ScanIconAt(x, y, _itemScanGeneration);
         };
 
-        App.ItemScan.ScanCompleted += r =>
+        App.ItemScan.ScanCompleted += r => _ = OnItemScanCompletedAsync(r);
+        App.ItemScan.ScanFailed += msg => _ = OnItemScanFailedAsync(msg);
+        App.ItemScan.StatusChanged += msg =>
         {
             Dispatcher.BeginInvoke(() =>
             {
-                _itemLens ??= CreateItemLens();
-                _itemLens.ShowResult(r);
-                if (!_itemLens.IsVisible)
-                {
-                    _itemLens.Show();
-                    App.Settings.ItemLensVisible = true;
-                }
+                if (_itemLensOpening || !IsItemLensRevealed()) return;
+                _itemLens!.SetStatus(msg, loading: true);
+                if (string.Equals(msg, Loc.T("ItemScan.Status.Indexing"), StringComparison.Ordinal))
+                    _itemLens.ShowLoading(msg, Loc.T("ItemScan.Status.IndexingHint"));
             });
         };
-        App.ItemScan.ScanFailed += msg =>
+    }
+
+    private bool IsItemLensRevealed() =>
+        _itemLens?.IsRevealed == true && App.Settings.ItemLensVisible;
+
+    private void CancelPendingItemLensScans()
+    {
+        _itemScanGeneration++;
+        _shiftScanPending = false;
+        App.ItemScan.CancelPendingScans();
+    }
+
+    private void BeginItemLensScan()
+    {
+        _shiftScanPending = true;
+        _itemScanGeneration++;
+        _itemScanStartedUtc = DateTime.UtcNow;
+        _itemLensOpening = false;
+        _itemLensAcceptsScans = true;
+        if (!_itemLensReady) WarmItemLensWindow();
+        _itemLens!.ShowLoading(Loc.T("ItemScan.Status.Scanning"), Loc.T("ItemScan.Status.ScanningHint"));
+        _itemLens.RevealInstant();
+        App.Settings.ItemLensVisible = true;
+    }
+
+    private async Task OnItemScanCompletedAsync(ItemScanResult result)
+    {
+        if (result.ScanId != _itemScanGeneration) return;
+
+        if (_shiftScanPending)
         {
-            Dispatcher.BeginInvoke(() => _itemLens?.SetStatus(msg));
-        };
-        App.ItemScan.StatusChanged += msg =>
+            _shiftScanPending = false;
+            await FinishItemLensScanAsync(result);
+            return;
+        }
+
+        if (!App.Settings.ItemLensVisible) return;
+        if (_itemLensOpening || !_itemLensAcceptsScans) return;
+
+        await Dispatcher.InvokeAsync(() =>
         {
-            Dispatcher.BeginInvoke(() => _itemLens?.SetStatus(msg));
-        };
+            if (result.ScanId != _itemScanGeneration) return;
+            if (!App.Settings.ItemLensVisible || _itemLensOpening) return;
+            if (!_itemLensReady) WarmItemLensWindow();
+            _itemLens!.ShowResult(result);
+            _itemLens.RevealInstant();
+        });
+    }
+
+    private async Task OnItemScanFailedAsync(string message)
+    {
+        if (_shiftScanPending)
+        {
+            _shiftScanPending = false;
+            await FinishItemLensScanFailedAsync(message);
+            return;
+        }
+
+        if (!App.Settings.ItemLensVisible) return;
+        if (_itemLensOpening || !_itemLensAcceptsScans) return;
+
+        await Dispatcher.InvokeAsync(() =>
+        {
+            if (!App.Settings.ItemLensVisible || _itemLensOpening) return;
+            if (!_itemLensReady) WarmItemLensWindow();
+            _itemLens!.ShowScanFailed(message);
+            _itemLens.RevealInstant();
+        });
+    }
+
+    private async Task FinishItemLensScanAsync(ItemScanResult result)
+    {
+        var gen = result.ScanId;
+        await WaitMinScanLoadingAsync().ConfigureAwait(false);
+
+        await Dispatcher.InvokeAsync(() =>
+        {
+            if (gen != _itemScanGeneration || !App.Settings.ItemLensVisible) return;
+            if (!_itemLensReady) WarmItemLensWindow();
+            _itemLens!.ShowResult(result);
+            _itemLens.RevealInstant();
+        });
+    }
+
+    private async Task FinishItemLensScanFailedAsync(string message)
+    {
+        var gen = _itemScanGeneration;
+        await WaitMinScanLoadingAsync().ConfigureAwait(false);
+
+        await Dispatcher.InvokeAsync(() =>
+        {
+            if (gen != _itemScanGeneration || !App.Settings.ItemLensVisible) return;
+            if (!_itemLensReady) WarmItemLensWindow();
+            _itemLens!.ShowScanFailed(message);
+            _itemLens.RevealInstant();
+        });
+    }
+
+    private async Task WaitMinScanLoadingAsync()
+    {
+        var wait = MinItemScanLoading - (DateTime.UtcNow - _itemScanStartedUtc);
+        if (wait > TimeSpan.Zero)
+            await Task.Delay(wait).ConfigureAwait(false);
     }
 
     private void StartItemScanServices()
@@ -714,26 +937,78 @@ public partial class MainWindow : Window
     private ItemLensWindow CreateItemLens()
     {
         var win = new ItemLensWindow();
-        win.Closed += (_, _) =>
+        win.Concealed += () =>
         {
+            if (!App.Settings.ItemLensVisible) return;
             App.Settings.ItemLensVisible = false;
-            _itemLens = null;
-            SettingsStore.Save(App.Settings);
+            _ = Task.Run(() => SettingsStore.Save(App.Settings));
         };
         return win;
     }
 
-    private void ShowItemLens()
+    private void OpenItemLensImmediate()
     {
-        _itemLens ??= CreateItemLens();
-        _itemLens.ApplyOpacity();
-        _itemLens.ShowEmpty();
-        _itemLens.Show();
+        if (!_itemLensReady || _itemLens == null)
+            return;
+
+        CancelPendingItemLensScans();
+        var gen = ++_itemLensOpenGeneration;
+        _itemLensOpening = true;
+        _itemLensAcceptsScans = false;
         App.Settings.ItemLensVisible = true;
-        SettingsStore.Save(App.Settings);
-        if (!App.Settings.ItemLensWindowPlacement.IsValid)
-            PlaceItemLensDefault();
+        _itemLens.ShowOpening();
+        _itemLens.RevealInstant();
+        _ = FinishItemLensOpenAsync(gen);
     }
+
+    private async Task FinishItemLensOpenAsync(int gen)
+    {
+        await _itemLens!.WaitMinLoadingVisibleAsync(MinItemLensOpenLoading).ConfigureAwait(false);
+
+        await Dispatcher.InvokeAsync(() =>
+        {
+            _itemLensOpening = false;
+            if (gen != _itemLensOpenGeneration || !App.Settings.ItemLensVisible) return;
+            if (_itemLens?.IsRevealed != true) return;
+
+            _itemLensAcceptsScans = true;
+
+            if (!App.ItemScan.IndexReady)
+            {
+                _itemLens.ShowLoading(
+                    Loc.T("ItemScan.Status.Indexing"),
+                    Loc.T("ItemScan.Status.IndexingHint"));
+                _ = App.ItemScan.EnsureReadyAsync();
+            }
+            else
+            {
+                _itemLens.ShowEmpty();
+            }
+        }, System.Windows.Threading.DispatcherPriority.Background);
+
+        _ = Task.Run(() => SettingsStore.Save(App.Settings));
+    }
+
+    private void CloseItemLensImmediate()
+    {
+        _itemLensOpenGeneration++;
+        _itemLensOpening = false;
+        _itemLensAcceptsScans = false;
+        CancelPendingItemLensScans();
+        App.Settings.ItemLensVisible = false;
+        _itemLens?.Conceal();
+        _ = Task.Run(() => SettingsStore.Save(App.Settings));
+    }
+
+    private void ToggleItemLensCore()
+    {
+        if (_itemLens?.IsRevealed == true)
+            CloseItemLensImmediate();
+        else
+            OpenItemLensImmediate();
+    }
+
+    private void ToggleItemLens() => ToggleItemLensCore();
 
     private void PlaceItemLensDefault()
     {
@@ -743,17 +1018,7 @@ public partial class MainWindow : Window
         _itemLens.Top = wa.Top + 16;
     }
 
-    private void ToggleItemLens()
-    {
-        if (_itemLens == null || !_itemLens.IsVisible)
-            ShowItemLens();
-        else
-        {
-            _itemLens.Hide();
-            App.Settings.ItemLensVisible = false;
-            SettingsStore.Save(App.Settings);
-        }
-    }
+    private void ShowItemLens() => OpenItemLensImmediate();
 
     private void StartItemScanWatcher()
     {

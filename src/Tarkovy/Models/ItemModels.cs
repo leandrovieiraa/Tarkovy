@@ -6,6 +6,7 @@ public sealed class ItemDefinition
     public string Name { get; set; } = "";
     public string ShortName { get; set; } = "";
     public string NormalizedName { get; set; } = "";
+    public string? WikiLink { get; set; }
     public string? IconLink { get; set; }
     public string? GridImageLink { get; set; }
     public string? Link { get; set; }
@@ -17,18 +18,24 @@ public sealed class ItemDefinition
     public long? High24hPrice { get; set; }
     public string[] Types { get; set; } = [];
     public ItemTraderPrice[] SellToTrader { get; set; } = [];
+    public ItemAmmoStats? Ammo { get; set; }
+    public bool IsQuestItem { get; set; }
+    public bool IsHideoutItem { get; set; }
 
     public int Slots => Math.Max(1, Width * Height);
 
     public long BestTraderRub =>
         SellToTrader.Length == 0 ? 0 : SellToTrader.Max(t => t.PriceRub);
+}
 
-    public bool IsQuestItem => Types.Any(t =>
-        t.Contains("quest", StringComparison.OrdinalIgnoreCase));
-
-    public bool IsHideoutItem => Types.Any(t =>
-        t.Contains("hideout", StringComparison.OrdinalIgnoreCase) ||
-        t.Contains("provisions", StringComparison.OrdinalIgnoreCase));
+public sealed class ItemAmmoStats
+{
+    public string Caliber { get; set; } = "";
+    public int Damage { get; set; }
+    public int PenetrationPower { get; set; }
+    public int ArmorDamage { get; set; }
+    public double FragmentationChance { get; set; }
+    public int ProjectileCount { get; set; } = 1;
 }
 
 public sealed class ItemTraderPrice
@@ -46,4 +53,7 @@ public sealed class ItemScanResult
     public string Mode { get; set; } = "icon";
     public int ScreenX { get; set; }
     public int ScreenY { get; set; }
+    public int SlotWidth { get; set; } = 1;
+    public int SlotHeight { get; set; } = 1;
+    public int ScanId { get; set; }
 }

@@ -136,4 +136,21 @@ internal static class NativeMethods
             ex &= ~WsExLayered;
         _ = SetWindowLong(hwnd, GwlExstyle, ex);
     }
+
+    private const uint RdwInvalidate = 0x0001;
+    private const uint RdwAllChildren = 0x0080;
+    private const uint RdwUpdatenow = 0x0100;
+
+    [DllImport("gdi32.dll")]
+    public static extern bool DeleteObject(IntPtr hObject);
+
+    [DllImport("user32.dll")]
+    private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, uint flags);
+
+    public static void InvalidateWindow(Window window)
+    {
+        var hwnd = new WindowInteropHelper(window).Handle;
+        if (hwnd == IntPtr.Zero) return;
+        _ = RedrawWindow(hwnd, IntPtr.Zero, IntPtr.Zero, RdwInvalidate | RdwAllChildren | RdwUpdatenow);
+    }
 }

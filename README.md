@@ -1,18 +1,18 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.10
+# TARKOVY · Dev 0.1.33
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.10-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.10"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.33-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.33"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/C4AAF760C9F7D149E4AFB71BC6FDF2A4A17DC12C122A7B748BAA521FCC5BA9CD"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.10**                   |
+| **Version**      | **Dev 0.1.33**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -56,7 +56,7 @@ No memory reading, no injection, no client modification.
 | ![pos](https://img.shields.io/badge/-position-222?style=flat-square)   | Position + heading   | Parses the EFT screenshot filename                                     |
 | ![follow](https://img.shields.io/badge/-follow-222?style=flat-square)  | Follow player        | Minimap zooms in and tracks you as screenshots update                  |
 | ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Compact minimap (`F8`, off by default); optional exits panel (`F9`); min **260×180** |
-| ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | RatScanner-style click scan: **Shift+click** stash/inventory icon, **click** inspect name (OCR); flea/trader/slot prices from tarkov.dev — **F10** |
+| ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | Shift+click stash/inventory icon, or **search by name** when the scan misses; flea/trader/slot prices from tarkov.dev — **F10** |
 | ![wp](https://img.shields.io/badge/-waypoint-222?style=flat-square)   | Pencil waypoint      | ✎ click anywhere on map or minimap — route line to your position      |
 | ![floor](https://img.shields.io/badge/-floors-222?style=flat-square)  | Map floors           | ▲▼ layer switch (Factory, Interchange, Ground Zero); auto from Y      |
 | ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
@@ -86,7 +86,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.10`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.33`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -146,10 +146,29 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
   - **F8** — show / hide minimap overlay (off by default)
   - **F9** — toggle optional exits/quests side panel on the minimap (stays compact)
   - **F10** — show / hide Item Lens
-6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** item icon in stash/inventory → **click** item name when inspecting → prices panel opens (first run indexes icons from tarkov.dev)
+6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** the **center** of the item icon in stash/inventory (item must be highlighted) → prices panel opens (first run indexes icons from tarkov.dev). The icon scan **will miss or misidentify** some items (ammo, guns, similar icons) — use **Item Search** at the bottom of the panel. See [Item Lens limitations](#item-lens-limitations).
 7. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
 
 On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show SmartScreen: *More info* → *Run anyway*.
+
+### Item Lens limitations
+
+Icon scan is **best-effort** (screen capture only — no memory read). It **will not** identify every item. When it misses or looks wrong, type the name in **Item Search** at the bottom of the panel (PT and EN).
+
+| | |
+| --- | --- |
+| **Use search** | Ammo, modded guns, and look-alike 1×1 icons are the usual misses. Search is the reliable path. |
+| **Weapons** | Modded guns cannot be identified reliably. Attachments change the icon; Tarkovy only has static tarkov.dev stills. |
+| **Equipment** | Some helmets/rigs/armor share similar silhouettes. |
+| **Durability / uses** | Not read from the slot. Flea and trader prices are catalog averages for a **full** item (CMS 5/5, water 60/60, etc.). |
+| **Shared icons** | Keys and other items that reuse the same picture can collide. The panel may refuse the match instead of guessing. |
+| **Stash light** | Icons at the **top-left** of the stash sit under the bright lamp at the top of the screen. That wash-out breaks highlight detection — expect misses there. |
+
+Also:
+
+- **Shift+click the grid icon**, not the inspect-window magnifying glass.
+- Unique in-cell labels (**CMS**, **Água**, **Esmarch**) scan more reliably than generic ammo packs.
+- **Item Search** looks up PT and EN names from tarkov.dev — same idea as a search bar, for anything the icon scan cannot resolve.
 
 ---
 
@@ -229,17 +248,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.10` (`Tarkovy.exe`)
+### Release `v0.1.33` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.33/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6)             |
+| **SHA-256**    | `F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.10` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.10/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/C4AAF760C9F7D149E4AFB71BC6FDF2A4A17DC12C122A7B748BAA521FCC5BA9CD)             |
 | **SHA-256**    | `C4AAF760C9F7D149E4AFB71BC6FDF2A4A17DC12C122A7B748BAA521FCC5BA9CD`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.9` (`Tarkovy.exe`)
 
@@ -320,7 +347,15 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.10</strong> (latest)</summary>
+<summary><strong>Dev 0.1.33</strong> (latest)</summary>
+
+- **Item Lens** — icon scan is best-effort; it can miss or misidentify items (ammo, guns, similar icons). **Use Item Search** in the panel when that happens (PT/EN).
+- Config drawer on the right, optional AI fallback, OCR/tooltip matching, highlight crop, and stash click scan improvements since 0.1.10.
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.10</strong></summary>
 
 - **Hotfix** — mouse lag on startup and while moving the cursor (removed global low-level mouse hook; item scan uses lightweight click polling instead)
 - **Startup** — WebView2 warms up in background after loading dismisses; item scan and overlay deferred a few seconds
@@ -426,6 +461,7 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 - Does not read your live PMC quest journal from logs
 - Does not work over exclusive fullscreen
 - Does not fire PrintScreen automatically
+- Item Lens does not scan weapons, remaining uses, or inspect-window search-icon names — see [Item Lens limitations](#item-lens-limitations)
 
 ---
 
@@ -456,7 +492,8 @@ Provided **as-is**, without warranty. Not affiliated with Battlestate Games. Use
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Studio**              | Anomaly Labs                                                                                                                                                                                        |
 | **Support**             | [anomalylabstudio@gmail.com](mailto:anomalylabstudio@gmail.com)                                                                                                                                     |
-| **Product**             | Tarkovy · Dev 0.1.10                                                                                                                                                                                |
+| **Product**             | Tarkovy · Dev 0.1.24                                                                                                                                                                                |
+| **Item scan approach**  | Inspired by [RatScanner](https://github.com/RatScanner/RatScanner) / [RatEye](https://github.com/RatScanner/RatEye) (Blightbuster) — highlight crop, 1080p template match, in-cell short-name OCR. Hover-tooltip isolation inspired by [Tilda](https://github.com/adrian-griffin/tilda-eft) (MIT) frame-diff. RatEye is **not** bundled (Elastic License 2.0). |
 | **SVG maps / extracts** | [tarkov.dev](https://tarkov.dev) · [tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps)                                                                                        |
 | **Map marker icons**    | [tarkov.dev](https://tarkov.dev) · [tarkov-dev](https://github.com/the-hideout/tarkov-dev/tree/main/public/maps/interactive)                                                                          |
 | **Approach references** | [TarkovMapTracker](https://github.com/M4elstr0m/TarkovMapTracker) · [TarkovMonitor](https://github.com/the-hideout/TarkovMonitor) · [Sayser TarkovTracker](https://github.com/sayser/TarkovTracker) |

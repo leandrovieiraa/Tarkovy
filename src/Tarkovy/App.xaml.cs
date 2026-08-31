@@ -61,10 +61,10 @@ public partial class App : Application
             Shots = new ScreenshotWatcher();
             _ = Items.LoadAsync();
             _ = Maps.RefreshMarkersAsync();
-            if (Settings.StartWithWindows)
-                StartupRegistration.Apply(true);
             ApplyWatchers();
         });
+        if (Settings.StartWithWindows)
+            _ = Task.Run(() => StartupRegistration.Apply(true));
     }
 
     private static void SanitizePlacements(AppSettings s)

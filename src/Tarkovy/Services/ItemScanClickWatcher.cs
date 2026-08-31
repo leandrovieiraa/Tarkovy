@@ -24,7 +24,7 @@ public sealed class ItemScanClickWatcher : IDisposable
     {
         _timer = new DispatcherTimer(DispatcherPriority.Background, dispatcher)
         {
-            Interval = TimeSpan.FromMilliseconds(40)
+            Interval = TimeSpan.FromMilliseconds(16)
         };
         _timer.Tick += (_, _) => OnTick();
     }
