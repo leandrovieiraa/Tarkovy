@@ -122,14 +122,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 
 *Main window — map preview, markers, and controls · Anomaly Labs*
 
-<a href="https://vimeo.com/1222815532">
-  <img src="docs/item-lens-showcase.jpg" alt="Play Item Lens Showcase" width="720">
-</a>
-
-<p>
-  <a href="https://vimeo.com/1222815532"><strong>▶ Play Item Lens Showcase</strong></a>
-  (Dev 0.1.33) — Shift+click stash icons for flea/trader prices
-</p>
+[Item Lens Showcase](https://vimeo.com/1222815532) (Dev 0.1.33)
 
 ---
 
