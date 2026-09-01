@@ -12,7 +12,7 @@ by **Anomaly Labs**
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -250,17 +250,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.33` (`Tarkovy.exe`)
+### Release `v0.1.38` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.38/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B)             |
+| **SHA-256**    | `862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.33` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.33/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6)             |
 | **SHA-256**    | `F1431CB82CE4699D1DB800E66C948CAB17AB938DF95455036C48DEB087B3A0F6`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.10` (`Tarkovy.exe`)
 
