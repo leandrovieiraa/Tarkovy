@@ -27,6 +27,7 @@ public partial class App : Application
 
         base.OnStartup(e);
         Settings = SettingsStore.Load();
+        Settings.EnabledPoiTypes ??= [];
         SanitizePlacements(Settings);
         QuestState.SanitizeTrackingList();
         Loc.Apply(Settings.UiLanguage);

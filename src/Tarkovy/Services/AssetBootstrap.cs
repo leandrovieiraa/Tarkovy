@@ -31,11 +31,21 @@ public static class AssetBootstrap
         return DirectoryPath;
     }
 
+    private static bool AssetsVersionMatches()
+    {
+        var stamp = Path.Combine(DirectoryPath, ".assets-version");
+        return File.Exists(stamp) &&
+               string.Equals(File.ReadAllText(stamp).Trim(), ProductInfo.AppVersion, StringComparison.Ordinal);
+    }
+
+    private static void WriteAssetsVersion()
+    {
+        File.WriteAllText(Path.Combine(DirectoryPath, ".assets-version"), ProductInfo.AppVersion);
+    }
+
     private static void RefreshVersionedData(string bundled, string destRoot)
     {
-        var stamp = Path.Combine(destRoot, ".assets-version");
-        var version = ProductInfo.AppVersion;
-        if (File.Exists(stamp) && string.Equals(File.ReadAllText(stamp).Trim(), version, StringComparison.Ordinal))
+        if (AssetsVersionMatches())
             return;
 
         foreach (var file in VersionedDataFiles)
@@ -45,8 +55,15 @@ public static class AssetBootstrap
                 ForceCopy(src, Path.Combine(destRoot, file));
         }
 
+        foreach (var file in new[] { "map.js", "map.html", "map.css" })
+        {
+            var src = Path.Combine(bundled, file);
+            if (File.Exists(src))
+                ForceCopy(src, Path.Combine(destRoot, file));
+        }
+
         Directory.CreateDirectory(destRoot);
-        File.WriteAllText(stamp, version);
+        WriteAssetsVersion();
     }
 
     private static void ForceCopy(string source, string dest)
@@ -99,6 +116,7 @@ public static class AssetBootstrap
     {
         var asm = Assembly.GetExecutingAssembly();
         const string prefix = "Tarkovy.Assets.";
+        var versionMatch = AssetsVersionMatches();
         foreach (var name in asm.GetManifestResourceNames())
         {
             if (!name.StartsWith(prefix, StringComparison.Ordinal)) continue;
@@ -111,11 +129,13 @@ public static class AssetBootstrap
             if (stream == null) continue;
 
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            if (File.Exists(dest) && new FileInfo(dest).Length == stream.Length)
+            if (versionMatch && File.Exists(dest) && new FileInfo(dest).Length == stream.Length)
                 continue;
 
             using var fs = File.Create(dest);
             stream.CopyTo(fs);
         }
+
+        WriteAssetsVersion();
     }
 }

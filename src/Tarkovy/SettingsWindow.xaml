@@ -56,6 +56,8 @@
                     <CheckBox x:Name="ShowLabelsBox" Content="{DynamicResource Settings.ShowLabels}"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
                                Text="{DynamicResource Settings.ShowLabelsHint}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,8,0,0"
+                               Text="{DynamicResource Settings.PoiHint}"/>
 
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Map}"/>
                     <CheckBox x:Name="FollowBox" Content="{DynamicResource Settings.FollowPlayer}"/>
@@ -85,6 +87,9 @@
                     <ComboBox x:Name="ItemScanSlotCombo"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
                                Text="{DynamicResource Settings.ItemScanSlotSizeHint}"/>
+                    <CheckBox x:Name="ItemScanRotatedBox" Content="{DynamicResource Settings.ItemScanRotated}" Margin="0,10,0,0"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
+                               Text="{DynamicResource Settings.ItemScanRotatedHint}"/>
 
                     <CheckBox x:Name="ItemScanDebugBox" Content="{DynamicResource Settings.ItemScanDebug}" Margin="0,14,0,0"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"

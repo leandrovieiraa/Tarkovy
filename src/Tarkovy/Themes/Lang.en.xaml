@@ -13,6 +13,7 @@
   <sys:String x:Key="Main.Section.Map">MAP</sys:String>
   <sys:String x:Key="Main.Section.Markers">MARKERS</sys:String>
   <sys:String x:Key="Main.Marker.Extracts">EXTRACTS</sys:String>
+  <sys:String x:Key="Main.Marker.Extracts.Short">EXFIL</sys:String>
   <sys:String x:Key="Main.Marker.Mines">MINES</sys:String>
   <sys:String x:Key="Main.Marker.Spawns">PMC SPAWNS</sys:String>
   <sys:String x:Key="Main.Marker.Spawns.Short">PMC</sys:String>
@@ -20,6 +21,24 @@
   <sys:String x:Key="Main.Marker.Labels.Short">NAMES</sys:String>
   <sys:String x:Key="Main.Marker.Quests">QUEST MARKERS</sys:String>
   <sys:String x:Key="Main.Marker.Quests.Short">QUESTS</sys:String>
+  <sys:String x:Key="Main.Marker.Loot">LOOT</sys:String>
+  <sys:String x:Key="Main.Marker.Bosses">BOSSES</sys:String>
+  <sys:String x:Key="Main.Marker.Locs">LOCS</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Clean">CLEAN</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Raid">RAID</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Loot">LOOT RUN</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Clean.Tip">Hide loot, bosses, and locations</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Raid.Tip">Bosses, transits, BTR, locked doors</sys:String>
+  <sys:String x:Key="Main.Poi.Preset.Loot.Tip">Safes, weapon boxes, caches, PCs, cabinets</sys:String>
+  <sys:String x:Key="Main.Section.Pois">POIs</sys:String>
+  <sys:String x:Key="Main.Poi.Hint">Off by default so the map stays clean. Check a type to show it. CLEAN / RAID / LOOT RUN are presets. Overlay chips (LT BS LC) toggle a compact subset.</sys:String>
+  <sys:String x:Key="Main.Poi.Cat.Loot">LOOT</sys:String>
+  <sys:String x:Key="Main.Poi.Cat.Enemies">ENEMIES</sys:String>
+  <sys:String x:Key="Main.Poi.Cat.Locations">LOCATIONS</sys:String>
+  <sys:String x:Key="Main.Poi.AllNone">ALL / NONE</sys:String>
+  <sys:String x:Key="Main.Poi.Empty">No extra markers for this map yet. They load from tarkov.dev after launch.</sys:String>
+  <sys:String x:Key="Main.Poi.Search.Tooltip">Filter loot, bosses, locations</sys:String>
+  <sys:String x:Key="Main.Poi.Search.Empty">No marker types match your search.</sys:String>
   <sys:String x:Key="Main.Section.Quests">MAP QUESTS</sys:String>
   <sys:String x:Key="Main.Quests.Hint">Green ○ = complete · square □ = map tracking. Mark manually when done (logs don’t report completion).</sys:String>
   <sys:String x:Key="Main.Quests.Search.Tooltip">Filter by quest or trader name</sys:String>
@@ -96,6 +115,7 @@
   <sys:String x:Key="Settings.ShowSpawns">SHOW PMC SPAWNS</sys:String>
   <sys:String x:Key="Settings.ShowLabels">ALWAYS SHOW NAMES ON MAP</sys:String>
   <sys:String x:Key="Settings.ShowLabelsHint">Off: tooltip on hover only.</sys:String>
+  <sys:String x:Key="Settings.PoiHint">Loot, bosses and locations stay off until you enable them on the main window (LOOT / BOSSES / LOCS, or CLEAN / RAID / LOOT RUN).</sys:String>
   <sys:String x:Key="Settings.Section.Overlay">OVERLAY</sys:String>
   <sys:String x:Key="Settings.Opacity">OPACITY</sys:String>
   <sys:String x:Key="Settings.FollowPlayer">FOLLOW PLAYER ON MINIMAP</sys:String>
@@ -142,6 +162,10 @@
   <sys:String x:Key="Map.Layer.Spawns">PMC Spawns</sys:String>
   <sys:String x:Key="Map.Layer.Quests">Quests</sys:String>
   <sys:String x:Key="Map.Layer.Labels">Labels</sys:String>
+  <sys:String x:Key="Map.Layer.Loot">Loot</sys:String>
+  <sys:String x:Key="Map.Layer.Bosses">Bosses</sys:String>
+  <sys:String x:Key="Map.Layer.Locs">Locations</sys:String>
+  <sys:String x:Key="Map.Tip.Poi">MARKER</sys:String>
   <sys:String x:Key="Map.Floor.Up">Floor up</sys:String>
   <sys:String x:Key="Map.Floor.Down">Floor down</sys:String>
   <sys:String x:Key="Map.Floor.Current">Floor</sys:String>
@@ -190,7 +214,7 @@
   <sys:String x:Key="ItemScan.Status.Scanning">Scanning…</sys:String>
   <sys:String x:Key="ItemScan.Status.Identifying">Identifying item</sys:String>
   <sys:String x:Key="ItemScan.Status.ScanningHint">Capturing icon and matching against catalog…</sys:String>
-  <sys:String x:Key="ItemScan.Status.IndexingHint">First run — downloading icons from tarkov.dev…</sys:String>
+  <sys:String x:Key="ItemScan.Status.IndexingHint">First run — indexing game icon cache and tarkov.dev sprites…</sys:String>
   <sys:String x:Key="ItemScan.Status.Indexing">Indexing item icons…</sys:String>
   <sys:String x:Key="ItemScan.Status.Ai">Asking AI…</sys:String>
   <sys:String x:Key="ItemScan.Status.IndexFailed">Icon index failed</sys:String>
@@ -201,14 +225,16 @@
   <sys:String x:Key="ItemScan.Error.Busy">Wait for the previous scan to finish</sys:String>
   <sys:String x:Key="Settings.Section.ItemLens">ITEM LENS</sys:String>
   <sys:String x:Key="Settings.ItemScanEnabled">ENABLE CLICK-TO-SCAN</sys:String>
-  <sys:String x:Key="Settings.ItemScanEnabledHint">Shift+click the item icon in stash/inventory (not the inspection window). Scan can miss — use Item Search. No memory reading.</sys:String>
+  <sys:String x:Key="Settings.ItemScanEnabledHint">Shift+click the item icon in stash/inventory. Local match uses the game icon cache + templates; AI is only used if that fails. No memory reading.</sys:String>
   <sys:String x:Key="Settings.ItemLensOpacity">ITEM LENS OPACITY</sys:String>
-  <sys:String x:Key="Settings.ItemScanSlotSize">SLOT SIZE (ICON GRID)</sys:String>
-  <sys:String x:Key="Settings.ItemScanSlotSizeHint">Auto uses screen height. If scans miss or crops look misaligned in debug PNGs, try 1080p (63) / 1440p (84) / 4K (126).</sys:String>
+  <sys:String x:Key="Settings.ItemScanSlotSize">GAME RESOLUTION (ICON GRID)</sys:String>
+  <sys:String x:Key="Settings.ItemScanSlotSizeHint">Must match the game. Slot is 63 px at 1080p (scale = height/1080). Wrong resolution makes template matching miss. Set this if Auto is off.</sys:String>
   <sys:String x:Key="Settings.ItemScanSlot.Auto">Auto (from screen)</sys:String>
-  <sys:String x:Key="Settings.ItemScanSlot.1080">1080p — 63 px</sys:String>
-  <sys:String x:Key="Settings.ItemScanSlot.1440">1440p — 84 px</sys:String>
-  <sys:String x:Key="Settings.ItemScanSlot.4k">4K — 126 px</sys:String>
+  <sys:String x:Key="Settings.ItemScanSlot.1080">1920×1080 — 63 px</sys:String>
+  <sys:String x:Key="Settings.ItemScanSlot.1440">2560×1440 — 84 px</sys:String>
+  <sys:String x:Key="Settings.ItemScanSlot.4k">3840×2160 — 126 px</sys:String>
+  <sys:String x:Key="Settings.ItemScanRotated">SCAN ROTATED ICONS (90°)</sys:String>
+  <sys:String x:Key="Settings.ItemScanRotatedHint">Items turned in the stash (2×1 as 1×2). Slightly slower.</sys:String>
   <sys:String x:Key="Settings.ItemScanDebug">SAVE SCAN DEBUG (SCREENSHOTS + JSON)</sys:String>
   <sys:String x:Key="Settings.ItemScanDebugHint">Each Shift+click writes capture crops, OCR, template scores and catalog status. Path shown below.</sys:String>
   <sys:String x:Key="Settings.Section.ItemScanAi">AI FALLBACK (OPTIONAL)</sys:String>

@@ -17,7 +17,7 @@ internal static class IconShortNameScanner
         {
             async Task AbsorbAsync(Bitmap crop, string cropName)
             {
-                var texts = await OcrHelper.ReadInCellLabelsAsync(crop, highlighted).ConfigureAwait(false);
+                var texts = await TitleOcr.ReadLabelAsync(crop, highlighted).ConfigureAwait(false);
                 var found = new List<ItemDefinition>();
                 foreach (var text in texts)
                 {

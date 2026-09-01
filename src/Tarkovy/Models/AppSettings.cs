@@ -33,12 +33,20 @@ public sealed class AppSettings
     public string ItemScanAiApiKey { get; set; } = "";
     /// <summary>0 = auto from screen height; else 63/84/126 for 1080p/1440p/4K.</summary>
     public int ItemScanSlotPx { get; set; } = 0;
+    /// <summary>0 = derive from slot / screen; else explicit game width (e.g. 1920).</summary>
+    public int ItemScanGameWidth { get; set; }
+    /// <summary>0 = derive from slot / screen; else explicit game height (e.g. 1080).</summary>
+    public int ItemScanGameHeight { get; set; }
+    /// <summary>Match 90° CCW rotated stash icons.</summary>
+    public bool ItemScanRotatedIcons { get; set; } = true;
     public double ItemLensOpacity { get; set; } = 0.88;
     /// <summary>Ao detectar fim de raid nos logs, encerra sessão e limpa leftovers.</summary>
     public bool AutoCleanupOnRaidEnd { get; set; } = true;
     /// <summary>Mostra nomes das marcações no mapa; se false, só tooltip no hover.</summary>
     public bool ShowMarkerLabels { get; set; } = true;
     public bool ShowQuests { get; set; } = true;
+    /// <summary>Opt-in POI types (loot / bosses / locations). Empty = map stays clean.</summary>
+    public List<string> EnabledPoiTypes { get; set; } = [];
     /// <summary>Quest slugs enabled as active waypoints for the current character/session.</summary>
     public List<string> EnabledQuestSlugs { get; set; } = [];
     /// <summary>Quest slugs marked complete — no longer tracked on the map.</summary>

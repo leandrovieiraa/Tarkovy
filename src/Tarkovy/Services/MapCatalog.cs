@@ -12,6 +12,7 @@ public sealed class MapCatalog
     private readonly Dictionary<string, List<ExtractMarker>> _extracts = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<HazardMarker>> _mines = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<SpawnMarker>> _spawns = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, List<MapPoi>> _pois = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, List<QuestDefinition>> _quests = new(StringComparer.OrdinalIgnoreCase);
 
     public IReadOnlyList<MapDefinition> Maps { get; private set; } = [];
@@ -43,6 +44,9 @@ public sealed class MapCatalog
 
     public IReadOnlyList<SpawnMarker> SpawnsFor(string mapId) =>
         _spawns.TryGetValue(mapId, out var list) ? list : [];
+
+    public IReadOnlyList<MapPoi> PoisFor(string mapId) =>
+        _pois.TryGetValue(mapId, out var list) ? list : [];
 
     public IReadOnlyList<QuestDefinition> QuestsFor(string mapId) =>
         _quests.TryGetValue(mapId, out var list) ? list : [];
@@ -194,6 +198,21 @@ public sealed class MapCatalog
             };
 
             var collected = new Dictionary<string, List<(double x, double y, double z)>>(StringComparer.OrdinalIgnoreCase);
+            var idToName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var mapProp in mapsEl.EnumerateObject())
+            {
+                var map = mapProp.Value;
+                if (!map.TryGetProperty("normalizedName", out var nEl)) continue;
+                var n = nEl.GetString();
+                if (!string.IsNullOrWhiteSpace(n))
+                    idToName[mapProp.Name] = n;
+                if (map.TryGetProperty("id", out var idEl))
+                {
+                    var tid = idEl.GetString();
+                    if (!string.IsNullOrWhiteSpace(tid) && !string.IsNullOrWhiteSpace(n))
+                        idToName[tid] = n;
+                }
+            }
 
             foreach (var mapProp in mapsEl.EnumerateObject())
             {
@@ -202,20 +221,25 @@ public sealed class MapCatalog
                 var norm = normEl.GetString();
                 if (string.IsNullOrWhiteSpace(norm) || !normToId.TryGetValue(norm, out var mapId)) continue;
                 if (!byNorm.ContainsKey(mapId)) continue;
-                if (!map.TryGetProperty("spawns", out var spawnsEl) || spawnsEl.ValueKind != JsonValueKind.Array)
-                    continue;
 
-                foreach (var spawn in spawnsEl.EnumerateArray())
+                if (map.TryGetProperty("spawns", out var spawnsEl) && spawnsEl.ValueKind == JsonValueKind.Array)
                 {
-                    if (!IsPmcPlayerSpawn(spawn)) continue;
-                    if (!TryPos(spawn, "position", out var x, out var y, out var z)) continue;
-                    if (!collected.TryGetValue(mapId, out var list))
+                    foreach (var spawn in spawnsEl.EnumerateArray())
                     {
-                        list = [];
-                        collected[mapId] = list;
+                        if (!IsPmcPlayerSpawn(spawn)) continue;
+                        if (!TryPos(spawn, "position", out var x, out var y, out var z)) continue;
+                        if (!collected.TryGetValue(mapId, out var list))
+                        {
+                            list = [];
+                            collected[mapId] = list;
+                        }
+                        list.Add((x, y, z));
                     }
-                    list.Add((x, y, z));
                 }
+
+                var pois = CollectPoisFromMap(map, idToName);
+                if (pois.Count > 0)
+                    _pois[mapId] = pois;
             }
 
             foreach (var (mapId, points) in collected)
@@ -283,6 +307,231 @@ public sealed class MapCatalog
             idx++;
         }
         return result;
+    }
+
+    private List<MapPoi> CollectPoisFromMap(JsonElement map, Dictionary<string, string> idToName)
+    {
+        var loot = new List<MapPoi>();
+        var scavs = new List<MapPoi>();
+        var loose = new List<MapPoi>();
+        var rest = new List<MapPoi>();
+
+        var bosses = ReadBossIndex(map);
+
+        if (map.TryGetProperty("spawns", out var spawnsEl) && spawnsEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var spawn in spawnsEl.EnumerateArray())
+            {
+                if (!TryPos(spawn, "position", out var x, out var y, out var z)) continue;
+                var cats = ReadStringArray(spawn, "categories");
+                var sides = ReadStringArray(spawn, "sides");
+                var zone = Str(spawn, "zoneName");
+
+                if (cats.Contains("boss"))
+                {
+                    var matched = bosses.Where(b =>
+                        b.Keys.Contains(zone, StringComparer.OrdinalIgnoreCase)).ToList();
+                    if (matched.Count == 0 && cats.Contains("bot") && sides.Contains("scav"))
+                    {
+                        scavs.Add(PoiCatalog.Create("scav", "Scav", x, y, z));
+                        continue;
+                    }
+                    if (matched.Count == 0) continue;
+
+                    var type = "boss";
+                    if (matched.All(b => b.Type == "cultist")) type = "cultist";
+                    else if (matched.All(b => b.Type == "black-division")) type = "black-division";
+                    else if (matched.All(b => b.Type == "rogue")) type = "rogue";
+                    else if (matched.All(b => b.Type == "scav-sniper")) type = "scav-sniper";
+
+                    var names = matched.Select(b =>
+                        b.Chance > 0 ? $"{b.Name} {Math.Round(b.Chance * 100)}%" : b.Name);
+                    rest.Add(PoiCatalog.Create(type, string.Join(", ", names.Distinct()), x, y, z,
+                        string.Join(" · ", matched.Select(b => b.Name).Distinct())));
+                    continue;
+                }
+
+                if (cats.Contains("player")) continue;
+
+                if (cats.Contains("sniper"))
+                {
+                    rest.Add(PoiCatalog.Create("scav-sniper", "Scav sniper", x, y, z));
+                    continue;
+                }
+
+                if (sides.Contains("scav") && (cats.Contains("bot") || cats.Contains("all")))
+                    scavs.Add(PoiCatalog.Create("scav", "Scav", x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("lootContainers", out var lootEl) && lootEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var c in lootEl.EnumerateArray())
+            {
+                if (!TryPos(c, "position", out var x, out var y, out var z)) continue;
+                var id = ContainerId(c);
+                var type = PoiCatalog.ContainerType(id);
+                if (type == null) continue;
+                var def = PoiCatalog.Find(type);
+                loot.Add(PoiCatalog.Create(type, def?.Name ?? type, x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("lootLoose", out var looseEl) && looseEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var c in looseEl.EnumerateArray())
+            {
+                if (!TryPos(c, "position", out var x, out var y, out var z)) continue;
+                loose.Add(PoiCatalog.Create("loose-loot", "Loose loot", x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("locks", out var locksEl) && locksEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var lk in locksEl.EnumerateArray())
+            {
+                if (!TryPos(lk, "position", out var x, out var y, out var z)) continue;
+                var keyId = KeyId(lk);
+                var keyName = App.Items.FindById(keyId)?.Name;
+                rest.Add(PoiCatalog.Create("locked-door",
+                    string.IsNullOrWhiteSpace(keyName) ? "Locked door" : keyName,
+                    x, y, z, keyId));
+            }
+        }
+
+        if (map.TryGetProperty("transits", out var trEl) && trEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var tr in trEl.EnumerateArray())
+            {
+                if (!TryPos(tr, "position", out var x, out var y, out var z) &&
+                    !TryPos(tr, null, out x, out y, out z))
+                    continue;
+                var destId = TransitMapId(tr);
+                var dest = "Transit";
+                if (!string.IsNullOrWhiteSpace(destId) && idToName.TryGetValue(destId, out var destNorm))
+                {
+                    var local = Maps.FirstOrDefault(m =>
+                        string.Equals(m.Id, destNorm, StringComparison.OrdinalIgnoreCase));
+                    dest = local?.Name ?? destNorm;
+                }
+                rest.Add(PoiCatalog.Create("transit", dest, x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("btrStops", out var btrEl) && btrEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var stop in btrEl.EnumerateArray())
+            {
+                if (!TryNamedPos(stop, out var x, out var y, out var z)) continue;
+                rest.Add(PoiCatalog.Create("btr", "BTR Stop", x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("switches", out var swEl) && swEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var sw in swEl.EnumerateArray())
+            {
+                if (!TryPos(sw, "position", out var x, out var y, out var z)) continue;
+                rest.Add(PoiCatalog.Create("switch", "Switch", x, y, z));
+            }
+        }
+
+        if (map.TryGetProperty("stationaryWeapons", out var stEl) && stEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var st in stEl.EnumerateArray())
+            {
+                if (!TryPos(st, "position", out var x, out var y, out var z)) continue;
+                rest.Add(PoiCatalog.Create("emplacement", "Emplacement", x, y, z));
+            }
+        }
+
+        var result = new List<MapPoi>(loot.Count + rest.Count + 32);
+        result.AddRange(PoiCatalog.Cluster(loot, 48));
+        result.AddRange(rest);
+        result.AddRange(PoiCatalog.Cluster(scavs, 55));
+        result.AddRange(PoiCatalog.Cluster(loose, 48));
+        return result;
+    }
+
+    private static List<BossRef> ReadBossIndex(JsonElement map)
+    {
+        var list = new List<BossRef>();
+        if (!map.TryGetProperty("bosses", out var bosses) || bosses.ValueKind != JsonValueKind.Array)
+            return list;
+        foreach (var b in bosses.EnumerateArray())
+        {
+            var mob = Str(b, "mob");
+            if (string.IsNullOrWhiteSpace(mob) && b.TryGetProperty("boss", out var bossEl))
+                mob = Str(bossEl, "normalizedName");
+            var (type, name) = PoiCatalog.ResolveMob(mob);
+            if (b.TryGetProperty("boss", out var bossObj))
+            {
+                var n = Str(bossObj, "name");
+                if (!string.IsNullOrWhiteSpace(n)) name = n;
+            }
+            var chance = b.TryGetProperty("spawnChance", out var ch) && ch.TryGetDouble(out var cv) ? cv : 0;
+            var keys = new List<string>();
+            if (b.TryGetProperty("spawnLocations", out var locs) && locs.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var loc in locs.EnumerateArray())
+                {
+                    var key = Str(loc, "spawnKey");
+                    if (string.IsNullOrWhiteSpace(key)) key = Str(loc, "name");
+                    if (!string.IsNullOrWhiteSpace(key)) keys.Add(key);
+                }
+            }
+            list.Add(new BossRef(type, name, chance, keys));
+        }
+        return list;
+    }
+
+    private readonly record struct BossRef(string Type, string Name, double Chance, List<string> Keys);
+
+    private static HashSet<string> ReadStringArray(JsonElement el, string name)
+    {
+        var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (!el.TryGetProperty(name, out var arr) || arr.ValueKind != JsonValueKind.Array)
+            return set;
+        foreach (var v in arr.EnumerateArray())
+        {
+            var s = v.GetString();
+            if (!string.IsNullOrWhiteSpace(s)) set.Add(s);
+        }
+        return set;
+    }
+
+    private static string ContainerId(JsonElement el)
+    {
+        if (!el.TryGetProperty("lootContainer", out var c)) return "";
+        if (c.ValueKind == JsonValueKind.String) return c.GetString() ?? "";
+        if (c.ValueKind == JsonValueKind.Object) return Str(c, "id");
+        return "";
+    }
+
+    private static string KeyId(JsonElement el)
+    {
+        if (!el.TryGetProperty("key", out var k)) return "";
+        if (k.ValueKind == JsonValueKind.String) return k.GetString() ?? "";
+        if (k.ValueKind == JsonValueKind.Object) return Str(k, "id");
+        return "";
+    }
+
+    private static string TransitMapId(JsonElement el)
+    {
+        if (!el.TryGetProperty("map", out var m)) return "";
+        if (m.ValueKind == JsonValueKind.String) return m.GetString() ?? "";
+        if (m.ValueKind == JsonValueKind.Object)
+            return Str(m, "id").Length > 0 ? Str(m, "id") : Str(m, "normalizedName");
+        return "";
+    }
+
+    private static bool TryNamedPos(JsonElement el, out double x, out double y, out double z)
+    {
+        if (TryPos(el, out x, out y, out z)) return true;
+        x = ReadNum(el, "x");
+        y = ReadNum(el, "y");
+        z = ReadNum(el, "z");
+        return el.TryGetProperty("x", out _);
     }
 
     private void MergeQuestsFile(string json)

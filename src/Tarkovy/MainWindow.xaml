@@ -54,7 +54,7 @@
                         <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="10"
                                    ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
-                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.33" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.38" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
@@ -105,43 +105,74 @@
                             <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Map}"/>
                             <ComboBox x:Name="MapCombo" SelectionChanged="MapCombo_SelectionChanged"/>
 
-                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Main.Section.Markers}"/>
-                            <Grid Margin="0,2,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <CheckBox x:Name="ShowExtractsBox" Grid.Row="0" Grid.Column="0"
-                                          Style="{StaticResource MarkerGridCheckBox}"
-                                          Content="{DynamicResource Main.Marker.Extracts}"
-                                          Checked="Markers_Changed" Unchecked="Markers_Changed"/>
-                                <CheckBox x:Name="ShowMinesBox" Grid.Row="0" Grid.Column="1"
-                                          Style="{StaticResource MarkerGridCheckBox}"
-                                          Content="{DynamicResource Main.Marker.Mines}"
-                                          Checked="Markers_Changed" Unchecked="Markers_Changed"/>
-                                <CheckBox x:Name="ShowSpawnsBox" Grid.Row="0" Grid.Column="2"
-                                          Style="{StaticResource MarkerGridCheckBox}"
-                                          Content="{DynamicResource Main.Marker.Spawns.Short}"
-                                          ToolTip="{DynamicResource Main.Marker.Spawns}"
-                                          Checked="Markers_Changed" Unchecked="Markers_Changed"/>
-                                <CheckBox x:Name="ShowLabelsBox" Grid.Row="0" Grid.Column="3"
-                                          Style="{StaticResource MarkerGridCheckBox}"
-                                          Content="{DynamicResource Main.Marker.Labels.Short}"
-                                          ToolTip="{DynamicResource Main.Marker.Labels}"
-                                          Checked="Markers_Changed" Unchecked="Markers_Changed"/>
-                                <CheckBox x:Name="ShowQuestsBox" Grid.Row="1" Grid.Column="0"
-                                          Style="{StaticResource MarkerGridCheckBox}"
-                                          Content="{DynamicResource Main.Marker.Quests.Short}"
-                                          ToolTip="{DynamicResource Main.Marker.Quests}"
-                                          Checked="Markers_Changed" Unchecked="Markers_Changed"/>
-                            </Grid>
+                            <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,6" Text="{DynamicResource Main.Section.Markers}"/>
+                            <Border Background="#0A0A0A"
+                                    BorderBrush="{StaticResource BrushBorder}"
+                                    BorderThickness="1"
+                                    Padding="6,6,6,6">
+                                <StackPanel>
+                                    <UniformGrid Columns="4" Rows="2">
+                                        <CheckBox x:Name="ShowExtractsBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Extracts.Short}"
+                                                  ToolTip="{DynamicResource Main.Marker.Extracts}"
+                                                  Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                                        <CheckBox x:Name="ShowMinesBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Mines}"
+                                                  ToolTip="{DynamicResource Main.Marker.Mines}"
+                                                  Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                                        <CheckBox x:Name="ShowSpawnsBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Spawns.Short}"
+                                                  ToolTip="{DynamicResource Main.Marker.Spawns}"
+                                                  Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                                        <CheckBox x:Name="ShowLabelsBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Labels.Short}"
+                                                  ToolTip="{DynamicResource Main.Marker.Labels}"
+                                                  Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                                        <CheckBox x:Name="ShowQuestsBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Quests.Short}"
+                                                  ToolTip="{DynamicResource Main.Marker.Quests}"
+                                                  Checked="Markers_Changed" Unchecked="Markers_Changed"/>
+                                        <CheckBox x:Name="ShowLootBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Loot}"
+                                                  ToolTip="{DynamicResource Main.Poi.Cat.Loot}"
+                                                  IsThreeState="True"
+                                                  PreviewMouseLeftButtonDown="PoiMaster_PreviewMouseDown"/>
+                                        <CheckBox x:Name="ShowBossesBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Bosses}"
+                                                  ToolTip="{DynamicResource Main.Poi.Cat.Enemies}"
+                                                  IsThreeState="True"
+                                                  PreviewMouseLeftButtonDown="PoiMaster_PreviewMouseDown"/>
+                                        <CheckBox x:Name="ShowLocsBox"
+                                                  Style="{StaticResource MarkerToggleChip}"
+                                                  Content="{DynamicResource Main.Marker.Locs}"
+                                                  ToolTip="{DynamicResource Main.Poi.Cat.Locations}"
+                                                  IsThreeState="True"
+                                                  PreviewMouseLeftButtonDown="PoiMaster_PreviewMouseDown"/>
+                                    </UniformGrid>
+                                    <Rectangle Height="1" Fill="#2A2A2A" Margin="2,8,2,6"/>
+                                    <UniformGrid Columns="3">
+                                        <Button x:Name="PoiPresetCleanBtn" Style="{StaticResource PoiPresetBarChip}"
+                                                Content="{DynamicResource Main.Poi.Preset.Clean}"
+                                                ToolTip="{DynamicResource Main.Poi.Preset.Clean.Tip}"
+                                                Click="PoiPreset_Click" Tag="clean"/>
+                                        <Button x:Name="PoiPresetRaidBtn" Style="{StaticResource PoiPresetBarChip}"
+                                                Content="{DynamicResource Main.Poi.Preset.Raid}"
+                                                ToolTip="{DynamicResource Main.Poi.Preset.Raid.Tip}"
+                                                Click="PoiPreset_Click" Tag="raid"/>
+                                        <Button x:Name="PoiPresetLootBtn" Style="{StaticResource PoiPresetBarChip}"
+                                                Content="{DynamicResource Main.Poi.Preset.Loot}"
+                                                ToolTip="{DynamicResource Main.Poi.Preset.Loot.Tip}"
+                                                Click="PoiPreset_Click" Tag="loot"/>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
 
                         <Grid Grid.Row="1" Margin="0,16,0,6" HorizontalAlignment="Stretch">
@@ -150,8 +181,12 @@
                                 <ColumnDefinition Width="*" MinWidth="0"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Style="{StaticResource HudLabel}" VerticalAlignment="Center" Margin="0"
-                                           Text="{DynamicResource Main.Section.Quests}"/>
+                                <Button x:Name="PanelQuestsBtn" Style="{StaticResource PanelTabButton}"
+                                        Content="{DynamicResource Main.Section.Quests}"
+                                        Click="PanelTab_Click" Tag="quests"/>
+                                <Button x:Name="PanelPoisBtn" Style="{StaticResource PanelTabButton}"
+                                        Content="{DynamicResource Main.Section.Pois}"
+                                        Click="PanelTab_Click" Tag="pois" Margin="8,0,0,0"/>
                                 <Button Style="{StaticResource ShortcutChipInfo}"
                                         Content="i"
                                         FontSize="11"
@@ -163,7 +198,7 @@
                                         VerticalAlignment="Center">
                                     <Button.ToolTip>
                                         <ToolTip MaxWidth="300">
-                                            <TextBlock Text="{DynamicResource Main.Quests.Hint}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="PanelHintText" Text="{DynamicResource Main.Quests.Hint}" TextWrapping="Wrap"/>
                                         </ToolTip>
                                     </Button.ToolTip>
                                 </Button>

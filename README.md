@@ -1,12 +1,12 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.33
+# TARKOVY · Dev 0.1.38
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.33-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.33"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.38-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.38"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.33**                   |
+| **Version**      | **Dev 0.1.38**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -56,7 +56,7 @@ No memory reading, no injection, no client modification.
 | ![pos](https://img.shields.io/badge/-position-222?style=flat-square)   | Position + heading   | Parses the EFT screenshot filename                                     |
 | ![follow](https://img.shields.io/badge/-follow-222?style=flat-square)  | Follow player        | Minimap zooms in and tracks you as screenshots update                  |
 | ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Compact minimap (`F8`, off by default); optional exits panel (`F9`); min **260×180** |
-| ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | Shift+click stash/inventory icon, or **search by name** when the scan misses; flea/trader/slot prices from tarkov.dev — **F10** |
+| ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | Shift+click stash/inventory icon (game icon cache + templates; AI only if local scan fails), or **search by name**; flea/trader/slot prices from tarkov.dev — **F10** |
 | ![wp](https://img.shields.io/badge/-waypoint-222?style=flat-square)   | Pencil waypoint      | ✎ click anywhere on map or minimap — route line to your position      |
 | ![floor](https://img.shields.io/badge/-floors-222?style=flat-square)  | Map floors           | ▲▼ layer switch (Factory, Interchange, Ground Zero); auto from Y      |
 | ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
@@ -86,7 +86,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.33`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.38`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -349,7 +349,43 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.33</strong> (latest)</summary>
+<summary><strong>Dev 0.1.38</strong> (latest)</summary>
+
+- **Item Lens** — local scan uses the EFT icon cache + catalog templates (OpenCV) and Tesseract for inspect titles; optional AI is last-resort only
+- **Fix** — Shift+click no longer trusts a garbage tooltip (`MS?BBO` → Zibbo) when the highlighted cell is a larger item (CMS, kits); prefers the full grid cell and icon match
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.37</strong></summary>
+
+- **UI** — MARKERS panel uses aligned toggle chips and equal-width CLEAN / RAID / LOOT RUN presets
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.36</strong></summary>
+
+- **Fix** — toggling map markers (extracts, mines, PMC, names, loot, bosses, locs) no longer rebuilds the whole map; layers hide with CSS and loot is clustered
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.35</strong></summary>
+
+- **Fix** — LOCS / LOOT / BOSSES checkboxes no longer freeze the app (filter-only map update, no full marker rebuild)
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.34</strong></summary>
+
+- **Map POIs** — loot, bosses, and locations off by default; enable from the main window (LOOT / BOSSES / LOCS, CLEAN / RAID / LOOT RUN, POIs tab) or overlay chips LT / BS / LC
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.33</strong></summary>
 
 - **Item Lens** — icon scan is best-effort; it can miss or misidentify items (ammo, guns, similar icons). **Use Item Search** in the panel when that happens (PT/EN).
 - Config drawer on the right, optional AI fallback, OCR/tooltip matching, highlight crop, and stash click scan improvements since 0.1.10.

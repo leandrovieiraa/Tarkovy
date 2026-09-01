@@ -391,10 +391,13 @@ public sealed class ItemCatalog
     public (ItemDefinition? Item, double Score) MatchByTooltip(string? text)
     {
         if (string.IsNullOrWhiteSpace(text)) return (null, 1);
+        if (text.IndexOfAny(['?', '¿', '\\']) >= 0 && text.Count(char.IsLetter) < 8)
+            return (null, 1);
         text = RepairOcrGarbage(text);
 
         var q = NormalizeTooltip(text);
         if (q.Length < 3) return (null, 1);
+        if (q.Count(char.IsLetter) < 3) return (null, 1);
 
         if (IsGenericTooltipToken(q)) return (null, 1);
 

@@ -144,7 +144,7 @@ internal static class ItemScanDebug
     public static void FillEnvironment(ItemScanDebugReport report)
     {
         report.ScreenHeight = SystemParameters.PrimaryScreenHeight;
-        report.SlotPx = ScreenCapture.ItemSlotPx();
+        report.SlotPx = LensConfig.SlotPx;
         report.SlotPxSetting = App.Settings.ItemScanSlotPx;
         report.Catalog.CachePath = Path.Combine(SettingsStore.AppDataDir, "items-cache.json");
         if (File.Exists(report.Catalog.CachePath))

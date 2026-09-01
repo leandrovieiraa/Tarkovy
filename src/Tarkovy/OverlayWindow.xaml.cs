@@ -22,6 +22,7 @@ public partial class OverlayWindow : Window
     public event Action? QuestSelectionChanged;
     public event Action<MapWaypoint?>? WaypointRequested;
     public event Action? LayersChanged;
+    public event Action? PoiFilterChanged;
 
     public OverlayWindow()
     {
@@ -53,6 +54,7 @@ public partial class OverlayWindow : Window
             WaypointRequested?.Invoke(wp);
         };
         OverlayMap.LayerToggled += OnLayerToggled;
+        OverlayMap.PoiCategoryToggled += OnPoiCategoryToggled;
     }
 
     private void EnforceMinSize()
@@ -80,6 +82,17 @@ public partial class OverlayWindow : Window
         LayersChanged?.Invoke();
     }
 
+    private void OnPoiCategoryToggled(string category)
+    {
+        var present = App.Maps.PoisFor(App.Settings.SelectedMapId)
+            .Select(p => p.Type)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        PoiCatalog.ToggleCategoryFromOverlay(category, present);
+        SettingsStore.Save(App.Settings);
+        OverlayMap.SetPoiFilter();
+        PoiFilterChanged?.Invoke();
+    }
+
     public void SetGlassOpacity(double opacity)
     {
         Opacity = Math.Clamp(opacity, 0.45, 1.0);
@@ -105,6 +118,7 @@ public partial class OverlayWindow : Window
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
         OverlayMap.SetQuests(_quests, QuestState.TrackingSlugs());
+        OverlayMap.SetPois(App.Maps.PoisFor(map.Id), compact: true);
         OverlayMap.SetWaypoint(App.Settings.ActiveWaypoint);
         OverlayMap.SetFollow(App.Settings.FollowPlayer);
         OverlayMap.SetAutoFloor(App.Settings.AutoFloorFromHeight);
@@ -140,12 +154,25 @@ public partial class OverlayWindow : Window
         RebuildSidePanel();
     }
 
+    public void SetLayers() =>
+        OverlayMap.SetLayers(
+            App.Settings.ShowExtracts,
+            App.Settings.ShowMines,
+            App.Settings.ShowSpawns,
+            App.Settings.ShowQuests,
+            App.Settings.ShowMarkerLabels);
+
     public void SetQuests(IReadOnlyList<QuestDefinition> quests)
     {
         _quests = quests;
         OverlayMap.SetQuests(quests, QuestState.TrackingSlugs());
         RebuildSidePanel();
     }
+
+    public void SetPois(IReadOnlyList<MapPoi> pois) =>
+        OverlayMap.SetPois(pois, compact: true);
+
+    public void SetPoiFilter() => OverlayMap.SetPoiFilter();
 
     public void SetWaypoint(MapWaypoint? wp) => OverlayMap.SetWaypoint(wp);
 

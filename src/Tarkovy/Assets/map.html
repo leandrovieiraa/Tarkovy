@@ -11,6 +11,7 @@
       <div id="mapGrid"></div>
       <svg id="routeLayer" xmlns="http://www.w3.org/2000/svg"></svg>
       <div id="markers"></div>
+      <div id="poiMarkers"></div>
       <div id="player" hidden></div>
     </div>
     <div id="viewGrid"></div>
@@ -24,6 +25,12 @@
           <button type="button" class="layer-btn active" data-layer="spawns" title="PMC Spawns">RS</button>
           <button type="button" class="layer-btn active" data-layer="quests" title="Quests">QT</button>
           <button type="button" class="layer-btn active" data-layer="labels" title="Labels">LB</button>
+        </div>
+        <div class="tool-sep" id="poiSep"></div>
+        <div class="tool-group" id="poiTools">
+          <button type="button" class="layer-btn poi-cat" data-poi-cat="loot" title="Loot">LT</button>
+          <button type="button" class="layer-btn poi-cat" data-poi-cat="enemies" title="Bosses">BS</button>
+          <button type="button" class="layer-btn poi-cat" data-poi-cat="locations" title="Locations">LC</button>
         </div>
         <div class="tool-sep" id="floorSep" hidden></div>
         <div class="tool-group" id="floorTools" hidden>

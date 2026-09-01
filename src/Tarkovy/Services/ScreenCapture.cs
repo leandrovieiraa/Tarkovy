@@ -22,7 +22,7 @@ internal static class ScreenCapture
     }
 
     /// <summary>Square capture region scaled with resolution (896 @ 1080p).</summary>
-    public static int IconScanSizePx() => Math.Max(320, (int)Math.Round(896 * GameScale()));
+    public static int IconScanSizePx() => LensConfig.ScanSizePx;
 
     /// <summary>Square region centered on click.</summary>
     public static (Bitmap Region, int LocalX, int LocalY, int OriginX, int OriginY) CaptureIconScanRegion(int clickX, int clickY)
@@ -71,24 +71,13 @@ internal static class ScreenCapture
     }
 
     /// <summary>Inventory slot size: 63 @ 1080p, 84 @ 1440p, 126 @ 4K.</summary>
-    public static int ItemSlotPx()
-    {
-        if (App.Settings.ItemScanSlotPx is 63 or 84 or 126)
-            return App.Settings.ItemScanSlotPx;
+    public static int ItemSlotPx() => LensConfig.SlotPx;
 
-        var h = SystemParameters.PrimaryScreenHeight;
-        if (h < 1) h = 1080;
-        return Math.Max(40, (int)Math.Round(63.0 * h / 1080.0));
-    }
-
-    public static double GameScale() => ItemSlotPx() / 63.0;
+    public static double GameScale() => LensConfig.Scale;
 
     /// <summary>Slot footprint in pixels: (n × slot) + 1.</summary>
-    public static (int W, int H) SlotPixelSize(int slotW, int slotH)
-    {
-        var slot = ItemSlotPx();
-        return (slotW * slot + 1, slotH * slot + 1);
-    }
+    public static (int W, int H) SlotPixelSize(int slotW, int slotH) =>
+        LensConfig.SlotPixelSize(slotW, slotH);
 
     private static (int X, int Y, int W, int H) VirtualScreen() =>
         ((int)SystemParameters.VirtualScreenLeft,

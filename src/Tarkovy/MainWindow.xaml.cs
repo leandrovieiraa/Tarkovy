@@ -30,6 +30,8 @@ public partial class MainWindow : Window
     private static readonly TimeSpan MinItemLensOpenLoading = TimeSpan.FromMilliseconds(1200);
     private bool _itemLensOpening;
     private bool _itemLensAcceptsScans;
+    private string _listMode = "quests";
+    private bool _poiBusy;
 
     public MainWindow()
     {
@@ -111,10 +113,13 @@ public partial class MainWindow : Window
         ShowSpawnsBox.IsChecked = App.Settings.ShowSpawns;
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
+        SyncPoiMasters();
+        SyncPanelTabs();
         _suppress = false;
 
         WireRuntime();
         PreviewMap.LayerToggled += OnMapLayerToggled;
+        PreviewMap.PoiCategoryToggled += OnPoiCategoryToggled;
         PreviewMap.WaypointChanged += wp =>
         {
             App.Settings.ActiveWaypoint = wp;
@@ -278,7 +283,9 @@ public partial class MainWindow : Window
             }
             _overlay?.RefreshQuestList();
             UpdateMaximizeGlyph();
-            RebuildQuestList();
+            RebuildSideList();
+            SyncPoiMasters();
+            SyncPanelTabs();
             RefreshHud();
         });
     }
@@ -315,6 +322,13 @@ public partial class MainWindow : Window
         App.Shots.DeletedCount += _ => Dispatcher.Invoke(RefreshHud);
         App.Raid.Changed += () => Dispatcher.Invoke(RefreshHud);
         App.Maps.MarkersUpdated += () => Dispatcher.Invoke(PushMapToViews);
+        App.Items.ItemsUpdated += () => Dispatcher.Invoke(() =>
+        {
+            var pois = App.Maps.PoisFor(App.Settings.SelectedMapId);
+            PreviewMap.SetPois(pois);
+            _overlay?.SetPois(pois);
+            if (_listMode == "pois") RebuildSideList();
+        });
     }
 
     private void SelectMapId(string id)
@@ -350,6 +364,7 @@ public partial class MainWindow : Window
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
         PreviewMap.SetQuests(quests, QuestState.TrackingSlugs());
+        PreviewMap.SetPois(App.Maps.PoisFor(map.Id));
         PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
         PreviewMap.SetFollow(App.Settings.FollowPlayer);
         PreviewMap.SetAutoFloor(App.Settings.AutoFloorFromHeight);
@@ -358,41 +373,34 @@ public partial class MainWindow : Window
             _overlay.QuestSelectionChanged -= OnOverlayQuestSelectionChanged;
             _overlay.WaypointRequested -= OnOverlayWaypointRequested;
             _overlay.LayersChanged -= OnOverlayLayersChanged;
+            _overlay.PoiFilterChanged -= OnOverlayPoiFilterChanged;
             _overlay.LoadMap(map, extracts, mines, spawns, labels, quests);
             _overlay.SetFollow(App.Settings.FollowPlayer);
             _overlay.SetGlassOpacity(App.Settings.OverlayOpacity);
             _overlay.QuestSelectionChanged += OnOverlayQuestSelectionChanged;
             _overlay.WaypointRequested += OnOverlayWaypointRequested;
             _overlay.LayersChanged += OnOverlayLayersChanged;
+            _overlay.PoiFilterChanged += OnOverlayPoiFilterChanged;
         }
         MapTitle.Text = map.Name.ToUpperInvariant();
+        SyncPoiMasters();
         ScheduleRebuildQuestList();
     }
 
     private void ScheduleRebuildQuestList()
     {
-        Dispatcher.BeginInvoke(RebuildQuestList, System.Windows.Threading.DispatcherPriority.Background);
+        Dispatcher.BeginInvoke(RebuildSideList, System.Windows.Threading.DispatcherPriority.Background);
     }
 
     private void PushMarkersToViews()
     {
-        var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
-        if (map == null) return;
-        var extracts = App.Maps.ExtractsFor(map.Id);
-        var mines = App.Maps.MinesFor(map.Id);
-        var spawns = App.Maps.SpawnsFor(map.Id);
-        var quests = App.Maps.QuestsFor(map.Id);
-        var labels = App.Settings.ShowMarkerLabels;
-        PreviewMap.SetMarkers(extracts, mines, spawns, labels);
         PreviewMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
             App.Settings.ShowSpawns,
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
-        PreviewMap.SetQuests(quests, QuestState.TrackingSlugs());
-        _overlay?.SetMarkers(extracts, mines, spawns, labels);
-        _overlay?.SetQuests(quests);
+        _overlay?.SetLayers();
     }
 
     private void RebuildQuestList()
@@ -440,7 +448,7 @@ public partial class MainWindow : Window
     private void QuestSearch_Changed(object sender, TextChangedEventArgs e)
     {
         if (_suppress) return;
-        RebuildQuestList();
+        RebuildSideList();
     }
 
     private void OnQuestStateChanged()
@@ -448,14 +456,14 @@ public partial class MainWindow : Window
         if (_suppress) return;
         PushMarkersToViews();
         PreviewMap.SetWaypoint(App.Settings.ActiveWaypoint);
-        RebuildQuestList();
+        RebuildSideList();
         _overlay?.RefreshQuestList();
         _overlay?.SetWaypoint(App.Settings.ActiveWaypoint);
     }
 
     private void OnOverlayQuestSelectionChanged()
     {
-        RebuildQuestList();
+        RebuildSideList();
         var map = App.Maps.FindById(App.Settings.SelectedMapId) ?? App.Maps.Maps.FirstOrDefault();
         if (map == null) return;
         PreviewMap.SetQuests(App.Maps.QuestsFor(map.Id), QuestState.TrackingSlugs());
@@ -476,12 +484,21 @@ public partial class MainWindow : Window
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
+        SyncPoiMasters();
         PreviewMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
             App.Settings.ShowSpawns,
             App.Settings.ShowQuests,
             App.Settings.ShowMarkerLabels);
+        if (_listMode == "pois") RebuildSideList();
+    }
+
+    private void OnOverlayPoiFilterChanged()
+    {
+        SyncPoiMasters();
+        PreviewMap.SetPoiFilter();
+        if (_listMode == "pois") RebuildSideList();
     }
 
     private void OnMapLayerToggled(string key, bool value)
@@ -522,11 +539,101 @@ public partial class MainWindow : Window
                 return;
         }
         SettingsStore.Save(App.Settings);
-        _overlay?.SetMarkers(
-            App.Maps.ExtractsFor(App.Settings.SelectedMapId),
-            App.Maps.MinesFor(App.Settings.SelectedMapId),
-            App.Maps.SpawnsFor(App.Settings.SelectedMapId),
-            App.Settings.ShowMarkerLabels);
+        _overlay?.SetLayers();
+    }
+
+    private void OnPoiCategoryToggled(string category)
+    {
+        PoiCatalog.ToggleCategoryFromOverlay(category, PresentPoiTypes());
+        SettingsStore.Save(App.Settings);
+        AfterPoiChange();
+    }
+
+    private HashSet<string> PresentPoiTypes() =>
+        App.Maps.PoisFor(App.Settings.SelectedMapId)
+            .Select(p => p.Type)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+    private void SyncPoiMasters()
+    {
+        var present = PresentPoiTypes();
+        _suppress = true;
+        ShowLootBox.IsChecked = PoiCatalog.CategoryState(PoiCatalog.CatLoot, present);
+        ShowBossesBox.IsChecked = PoiCatalog.CategoryState(PoiCatalog.CatEnemies, present);
+        ShowLocsBox.IsChecked = PoiCatalog.CategoryState(PoiCatalog.CatLocations, present);
+        _suppress = false;
+    }
+
+    private void AfterPoiChange()
+    {
+        if (_poiBusy) return;
+        _poiBusy = true;
+        try
+        {
+            SyncPoiMasters();
+            PreviewMap.SetPoiFilter();
+            _overlay?.SetPoiFilter();
+            if (_listMode == "pois") RebuildSideList();
+        }
+        finally
+        {
+            _poiBusy = false;
+        }
+    }
+
+    private void PoiMaster_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+        if (_suppress || _poiBusy || sender is not CheckBox box) return;
+        var cat = ReferenceEquals(box, ShowLootBox) ? PoiCatalog.CatLoot
+            : ReferenceEquals(box, ShowBossesBox) ? PoiCatalog.CatEnemies
+            : PoiCatalog.CatLocations;
+        PoiCatalog.ToggleCategory(cat, PresentPoiTypes());
+        SettingsStore.Save(App.Settings);
+        AfterPoiChange();
+    }
+
+    private void PoiPreset_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: string tag }) return;
+        if (tag == "clean") PoiCatalog.ClearAll();
+        else if (tag == "raid") PoiCatalog.ApplyPreset(PoiCatalog.RaidPreset);
+        else if (tag == "loot") PoiCatalog.ApplyPreset(PoiCatalog.LootRunPreset);
+        SettingsStore.Save(App.Settings);
+        AfterPoiChange();
+    }
+
+    private void PanelTab_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: string mode }) return;
+        _listMode = mode;
+        SyncPanelTabs();
+        RebuildSideList();
+    }
+
+    private void SyncPanelTabs()
+    {
+        var active = (Style)FindResource("PanelTabButtonActive");
+        var idle = (Style)FindResource("PanelTabButton");
+        PanelQuestsBtn.Style = _listMode == "quests" ? active : idle;
+        PanelPoisBtn.Style = _listMode == "pois" ? active : idle;
+        QuestSearchBox.ToolTip = _listMode == "pois"
+            ? Loc.T("Main.Poi.Search.Tooltip")
+            : Loc.T("Main.Quests.Search.Tooltip");
+        if (PanelHintText != null)
+            PanelHintText.Text = _listMode == "pois" ? Loc.T("Main.Poi.Hint") : Loc.T("Main.Quests.Hint");
+    }
+
+    private void RebuildSideList()
+    {
+        if (_listMode == "pois")
+        {
+            QuestListPanel.Children.Clear();
+            QuestListPanel.Children.Add(
+                PoiListUi.BuildCatalog(App.Settings.SelectedMapId, QuestSearchBox.Text, AfterPoiChange));
+            return;
+        }
+        RebuildQuestList();
     }
 
     private void RefreshHud()
@@ -627,6 +734,8 @@ public partial class MainWindow : Window
         ShowLabelsBox.IsChecked = App.Settings.ShowMarkerLabels;
         ShowQuestsBox.IsChecked = App.Settings.ShowQuests;
         _suppress = false;
+        SyncPoiMasters();
+        SyncPanelTabs();
         _itemLens?.ApplyOpacity();
         if (App.Settings.ItemScanEnabled)
             StartItemScanWatcher();

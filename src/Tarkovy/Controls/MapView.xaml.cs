@@ -20,6 +20,7 @@ public partial class MapView : UserControl
     };
 
     public event Action<string, bool>? LayerToggled;
+    public event Action<string>? PoiCategoryToggled;
     public event Action<MapWaypoint?>? WaypointChanged;
 
     /// <summary>
@@ -122,6 +123,14 @@ public partial class MapView : UserControl
             return;
         }
 
+        if (string.Equals(type, "poiCategory", StringComparison.OrdinalIgnoreCase))
+        {
+            var key = root.TryGetProperty("key", out var k) ? k.GetString() ?? "" : "";
+            if (!string.IsNullOrEmpty(key))
+                PoiCategoryToggled?.Invoke(key);
+            return;
+        }
+
         if (string.Equals(type, "waypoint", StringComparison.OrdinalIgnoreCase))
         {
             MapWaypoint? wp = null;
@@ -192,6 +201,52 @@ public partial class MapView : UserControl
             type = "layers",
             layers = new { extracts, mines, spawns, quests, labels }
         });
+
+    public void SetPois(IReadOnlyList<MapPoi> pois, IEnumerable<string>? enabled = null, bool compact = false)
+    {
+        var enabledSet = (enabled ?? App.Settings.EnabledPoiTypes).ToArray();
+        IEnumerable<MapPoi> src = pois;
+        if (compact)
+            src = pois.Where(p => PoiCatalog.Find(p.Type)?.OverlaySafe == true);
+
+        var payload = src.Select(p =>
+        {
+            var def = PoiCatalog.Find(p.Type);
+            var name = p.Name;
+            if (string.Equals(p.Type, "locked-door", StringComparison.OrdinalIgnoreCase) &&
+                !string.IsNullOrWhiteSpace(p.Detail))
+            {
+                var item = App.Items.FindById(p.Detail);
+                if (item != null)
+                    name = ItemDisplayNames.Name(item);
+            }
+            else if (def != null && ShouldLocalizeStockName(p.Type, name, def))
+                name = PoiCatalog.TypeLabel(def);
+
+            return new
+            {
+                type = p.Type,
+                category = def?.Category ?? p.Category,
+                name,
+                detail = p.Detail,
+                icon = def?.Icon ?? p.Icon,
+                overlaySafe = def?.OverlaySafe ?? false,
+                x = p.X,
+                y = p.Y,
+                z = p.Z
+            };
+        }).ToArray();
+
+        Post(new { type = "pois", pois = payload, enabled = enabledSet, compact });
+    }
+
+    public void SetPoiFilter(IEnumerable<string>? enabled = null) =>
+        Post(new { type = "poiFilter", enabled = (enabled ?? App.Settings.EnabledPoiTypes).ToArray() });
+
+    private static bool ShouldLocalizeStockName(string type, string name, PoiTypeDef def) =>
+        string.Equals(name, def.Name, StringComparison.OrdinalIgnoreCase) ||
+        type is "scav" or "loose-loot" or "btr" or "switch" or "emplacement" or "transit"
+            or "locked-door" or "scav-sniper";
 
     public void SetWaypoint(MapWaypoint? waypoint) =>
         Post(new { type = "waypoint", waypoint });

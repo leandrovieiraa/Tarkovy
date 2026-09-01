@@ -76,11 +76,19 @@ body::-webkit-scrollbar,
   background-size: 24px 24px;
 }
 
-#markers, #player {
+#markers, #poiMarkers, #player {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
+}
+
+#world.hid-extracts .marker-wrap.extract,
+#world.hid-mines .marker-wrap.mine,
+#world.hid-spawns .marker-wrap.spawn,
+#world.hid-quests .marker-wrap.quest,
+#world.hid-labels .extract-label {
+  display: none !important;
 }
 
 .extract, .mine, .spawn-wrap, .marker-wrap {
@@ -130,6 +138,9 @@ body::-webkit-scrollbar,
 .marker-wrap.spawn .marker-icon { left: -13px; top: -13px; width: 26px; height: 26px; }
 .marker-wrap.quest .marker-icon { left: -14px; top: -14px; }
 .marker-wrap.waypoint-pin-wrap .marker-icon { left: -12px; top: -12px; width: 24px; height: 24px; }
+.marker-wrap.poi .marker-icon { left: -11px; top: -11px; width: 22px; height: 22px; }
+.marker-wrap.poi-dense .marker-icon { left: -9px; top: -9px; width: 18px; height: 18px; }
+.marker-wrap.poi-enemy .marker-icon { left: -13px; top: -13px; width: 26px; height: 26px; }
 
 .marker-wrap.extract .marker-icon-wrap {
   animation: markerPulseExtract 2.4s ease-in-out infinite;
@@ -145,6 +156,10 @@ body::-webkit-scrollbar,
 
 .marker-wrap.waypoint-pin-wrap .marker-icon-wrap {
   animation: markerPulseWaypoint 1.6s ease-in-out infinite;
+}
+.marker-wrap.poi .marker-icon-wrap { animation: none; }
+.marker-wrap.poi-enemy .marker-icon-wrap {
+  animation: markerPulseSpawn 2.2s ease-in-out infinite;
 }
 
 .marker-wrap:nth-child(3n) .marker-icon-wrap { animation-delay: 0.35s; }
@@ -277,6 +292,14 @@ body::-webkit-scrollbar,
 
 #tip.spawn-tip .tip-kind {
   color: #9be7ff;
+}
+
+#tip.poi-tip {
+  border-color: #e8a317;
+}
+
+#tip.poi-tip .tip-kind {
+  color: #e8a317;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -504,6 +527,11 @@ body::-webkit-scrollbar,
 #sideTools .layer-btn.active {
   border-color: #3dff7a;
   color: #3dff7a;
+}
+
+#sideTools .poi-cat.active {
+  border-color: #e8a317;
+  color: #e8a317;
 }
 
 #sideTools .floor-label-btn {

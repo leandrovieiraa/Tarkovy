@@ -4,6 +4,7 @@
   const svgHost = document.getElementById("svgHost");
   const routeLayer = document.getElementById("routeLayer");
   const markers = document.getElementById("markers");
+  const poiMarkers = document.getElementById("poiMarkers");
   const playerEl = document.getElementById("player");
   const tip = document.getElementById("tip");
   const wpBanner = document.getElementById("wpBanner");
@@ -56,6 +57,10 @@
     layerSpawns: "PMC Spawns",
     layerQuests: "Quests",
     layerLabels: "Labels",
+    layerLoot: "Loot",
+    layerBosses: "Bosses",
+    layerLocs: "Locations",
+    poi: "MARKER",
     floorUp: "Floor up",
     floorDown: "Floor down",
     floorCurrent: "Floor",
@@ -81,6 +86,9 @@
     mines: [],
     spawns: [],
     quests: [],
+    pois: [],
+    enabledPois: new Set(),
+    compact: false,
     enabledQuests: new Set(),
     completedQuests: new Set(),
     layers: { extracts: true, mines: true, spawns: true, quests: true, labels: true },
@@ -155,10 +163,28 @@
       quests: strings.layerQuests,
       labels: strings.layerLabels
     };
-    document.querySelectorAll(".layer-btn").forEach((btn) => {
+    document.querySelectorAll(".layer-btn:not(.poi-cat)").forEach((btn) => {
       const key = btn.getAttribute("data-layer");
       btn.classList.toggle("active", !!state.layers[key]);
       btn.title = titles[key] || key;
+    });
+    syncPoiCatButtons();
+  }
+
+  function poiCategoryOn(cat) {
+    return state.pois.some((p) => p.category === cat && state.enabledPois.has(p.type));
+  }
+
+  function syncPoiCatButtons() {
+    const titles = {
+      loot: strings.layerLoot,
+      enemies: strings.layerBosses,
+      locations: strings.layerLocs
+    };
+    document.querySelectorAll(".poi-cat").forEach((btn) => {
+      const cat = btn.getAttribute("data-poi-cat");
+      btn.classList.toggle("active", poiCategoryOn(cat));
+      btn.title = titles[cat] || cat;
     });
   }
 
@@ -181,6 +207,7 @@
     img.src = src;
     img.alt = alt || "";
     img.draggable = false;
+    img.decoding = "async";
     return img;
   }
 
@@ -625,7 +652,8 @@
     if (manual) state.floorManual = true;
     applySvgFloor();
     updateFloorUi();
-    renderMarkers();
+    scheduleRenderMarkers();
+    scheduleRenderPois();
     updateRoute();
   }
 
@@ -701,7 +729,8 @@
       }
     }
     initFloors();
-    renderMarkers();
+    scheduleRenderMarkers();
+    scheduleRenderPois();
     updateRoute();
     requestAnimationFrame(() => {
       if (shouldFollow() && state.player) trackPlayer(true);
@@ -719,18 +748,20 @@
     tip.innerHTML = "";
   }
 
-  function showTip(name, kind, clientX, clientY) {
+  function showTip(name, kind, clientX, clientY, extra) {
     const rect = stage.getBoundingClientRect();
     tip.hidden = false;
     const kindLabel =
       kind === "mine" ? strings.mine :
       kind === "spawn" ? strings.spawn :
       kind === "quest" ? strings.quest :
+      kind === "poi" ? (extra || strings.poi) :
       strings.extract;
     tip.className =
       kind === "mine" ? "mine-tip" :
       kind === "spawn" ? "spawn-tip" :
       kind === "quest" ? "quest-tip" :
+      kind === "poi" ? "poi-tip" :
       "extract-tip";
     tip.innerHTML =
       `<span class="tip-kind">${kindLabel}</span>` +
@@ -748,23 +779,54 @@
     tip.style.top = Math.max(pad, y) + "px";
   }
 
-  function bindMarkerTip(node, name, kind) {
-    node.addEventListener("pointerenter", (e) => showTip(name, kind, e.clientX, e.clientY));
-    node.addEventListener("pointermove", (e) => {
-      if (!tip.hidden) showTip(name, kind, e.clientX, e.clientY);
-    });
-    node.addEventListener("pointerleave", hideTip);
+  function stampMarker(node, kind, id, name, x, z, tipKind, tipExtra) {
+    node.dataset.wpKind = kind;
+    node.dataset.wpId = id;
+    node.dataset.wpName = name;
+    node.dataset.wpX = String(x);
+    node.dataset.wpZ = String(z);
+    node.dataset.tipKind = tipKind || kind;
+    node.dataset.tipName = name;
+    if (tipExtra) node.dataset.tipExtra = tipExtra;
+  }
+
+  function stampTip(node, name, kind, extra) {
+    node.dataset.tipKind = kind;
+    node.dataset.tipName = name;
+    if (extra) node.dataset.tipExtra = extra;
+  }
+
+  function addMarkerLabel(node, text, extraClass) {
+    const lab = document.createElement("div");
+    lab.className = extraClass ? "extract-label " + extraClass : "extract-label";
+    lab.textContent = text;
+    node.appendChild(lab);
   }
 
   function isWp(kind, id) {
     return state.waypoint && state.waypoint.kind === kind && state.waypoint.id === id;
   }
 
+  function refreshWaypointHighlights() {
+    const roots = [markers, poiMarkers].filter(Boolean);
+    for (const root of roots) {
+      root.querySelectorAll(".waypoint-target").forEach((n) => n.classList.remove("waypoint-target"));
+      if (!state.waypoint) continue;
+      const kind = state.waypoint.kind;
+      const id = state.waypoint.id;
+      for (const n of root.querySelectorAll("[data-wp-kind]")) {
+        if (n.dataset.wpKind === kind && n.dataset.wpId === id)
+          n.classList.add("waypoint-target");
+      }
+    }
+  }
+
   function setWaypoint(wp) {
     state.waypoint = wp;
     if (wp) setWpPlaceMode(false);
     updateWpBanner();
-    renderMarkers();
+    scheduleRenderMarkers();
+    refreshWaypointHighlights();
     updateRoute();
     window.chrome?.webview?.postMessage({ type: "waypoint", waypoint: wp });
   }
@@ -805,7 +867,8 @@
   function clearWaypoint() {
     state.waypoint = null;
     updateWpBanner();
-    renderMarkers();
+    scheduleRenderMarkers();
+    refreshWaypointHighlights();
     updateRoute();
     window.chrome?.webview?.postMessage({ type: "waypoint", waypoint: null });
   }
@@ -850,102 +913,97 @@
     routeLayer.appendChild(line);
   }
 
+  let tacticalFrame = 0;
+  let poiFrame = 0;
+
+  function scheduleRenderMarkers() {
+    if (tacticalFrame) return;
+    tacticalFrame = requestAnimationFrame(() => {
+      tacticalFrame = 0;
+      renderMarkers();
+    });
+  }
+
+  function scheduleRenderPois() {
+    if (poiFrame) return;
+    poiFrame = requestAnimationFrame(() => {
+      poiFrame = 0;
+      renderPois();
+    });
+  }
+
+  function applyLayerVisibility() {
+    if (!world) return;
+    world.classList.toggle("hid-extracts", !state.layers.extracts);
+    world.classList.toggle("hid-mines", !state.layers.mines);
+    world.classList.toggle("hid-spawns", !state.layers.spawns);
+    world.classList.toggle("hid-quests", !state.layers.quests);
+    world.classList.toggle("hid-labels", !state.layers.labels);
+  }
+
   function renderMarkers() {
     hideTip();
     markers.innerHTML = "";
+    applyLayerVisibility();
     if (!state.map) return;
+    const frag = document.createDocumentFragment();
 
-    if (state.layers.extracts) {
-      for (const ex of state.extracts) {
-        if (!markerOnFloor(ex.y)) continue;
-        const { pctX, pctY } = gameToPct(ex.x, ex.z, state.map);
-        if (!inMap(pctX, pctY)) continue;
-        const id = ex.name || `${ex.x},${ex.z}`;
-        const name = ex.name || "EXFIL";
-        const node = createMarkerNode(
-          "marker-wrap extract " + String(ex.faction || "any").toLowerCase(),
-          pctX,
-          pctY,
-          extractIconSrc(ex),
-          name
-        );
-        if (isWp("extract", id)) node.classList.add("waypoint-target");
-        if (state.layers.labels) {
-          const lab = document.createElement("div");
-          lab.className = "extract-label";
-          lab.textContent = name;
-          node.appendChild(lab);
-        }
-        bindMarkerTip(node, name, "extract");
-        node.addEventListener("click", (e) => {
-          e.stopPropagation();
-          setWaypoint({ kind: "extract", id, name, x: ex.x, z: ex.z });
-        });
-        markers.appendChild(node);
-      }
+    for (const ex of state.extracts) {
+      if (!markerOnFloor(ex.y)) continue;
+      const { pctX, pctY } = gameToPct(ex.x, ex.z, state.map);
+      if (!inMap(pctX, pctY)) continue;
+      const id = ex.name || `${ex.x},${ex.z}`;
+      const name = ex.name || "EXFIL";
+      const node = createMarkerNode(
+        "marker-wrap extract " + String(ex.faction || "any").toLowerCase(),
+        pctX,
+        pctY,
+        extractIconSrc(ex),
+        name
+      );
+      stampMarker(node, "extract", id, name, ex.x, ex.z, "extract");
+      if (isWp("extract", id)) node.classList.add("waypoint-target");
+      addMarkerLabel(node, name);
+      frag.appendChild(node);
     }
 
-    if (state.layers.mines) {
-      for (const m of state.mines) {
-        if (!markerOnFloor(m.y)) continue;
-        const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
-        if (!inMap(pctX, pctY)) continue;
-        const name = m.name || strings.mine;
-        const node = createMarkerNode("marker-wrap mine", pctX, pctY, MARKER_ICONS.hazard, name);
-        if (state.layers.labels) {
-          const lab = document.createElement("div");
-          lab.className = "extract-label mine-label";
-          lab.textContent = name;
-          node.appendChild(lab);
-        }
-        bindMarkerTip(node, name, "mine");
-        markers.appendChild(node);
-      }
+    for (const m of state.mines) {
+      if (!markerOnFloor(m.y)) continue;
+      const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
+      if (!inMap(pctX, pctY)) continue;
+      const name = m.name || strings.mine;
+      const node = createMarkerNode("marker-wrap mine", pctX, pctY, MARKER_ICONS.hazard, name);
+      stampTip(node, name, "mine");
+      addMarkerLabel(node, name, "mine-label");
+      frag.appendChild(node);
     }
 
-    if (state.layers.spawns) {
-      for (const sp of state.spawns) {
-        if (!markerOnFloor(sp.y)) continue;
-        const { pctX, pctY } = gameToPct(sp.x, sp.z, state.map);
-        if (!inMap(pctX, pctY)) continue;
-        const name = sp.name || strings.spawn;
-        const node = createMarkerNode("marker-wrap spawn", pctX, pctY, MARKER_ICONS.spawnPmc, name);
-        if (state.layers.labels) {
-          const lab = document.createElement("div");
-          lab.className = "extract-label";
-          lab.textContent = name;
-          node.appendChild(lab);
-        }
-        bindMarkerTip(node, name, "spawn");
-        markers.appendChild(node);
-      }
+    for (const sp of state.spawns) {
+      if (!markerOnFloor(sp.y)) continue;
+      const { pctX, pctY } = gameToPct(sp.x, sp.z, state.map);
+      if (!inMap(pctX, pctY)) continue;
+      const name = sp.name || strings.spawn;
+      const node = createMarkerNode("marker-wrap spawn", pctX, pctY, MARKER_ICONS.spawnPmc, name);
+      stampTip(node, name, "spawn");
+      addMarkerLabel(node, name);
+      frag.appendChild(node);
     }
 
-    if (state.layers.quests) {
-      for (const q of state.quests) {
-        if (state.completedQuests.has(q.slug)) continue;
-        if (!state.enabledQuests.has(q.slug)) continue;
-        for (const obj of q.objectives || []) {
-          if (!markerOnFloor(obj.y)) continue;
-          const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
-          if (!inMap(pctX, pctY)) continue;
-          const id = obj.id || `${q.slug}-${obj.x}`;
-          const name = obj.description || q.name;
-          const node = createMarkerNode("marker-wrap quest", pctX, pctY, MARKER_ICONS.quest, q.name);
-          if (isWp("quest", id)) node.classList.add("waypoint-target");
-          if (state.layers.labels) {
-            const lab = document.createElement("div");
-            lab.className = "extract-label quest-label";
-            lab.textContent = q.name;
-            node.appendChild(lab);
-          }
-          bindMarkerTip(node, name, "quest");
-          node.addEventListener("click", (e) => {
-            e.stopPropagation();
-            setWaypoint({ kind: "quest", id, name: q.name, x: obj.x, z: obj.z });
-          });
-          markers.appendChild(node);
-        }
+    for (const q of state.quests) {
+      if (state.completedQuests.has(q.slug)) continue;
+      if (!state.enabledQuests.has(q.slug)) continue;
+      for (const obj of q.objectives || []) {
+        if (!markerOnFloor(obj.y)) continue;
+        const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
+        if (!inMap(pctX, pctY)) continue;
+        const id = obj.id || `${q.slug}-${obj.x}`;
+        const name = obj.description || q.name;
+        const node = createMarkerNode("marker-wrap quest", pctX, pctY, MARKER_ICONS.quest, q.name);
+        stampMarker(node, "quest", id, q.name, obj.x, obj.z, "quest");
+        node.dataset.tipName = name;
+        if (isWp("quest", id)) node.classList.add("waypoint-target");
+        addMarkerLabel(node, q.name, "quest-label");
+        frag.appendChild(node);
       }
     }
 
@@ -959,9 +1017,65 @@
           MARKER_ICONS.waypoint,
           state.waypoint.name || strings.waypoint
         );
-        markers.appendChild(pin);
+        frag.appendChild(pin);
       }
     }
+
+    markers.appendChild(frag);
+  }
+
+  function renderPois() {
+    if (!poiMarkers) return;
+    poiMarkers.innerHTML = "";
+    if (!state.map) return;
+    const poiCap = state.compact ? 56 : 140;
+    const perType = state.compact ? 8 : 20;
+    const buckets = new Map();
+    for (const p of state.pois) {
+      if (!state.enabledPois.has(p.type)) continue;
+      if (state.compact && p.overlaySafe === false) continue;
+      if (!markerOnFloor(p.y)) continue;
+      let list = buckets.get(p.type);
+      if (!list) {
+        list = [];
+        buckets.set(p.type, list);
+      }
+      if (list.length < perType) list.push(p);
+    }
+
+    const lists = [...buckets.values()];
+    const frag = document.createDocumentFragment();
+    let poiDrawn = 0;
+    let idx = 0;
+    while (poiDrawn < poiCap) {
+      let anyLeft = false;
+      for (const list of lists) {
+        if (idx >= list.length) continue;
+        anyLeft = true;
+        const p = list[idx];
+        const { pctX, pctY } = gameToPct(p.x, p.z, state.map);
+        if (!inMap(pctX, pctY)) continue;
+        const id = `${p.type}-${Math.round(p.x)},${Math.round(p.z)}`;
+        const name = p.name || p.type;
+        const icon = p.icon ? MARKER_BASE + p.icon : MARKER_ICONS.waypoint;
+        const dense = p.category === "loot" && p.type !== "safe" && p.type !== "weapon-box" && p.type !== "cache";
+        const node = createMarkerNode(
+          "marker-wrap poi" + (dense ? " poi-dense" : "") + (p.category === "enemies" ? " poi-enemy" : ""),
+          pctX,
+          pctY,
+          icon,
+          name
+        );
+        stampMarker(node, "poi", id, name, p.x, p.z, "poi", p.type);
+        if (isWp("poi", id)) node.classList.add("waypoint-target");
+        frag.appendChild(node);
+        poiDrawn++;
+        if (poiDrawn >= poiCap) break;
+      }
+      idx++;
+      if (!anyLeft) break;
+    }
+    poiMarkers.appendChild(frag);
   }
 
   function setMarkers(extracts, mines, spawns, showLabels) {
@@ -970,7 +1084,8 @@
     state.spawns = Array.isArray(spawns) ? spawns : [];
     if (typeof showLabels === "boolean") state.layers.labels = showLabels;
     syncLayerButtons();
-    renderMarkers();
+    applyLayerVisibility();
+    scheduleRenderMarkers();
     updateRoute();
   }
 
@@ -983,7 +1098,7 @@
     state.completedQuests = completed;
     const enabled = Array.isArray(enabledSlugs) ? enabledSlugs : [];
     state.enabledQuests = new Set(enabled.filter((s) => !completed.has(s)));
-    renderMarkers();
+    scheduleRenderMarkers();
     updateRoute();
   }
 
@@ -991,13 +1106,27 @@
     if (!layers || typeof layers !== "object") return;
     Object.assign(state.layers, layers);
     syncLayerButtons();
-    renderMarkers();
+    applyLayerVisibility();
   }
 
   function setShowLabels(value) {
     state.layers.labels = !!value;
     syncLayerButtons();
-    renderMarkers();
+    applyLayerVisibility();
+  }
+
+  function setPois(pois, enabled, compact) {
+    state.pois = Array.isArray(pois) ? pois : [];
+    if (typeof compact === "boolean") state.compact = compact;
+    if (Array.isArray(enabled)) state.enabledPois = new Set(enabled);
+    syncPoiCatButtons();
+    scheduleRenderPois();
+  }
+
+  function setPoiFilter(enabled) {
+    state.enabledPois = new Set(Array.isArray(enabled) ? enabled : []);
+    syncPoiCatButtons();
+    scheduleRenderPois();
   }
 
   function setPlayer(p) {
@@ -1102,15 +1231,59 @@
     setFloorIndex((state.floorIndex + 1) % state.map.floors.length, true);
   });
 
-  document.querySelectorAll(".layer-btn").forEach((btn) => {
+  function wireMarkerLayer(root) {
+    if (!root || root.dataset.uiWired) return;
+    root.dataset.uiWired = "1";
+    root.addEventListener("click", (e) => {
+      const node = e.target.closest("[data-wp-kind]");
+      if (!node || !root.contains(node)) return;
+      e.stopPropagation();
+      const x = Number(node.dataset.wpX);
+      const z = Number(node.dataset.wpZ);
+      if (!Number.isFinite(x) || !Number.isFinite(z)) return;
+      setWaypoint({
+        kind: node.dataset.wpKind,
+        id: node.dataset.wpId,
+        name: node.dataset.wpName,
+        x,
+        z
+      });
+    });
+    root.addEventListener("pointerover", (e) => {
+      const node = e.target.closest("[data-tip-kind]");
+      if (!node || !root.contains(node)) return;
+      if (e.relatedTarget && node.contains(e.relatedTarget)) return;
+      showTip(node.dataset.tipName, node.dataset.tipKind, e.clientX, e.clientY, node.dataset.tipExtra);
+    });
+    root.addEventListener("pointerout", (e) => {
+      const node = e.target.closest("[data-tip-kind]");
+      if (!node || !root.contains(node)) return;
+      if (e.relatedTarget && node.contains(e.relatedTarget)) return;
+      hideTip();
+    });
+  }
+
+  wireMarkerLayer(markers);
+  wireMarkerLayer(poiMarkers);
+
+  document.querySelectorAll(".layer-btn:not(.poi-cat)").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const key = btn.getAttribute("data-layer");
       if (!key) return;
       state.layers[key] = !state.layers[key];
       syncLayerButtons();
-      renderMarkers();
+      applyLayerVisibility();
       window.chrome?.webview?.postMessage({ type: "layer", key, value: state.layers[key] });
+    });
+  });
+
+  document.querySelectorAll(".poi-cat").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute("data-poi-cat");
+      if (!key) return;
+      window.chrome?.webview?.postMessage({ type: "poiCategory", key });
     });
   });
 
@@ -1132,12 +1305,15 @@
     if (data.type === "markers") setMarkers(data.extracts, data.mines, data.spawns, data.showLabels);
     if (data.type === "quests") setQuests(data.quests, data.enabled, data.completed);
     if (data.type === "layers") setLayers(data.layers);
+    if (data.type === "pois") setPois(data.pois, data.enabled, data.compact);
+    if (data.type === "poiFilter") setPoiFilter(data.enabled);
     if (data.type === "extracts") setMarkers(data.extracts, [], [], data.showLabels);
     if (data.type === "showLabels") setShowLabels(data.value);
     if (data.type === "waypoint") {
       state.waypoint = data.waypoint || null;
       updateWpBanner();
-      renderMarkers();
+      scheduleRenderMarkers();
+      refreshWaypointHighlights();
       updateRoute();
     }
     if (data.type === "player") setPlayer(data.player);

@@ -57,6 +57,28 @@ public sealed class SpawnMarker
     public double Z { get; set; }
 }
 
+public sealed class MapPoi
+{
+    public string Type { get; set; } = "";
+    public string Category { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Detail { get; set; } = "";
+    public string Icon { get; set; } = "";
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+}
+
+public sealed class PoiTypeDef
+{
+    public string Id { get; init; } = "";
+    public string Category { get; init; } = "";
+    public string Name { get; init; } = "";
+    public string NamePt { get; init; } = "";
+    public string Icon { get; init; } = "";
+    public bool OverlaySafe { get; init; }
+}
+
 public sealed class PlayerFix
 {
     public double X { get; set; }

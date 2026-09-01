@@ -62,6 +62,7 @@ public partial class SettingsWindow : UserControl
         ItemScanAiKeyBox.Password = s.ItemScanAiApiKey ?? "";
         PopulateItemScanAiProviderCombo(s.ItemScanAiProvider);
         PopulateItemScanSlotCombo(s.ItemScanSlotPx);
+        ItemScanRotatedBox.IsChecked = s.ItemScanRotatedIcons;
         RefreshPathBadges();
     }
 
@@ -207,7 +208,12 @@ public partial class SettingsWindow : UserControl
         if (ItemScanAiProviderCombo.SelectedItem is ComboBoxItem aiItem && aiItem.Tag is string provider)
             s.ItemScanAiProvider = provider;
         if (ItemScanSlotCombo.SelectedItem is ComboBoxItem slotItem && slotItem.Tag is int slotPx)
+        {
             s.ItemScanSlotPx = slotPx;
+            s.ItemScanGameWidth = slotPx switch { 63 => 1920, 84 => 2560, 126 => 3840, _ => 0 };
+            s.ItemScanGameHeight = slotPx switch { 63 => 1080, 84 => 1440, 126 => 2160, _ => 0 };
+        }
+        s.ItemScanRotatedIcons = ItemScanRotatedBox.IsChecked == true;
         var langChanged = Loc.Normalize(s.UiLanguage) != _langWhenOpened;
         Loc.Apply(s.UiLanguage);
         if (langChanged)

@@ -6,14 +6,11 @@ namespace Tarkovy.Services;
 public sealed class ItemScanService : IDisposable
 {
     private readonly ItemCatalog _catalog;
-    private readonly ItemIconMatcher _matcher = new();
+    private readonly LensEngine _lens = new();
     private readonly SemaphoreSlim _scanLock = new(1, 1);
     private CancellationTokenSource? _scanCts;
     private int _latestScanId;
     private bool _indexReady;
-
-    private static readonly (int W, int H)[] IconSizes =
-        [(1, 1), (1, 2), (2, 1), (2, 2), (2, 3), (3, 2)];
 
     private static readonly TimeSpan IconCaptureDelay = TimeSpan.FromMilliseconds(120);
     private static readonly TimeSpan HighlightRetryDelay = TimeSpan.FromMilliseconds(80);
@@ -24,7 +21,7 @@ public sealed class ItemScanService : IDisposable
         _catalog.ItemsUpdated += OnCatalogUpdated;
     }
 
-    public bool IndexReady => _indexReady && _matcher.IsReady;
+    public bool IndexReady => _indexReady && _lens.IsReady;
 
     public event Action<ItemScanResult>? ScanCompleted;
     public event Action<string>? ScanFailed;
@@ -33,17 +30,17 @@ public sealed class ItemScanService : IDisposable
     private void OnCatalogUpdated()
     {
         _indexReady = false;
-        _matcher.ResetIndex();
+        _lens.Reset();
     }
 
     public async Task EnsureReadyAsync(CancellationToken ct = default)
     {
         if (!_catalog.IsReady)
             await _catalog.LoadAsync(ct).ConfigureAwait(false);
-        if (_indexReady && _matcher.IsReady) return;
+        if (_indexReady && _lens.IsReady) return;
         StatusChanged?.Invoke(Loc.T("ItemScan.Status.Indexing"));
-        await _matcher.EnsureIndexAsync(_catalog, null, ct).ConfigureAwait(false);
-        _indexReady = _matcher.IsReady;
+        await _lens.EnsureReadyAsync(_catalog, msg => StatusChanged?.Invoke(msg), ct).ConfigureAwait(false);
+        _indexReady = _lens.IsReady;
         StatusChanged?.Invoke(_indexReady
             ? Loc.T("ItemScan.Status.Ready")
             : Loc.T("ItemScan.Status.IndexFailed"));
@@ -82,7 +79,7 @@ public sealed class ItemScanService : IDisposable
 
         Bitmap? scanRegion = null;
         Bitmap? beforeRegion = null;
-        List<IconSnapshot>? iconSnapshots = null;
+        StashCell? cell = null;
         Bitmap? nameSnapshot = null;
         string? failMessage = null;
         ItemScanResult? success = null;
@@ -96,7 +93,9 @@ public sealed class ItemScanService : IDisposable
                 debug.Catalog.IndexReady = IndexReady;
                 debug.Catalog.ItemCount = _catalog.Items.Count;
                 debug.Catalog.LastCatalogError = _catalog.LastError;
-                debug.Notes.Add("Shift+clique no centro do icone no inventario/stash (nao na janela de inspecao).");
+                debug.Notes.Add(LensConfig.Describe());
+                debug.Notes.Add($"icon-bank={_lens.Bank.Count} game-cache={_lens.Bank.GameCacheCount} tess={TitleOcr.IsReady}");
+                debug.Notes.Add("Shift+click the icon center in stash/inventory.");
             }
 
             await ItemLocalizedNames.LoadAsync(ct).ConfigureAwait(false);
@@ -119,11 +118,13 @@ public sealed class ItemScanService : IDisposable
                     success = await ScanIconAsync(x, y, scanId, debug, ct,
                         r => scanRegion = r,
                         b => beforeRegion = b,
-                        s => iconSnapshots = s).ConfigureAwait(false);
+                        c => cell = c).ConfigureAwait(false);
                 else
                 {
-                    nameSnapshot = CaptureNameSnapshot(x, y);
-                    success = await TryScanNameFromSnapshotAsync(nameSnapshot, x, y, scanId, debug)
+                    var cap = ScreenCapture.CaptureIconScanRegion(x, y);
+                    scanRegion = cap.Region;
+                    nameSnapshot = InspectFrame.ExtractTitle(cap.Region, cap.LocalX, cap.LocalY, debug);
+                    success = await ScanNameAsync(cap.Region, cap.LocalX, cap.LocalY, x, y, scanId, debug, ct)
                         .ConfigureAwait(false);
                 }
 
@@ -163,17 +164,11 @@ public sealed class ItemScanService : IDisposable
                 }
 
                 var saveCrops = new List<(int W, int H, Bitmap Bmp, string Label)>();
-                if (iconSnapshots != null)
+                if (cell != null)
                 {
-                    var n = 0;
-                    foreach (var snap in iconSnapshots.OrderBy(s => s.W * s.H))
-                    {
-                        n++;
-                        if (n > 8) break;
-                        saveCrops.Add((snap.W, snap.H, (Bitmap)snap.Icon.Clone(), $"crop{n}-icon"));
-                        if (snap.Label != null && !ReferenceEquals(snap.Label, snap.Icon))
-                            saveCrops.Add((snap.W, snap.H, (Bitmap)snap.Label.Clone(), $"crop{n}-label"));
-                    }
+                    saveCrops.Add((cell.SlotW, cell.SlotH, (Bitmap)cell.Icon.Clone(), "cell-icon"));
+                    if (cell.Label != null && !ReferenceEquals(cell.Label, cell.Icon))
+                        saveCrops.Add((cell.SlotW, cell.SlotH, (Bitmap)cell.Label.Clone(), "cell-label"));
                 }
                 if (nameSnapshot != null)
                     saveCrops.Add((0, 0, (Bitmap)nameSnapshot.Clone(), "name"));
@@ -188,7 +183,7 @@ public sealed class ItemScanService : IDisposable
 
             scanRegion?.Dispose();
             beforeRegion?.Dispose();
-            DisposeSnapshots(iconSnapshots);
+            cell?.Dispose();
             nameSnapshot?.Dispose();
         }
 
@@ -203,31 +198,19 @@ public sealed class ItemScanService : IDisposable
     private static string FailMessage(bool icon, ItemScanDebugReport? debug)
     {
         if (!icon) return Loc.T("ItemScan.Error.NoMatch");
-        if (debug?.Notes.Any(n => n.StartsWith("template-reject")) == true)
+        if (debug?.Notes.Any(n => n.StartsWith("icon-reject")) == true)
             return Loc.T("ItemScan.Error.Ambiguous");
         return Loc.T("ItemScan.Error.NoMatch");
     }
 
-    private static void DisposeSnapshots(List<IconSnapshot>? snapshots)
-    {
-        if (snapshots == null) return;
-        foreach (var snap in snapshots)
-        {
-            snap.Icon.Dispose();
-            if (snap.Label != null && !ReferenceEquals(snap.Label, snap.Icon))
-                snap.Label.Dispose();
-        }
-        snapshots.Clear();
-    }
-
     private async Task<ItemScanResult?> ScanIconAsync(
         int x, int y, int scanId, ItemScanDebugReport? debug, CancellationToken ct,
-        Action<Bitmap> setRegion, Action<Bitmap> setBefore, Action<List<IconSnapshot>> setSnapshots)
+        Action<Bitmap> setRegion, Action<Bitmap> setBefore, Action<StashCell> setCell)
     {
         List<(string Label, Bitmap Bmp)>? hoverStrips = null;
         Bitmap? before = null;
         Bitmap? region = null;
-        List<IconSnapshot>? snapshots = null;
+        StashCell? cell = null;
         int localX = 0, localY = 0, originX = 0, originY = 0;
 
         try
@@ -247,8 +230,8 @@ public sealed class ItemScanService : IDisposable
             originY = after.OriginY;
             setRegion(region);
 
-            snapshots = BuildIconSnapshots(region, before, originX, originY, x, y, localX, localY, debug);
-            if (snapshots.TrueForAll(s => !s.Highlighted))
+            cell = StashGrid.Locate(region, before, localX, localY, debug);
+            if (cell == null || !cell.Highlighted)
             {
                 await Task.Delay(HighlightRetryDelay, ct).ConfigureAwait(false);
                 var retry = ScreenCapture.CaptureIconScanRegion(x, y);
@@ -260,11 +243,12 @@ public sealed class ItemScanService : IDisposable
                 originY = retry.OriginY;
                 setRegion(region);
                 debug?.Notes.Add("highlight: retry capture +80ms.");
-                DisposeSnapshots(snapshots);
-                snapshots = BuildIconSnapshots(region, before, originX, originY, x, y, localX, localY, debug);
+                cell?.Dispose();
+                cell = StashGrid.Locate(region, before, localX, localY, debug);
             }
 
-            setSnapshots(snapshots);
+            if (cell != null)
+                setCell(cell);
 
             if (debug != null)
             {
@@ -272,17 +256,7 @@ public sealed class ItemScanService : IDisposable
                 debug.ScanOriginY = originY;
                 debug.LocalClickX = localX;
                 debug.LocalClickY = localY;
-                debug.Catalog.CatalogReady = _catalog.IsReady;
-                debug.Catalog.IndexReady = IndexReady;
-                debug.Catalog.ItemCount = _catalog.Items.Count;
-                debug.Catalog.I18nReady = ItemLocalizedNames.IsReady;
-                debug.Notes.Add(Loc.IsPortuguese
-                    ? ItemLocalizedNames.IsReady
-                        ? "Scan PT: OCR pt-BR + nomes json.tarkov.dev/items_pt."
-                        : $"Scan PT: nomes indisponiveis — {ItemLocalizedNames.LastError ?? "cache vazio"}."
-                    : "Scan EN: OCR en-US + nomes do catalogo.");
-                debug.Notes.Add("Icon scan: highlight template (exact size) → unique tooltip → in-cell OCR.");
-                debug.Notes.Add($"templates-indexed: {_matcher.IndexedTemplateCount}");
+                debug.Notes.Add($"templates-indexed: {_lens.Bank.Count}");
             }
 
             var tooltipOcr = new List<string>();
@@ -291,24 +265,107 @@ public sealed class ItemScanService : IDisposable
             hoverStrips = null;
             if (tip != null)
                 debug?.Notes.Add($"tooltip: {ItemDisplayNames.ShortName(tip)}");
-            else
+
+            if (cell == null)
             {
-                tip = await MatchTightTooltipAsync(x, y, debug, tooltipOcr).ConfigureAwait(false);
-                if (tip != null)
-                    debug?.Notes.Add($"tooltip-tight: {ItemDisplayNames.ShortName(tip)}");
+                return await TryAiOnlyAsync(null, tip, tooltipOcr, x, y, scanId, debug, ct)
+                    .ConfigureAwait(false);
             }
 
-            if (!IndexReady)
-                return tip != null ? Result(tip, 0.99, "tooltip", x, y, scanId) : null;
-
-            return await ScanIconFromSnapshotsAsync(
-                snapshots ?? [], x, y, scanId, debug, tip, tooltipOcr, ct).ConfigureAwait(false);
+            return await ResolveIconAsync(cell, region, localX, localY, tip, tooltipOcr, x, y, scanId, debug, ct)
+                .ConfigureAwait(false);
         }
         finally
         {
             if (hoverStrips != null)
                 TooltipScanner.DisposeStrips(hoverStrips);
         }
+    }
+
+    private async Task<ItemScanResult?> ResolveIconAsync(
+        StashCell cell,
+        Bitmap region,
+        int localX, int localY,
+        ItemDefinition? tooltip,
+        List<string> tooltipOcr,
+        int x, int y, int scanId,
+        ItemScanDebugReport? debug,
+        CancellationToken ct)
+    {
+        var iconHit = await Task.Run(() =>
+            _lens.MatchBestAround(region, localX, localY, cell, debug), ct)
+            .ConfigureAwait(false);
+
+        var ocrHits = new List<ItemDefinition>();
+        var ocrSlotW = iconHit?.SlotW ?? cell.SlotW;
+        var ocrSlotH = iconHit?.SlotH ?? cell.SlotH;
+        foreach (var bmp in new[] { cell.Icon, cell.Label })
+        {
+            if (bmp == null) continue;
+            var (lines, hits) = await IconShortNameScanner.TryMatchAllWithDebugAsync(
+                bmp, ocrSlotW, ocrSlotH, _catalog, debug != null ? [] : null, cell.Highlighted)
+                .ConfigureAwait(false);
+            if (debug != null)
+                debug.Ocr.AddRange(lines);
+            foreach (var item in hits)
+            {
+                if (_catalog.IsBroadShortLabel(item)) continue;
+                if (item.Width != ocrSlotW || item.Height != ocrSlotH) continue;
+                if (ocrHits.All(h => h.Id != item.Id))
+                    ocrHits.Add(item);
+            }
+        }
+
+        debug?.Notes.Add(
+            $"resolve: icon={(iconHit != null ? ItemDisplayNames.ShortName(iconHit.Item) + (iconHit.Confirmed ? "*" : "?") : "none")} " +
+            $"tooltip={(tooltip != null ? ItemDisplayNames.ShortName(tooltip) : "none")} " +
+            $"ocr=[{string.Join(",", ocrHits.Select(ItemDisplayNames.ShortName))}]");
+
+        LensHit? local = null;
+        if (iconHit is { Confirmed: true })
+            local = iconHit;
+        else if (ocrHits.Count == 1)
+        {
+            local = new LensHit
+            {
+                Item = ocrHits[0],
+                Confidence = 0.99,
+                Mode = cell.Highlighted ? "shortname-highlight" : "shortname",
+                SlotW = ocrHits[0].Width,
+                SlotH = ocrHits[0].Height,
+                Confirmed = true
+            };
+        }
+        else if (iconHit != null && tooltip != null && iconHit.Item.Id == tooltip.Id)
+            local = iconHit with { Confirmed = true, Confidence = Math.Max(iconHit.Confidence, 0.90) };
+        else if (iconHit != null && ocrHits.Count == 1 && ocrHits[0].Id == iconHit.Item.Id)
+            local = iconHit with { Confirmed = true, Confidence = Math.Max(iconHit.Confidence, 0.90) };
+
+        if (local is { Confirmed: true })
+        {
+            debug?.Notes.Add("ai: skipped (local confirmed)");
+            return Result(local, x, y, scanId);
+        }
+
+        debug?.Notes.Add("tooltip/name ignored on icon scan unless they confirm the icon.");
+        var ai = await TryAiOnlyAsync(cell, tooltip, tooltipOcr, x, y, scanId, debug, ct, ocrHits, iconHit)
+            .ConfigureAwait(false);
+        if (ai != null) return ai;
+
+        return null;
+    }
+
+    private async Task<ItemScanResult?> ScanNameAsync(
+        Bitmap region, int localX, int localY, int x, int y, int scanId,
+        ItemScanDebugReport? debug, CancellationToken ct)
+    {
+        var title = await _lens.MatchTitleAsync(region, localX, localY, _catalog, debug)
+            .ConfigureAwait(false);
+        if (title is { Confirmed: true })
+            return Result(title, x, y, scanId);
+
+        return await TryAiOnlyAsync(null, title?.Item, [], x, y, scanId, debug, ct)
+            .ConfigureAwait(false);
     }
 
     private async Task<ItemDefinition?> MatchTooltipAsync(
@@ -325,42 +382,91 @@ public sealed class ItemScanService : IDisposable
 
         var (item, lines) = await TooltipScanner.TryMatchCapturedAsync(
             strips, _catalog, []).ConfigureAwait(false);
-        AbsorbTooltipOcr(lines, debug, tooltipOcr);
-        return item;
-    }
-
-    private async Task<ItemDefinition?> MatchTightTooltipAsync(
-        int clickX, int clickY, ItemScanDebugReport? debug, List<string> tooltipOcr)
-    {
-        var strips = TooltipScanner.CaptureTight(clickX, clickY);
-        if (strips.Count == 0) return null;
-        var (item, lines) = await TooltipScanner.TryMatchCapturedAsync(
-            strips, _catalog, []).ConfigureAwait(false);
-        AbsorbTooltipOcr(lines, debug, tooltipOcr);
-        return item;
-    }
-
-    private static void AbsorbTooltipOcr(
-        List<OcrDebugLine> lines, ItemScanDebugReport? debug, List<string> tooltipOcr)
-    {
         debug?.Ocr.AddRange(lines);
         foreach (var line in lines)
         {
             if (!string.IsNullOrWhiteSpace(line.RawText))
                 tooltipOcr.Add(line.RawText);
         }
+        return item;
     }
 
+    private async Task<ItemScanResult?> TryAiOnlyAsync(
+        StashCell? cell,
+        ItemDefinition? tooltip,
+        List<string> tooltipOcr,
+        int x, int y, int scanId,
+        ItemScanDebugReport? debug,
+        CancellationToken ct,
+        List<ItemDefinition>? ocrHits = null,
+        LensHit? iconHit = null)
+    {
+        if (!ItemAiIdentifier.IsConfigured)
+        {
+            debug?.Notes.Add("ai: skipped (disabled or no API key)");
+            return null;
+        }
+
+        var slotW = cell?.SlotW ?? iconHit?.SlotW ?? 1;
+        var slotH = cell?.SlotH ?? iconHit?.SlotH ?? 1;
+        var candidates = new List<ItemDefinition>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        void Add(ItemDefinition? item)
+        {
+            if (item == null || !seen.Add(item.Id)) return;
+            candidates.Add(item);
+        }
+
+        Add(tooltip);
+        Add(iconHit?.Item);
+        if (ocrHits != null)
+        {
+            foreach (var hit in ocrHits)
+                Add(hit);
+        }
+
+        if (cell != null)
+        {
+            foreach (var (item, _, _) in _lens.TopCandidates(cell.Icon, slotW, slotH, 20))
+                Add(item);
+        }
+
+        var ocrBlob = string.Join(" | ", tooltipOcr.Where(t => !string.IsNullOrWhiteSpace(t))
+            .Distinct(StringComparer.OrdinalIgnoreCase));
+        if (ocrBlob.Length >= 2)
+        {
+            foreach (var item in _catalog.Search(ocrBlob, 20))
+                Add(item);
+        }
+
+        StatusChanged?.Invoke(Loc.T("ItemScan.Status.Ai"));
+        debug?.Notes.Add($"ai: fallback → {App.Settings.ItemScanAiProvider}, {candidates.Count} catalog hints");
+
+        var (itemHit, note, raw) = await ItemAiIdentifier.IdentifyAsync(
+            x, y, slotW, slotH, ocrBlob, candidates, _catalog, ct).ConfigureAwait(false);
+        debug?.Notes.Add(note);
+        if (debug != null)
+        {
+            debug.AiNote = note;
+            debug.AiRaw = string.IsNullOrWhiteSpace(raw) ? null : raw;
+        }
+        if (itemHit == null) return null;
+        return Result(itemHit, 0.97, "ai", x, y, scanId, itemHit.Width, itemHit.Height);
+    }
+
+    private static ItemScanResult Result(LensHit hit, int x, int y, int scanId) =>
+        Result(hit.Item, hit.Confidence, hit.Mode, x, y, scanId, hit.SlotW, hit.SlotH);
+
     private static ItemScanResult Result(
-        ItemDefinition item, double confidence, string mode, int x, int y, int scanId) => new()
+        ItemDefinition item, double confidence, string mode, int x, int y, int scanId, int slotW, int slotH) => new()
     {
         Item = item,
         Confidence = confidence,
         Mode = mode,
         ScreenX = x,
         ScreenY = y,
-        SlotWidth = item.Width,
-        SlotHeight = item.Height,
+        SlotWidth = slotW,
+        SlotHeight = slotH,
         ScanId = scanId
     };
 
@@ -371,494 +477,12 @@ public sealed class ItemScanService : IDisposable
             throw new OperationCanceledException();
     }
 
-    private sealed record IconSnapshot(int W, int H, Bitmap Icon, bool Highlighted, Bitmap? Label);
-
-    private static List<IconSnapshot> BuildIconSnapshots(
-        Bitmap region, Bitmap? beforeRegion, int originX, int originY, int clickX, int clickY, int localX, int localY,
-        ItemScanDebugReport? debug)
-    {
-        var list = new List<IconSnapshot>();
-
-        if (HighlightCrop.TryExtract(region, localX, localY, out var hw, out var hh, out var iconBmp, out var labelBmp,
-                out var method, beforeRegion)
-            && iconBmp != null)
-        {
-            list.Add(new IconSnapshot(hw, hh, iconBmp, true, labelBmp));
-            debug?.Notes.Add(
-                $"highlight ({method}): {hw}x{hh} icon {iconBmp.Width}x{iconBmp.Height}px" +
-                (labelBmp != null ? $" label {labelBmp.Width}x{labelBmp.Height}px." : "."));
-            return list;
-        }
-
-        debug?.Notes.Add("highlight: nao detectado (HSV + frame-diff). Fallback grade.");
-
-        foreach (var crop in ExtractSlotCrops(region, originX, originY, clickX, clickY))
-            list.Add(new IconSnapshot(crop.W, crop.H, crop.Bmp, false, null));
-
-        return list;
-    }
-
-    private static List<(int W, int H, Bitmap Bmp)> ExtractSlotCrops(
-        Bitmap region, int originX, int originY, int clickX, int clickY)
-    {
-        var list = new List<(int, int, Bitmap)>();
-        var seen = new HashSet<string>();
-
-        foreach (var (w, h) in IconSizes)
-        {
-            foreach (var (left, top, bw, bh) in InventoryGrid.SnappedSlotsAt(clickX, clickY, w, h))
-            {
-                var sx = left - originX;
-                var sy = top - originY;
-                if (sx < 0 || sy < 0 || sx + bw > region.Width || sy + bh > region.Height)
-                    continue;
-
-                var key = $"{sx}:{sy}:{w}x{h}";
-                if (!seen.Add(key)) continue;
-                list.Add((w, h, ScreenCapture.Crop(region, sx, sy, bw, bh)));
-                if (list.Count >= 6) return list;
-            }
-        }
-
-        return list;
-    }
-
-    private static Bitmap CaptureNameSnapshot(int x, int y)
-    {
-        var scale = ScreenCapture.GameScale();
-        var w = (int)Math.Round(520 * scale);
-        var h = (int)Math.Round(36 * scale);
-        var left = x - (int)Math.Round(10 * scale);
-        var top = y - (int)Math.Round(18 * scale);
-        return ScreenCapture.CaptureRegion(left, top, w, h);
-    }
-
-    private sealed record ScanCandidate(
-        ItemDefinition Item,
-        double Confidence,
-        double SecondConfidence,
-        int SlotW,
-        int SlotH,
-        int Slots);
-
-    private async Task<ItemScanResult?> ScanIconFromSnapshotsAsync(
-        List<IconSnapshot> snapshots, int x, int y, int scanId, ItemScanDebugReport? debug,
-        ItemDefinition? tooltip, List<string> tooltipOcr, CancellationToken ct)
-    {
-        var hasHighlight = snapshots.Any(s => s.Highlighted);
-
-        var templateResult = await Task.Run(() => ScanIconFromTemplates(snapshots, x, y, scanId, debug, hasHighlight))
-            .ConfigureAwait(false);
-
-        var ocrHits = new List<(ItemDefinition Item, int W, int H, bool Highlighted)>();
-        var ocrSnaps = hasHighlight
-            ? snapshots.Where(s => s.Highlighted)
-            : snapshots.Take(4);
-
-        var ocrAttempts = 0;
-        foreach (var snap in ocrSnaps)
-        {
-            if (++ocrAttempts > 4) break;
-
-            async Task AbsorbSnapAsync(Bitmap bmp)
-            {
-                var (lines, hits) = await IconShortNameScanner.TryMatchAllWithDebugAsync(
-                    bmp, snap.W, snap.H, _catalog, debug != null ? [] : null, snap.Highlighted)
-                    .ConfigureAwait(false);
-                if (debug != null)
-                    debug.Ocr.AddRange(lines);
-
-                foreach (var item in hits)
-                    ocrHits.Add((item, snap.W, snap.H, snap.Highlighted));
-            }
-
-            await AbsorbSnapAsync(snap.Icon).ConfigureAwait(false);
-            if (snap.Label != null && !ReferenceEquals(snap.Label, snap.Icon))
-                await AbsorbSnapAsync(snap.Label).ConfigureAwait(false);
-        }
-
-        var uniqueOcr = ocrHits
-            .GroupBy(h => h.Item.Id)
-            .Select(g => g.OrderByDescending(h => h.Highlighted).ThenByDescending(h => h.W * h.H).First())
-            .Where(h => !_catalog.IsBroadShortLabel(h.Item))
-            .ToList();
-
-        if (uniqueOcr.Count > 1
-            && uniqueOcr.Select(h => ItemDisplayNames.Name(h.Item)).Distinct(StringComparer.OrdinalIgnoreCase).Count() == 1)
-        {
-            var ordered = uniqueOcr.OrderBy(h => ItemDisplayNames.ShortName(h.Item).Replace(" ", "").Length).ToList();
-            var shortest = ordered[0];
-            var longest = ordered[^1];
-            var tipSn = tooltip != null ? ItemDisplayNames.ShortName(tooltip) : "";
-            var keepLonger = tipSn.Equals(ItemDisplayNames.ShortName(longest.Item), StringComparison.OrdinalIgnoreCase);
-            uniqueOcr = [keepLonger ? longest : shortest];
-            debug?.Notes.Add($"ocr-variant: {ItemDisplayNames.ShortName(uniqueOcr[0].Item)} (shared name)");
-        }
-
-        if (templateResult != null && uniqueOcr.Count > 0
-            && uniqueOcr.All(h => h.Item.Id != templateResult.Item.Id))
-        {
-            debug?.Notes.Add(
-                $"template-vs-ocr: dropping {ItemDisplayNames.ShortName(templateResult.Item)}, in-cell label disagrees.");
-            templateResult = null;
-        }
-
-        if (uniqueOcr.Count > 1)
-        {
-            if (tooltip != null && uniqueOcr.Any(h => h.Item.Id == tooltip.Id))
-            {
-                uniqueOcr = uniqueOcr.Where(h => h.Item.Id == tooltip.Id).ToList();
-                debug?.Notes.Add($"ocr-agree-tooltip: {ItemDisplayNames.ShortName(tooltip)}");
-            }
-            else
-            {
-                var loose = uniqueOcr.Select(h => h.Item).Where(i => IsLooseAmmo(i)).ToList();
-                var boxes = uniqueOcr.Select(h => h.Item).Where(IsAmmoBox).ToList();
-                var familyOk = tooltip == null
-                    || uniqueOcr.Any(h => h.Item.Id == tooltip.Id)
-                    || (tooltip != null && IsAmmoFamily(tooltip)
-                        && (loose.Any(i => i.Id == tooltip.Id) || boxes.Any(i => i.Id == tooltip.Id)));
-                if (familyOk && loose.Count == 1 && boxes.Count >= 1)
-                {
-                    var pick = PreferAmmoByTooltip(tooltip, loose[0], boxes[0]);
-                    debug?.Notes.Add($"ocr-ammo: {ItemDisplayNames.Name(pick)} (loose vs pack)");
-                    uniqueOcr = uniqueOcr.Where(h => h.Item.Id == pick.Id).ToList();
-                }
-                else if (tooltip != null)
-                {
-                    debug?.Notes.Add(
-                        $"ocr-ignored: [{string.Join(",", uniqueOcr.Select(h => ItemDisplayNames.ShortName(h.Item)))}] vs tooltip {ItemDisplayNames.ShortName(tooltip)}");
-                    uniqueOcr = [];
-                }
-            }
-        }
-
-        if (debug != null)
-        {
-            debug.Notes.Add(
-                $"resolve: template={(templateResult != null ? ItemDisplayNames.ShortName(templateResult.Item) : "none")} " +
-                $"tooltip={(tooltip != null ? ItemDisplayNames.ShortName(tooltip) : "none")} " +
-                $"ocr=[{string.Join(",", uniqueOcr.Select(h => ItemDisplayNames.ShortName(h.Item)))}]");
-        }
-
-        ItemScanResult? local = null;
-        if (templateResult != null)
-        {
-            if (tooltip?.Id == templateResult.Item.Id || uniqueOcr.Any(h => h.Item.Id == templateResult.Item.Id))
-                templateResult.Confidence = Math.Max(templateResult.Confidence, 0.97);
-            if (tooltip != null && tooltip.Id != templateResult.Item.Id)
-                debug?.Notes.Add(
-                    $"tooltip-vs-template: keeping icon {ItemDisplayNames.ShortName(templateResult.Item)} " +
-                    $"(tooltip was {ItemDisplayNames.ShortName(tooltip)}).");
-            local = templateResult;
-        }
-        else if (uniqueOcr.Count == 1)
-        {
-            var ocr = uniqueOcr[0];
-            if (tooltip != null && tooltip.Id != ocr.Item.Id)
-            {
-                if (IsAmmoFamily(tooltip)
-                    && (!IsAmmoFamily(ocr.Item) || _catalog.IsBroadShortLabel(ocr.Item)))
-                    local = Result(tooltip, 0.99, "tooltip", x, y, scanId);
-                else
-                {
-                    debug?.Notes.Add(
-                        $"tooltip-vs-ocr: keeping in-cell {ItemDisplayNames.ShortName(ocr.Item)} " +
-                        $"(tooltip was {ItemDisplayNames.ShortName(tooltip)}).");
-                    local = Result(ocr.Item, 0.99, ocr.Highlighted ? "shortname-highlight" : "shortname", x, y, scanId);
-                }
-            }
-            else
-                local = Result(ocr.Item, 0.99, ocr.Highlighted ? "shortname-highlight" : "shortname", x, y, scanId);
-        }
-        else if (tooltip != null)
-            local = Result(tooltip, 0.99, "tooltip", x, y, scanId);
-        else if (uniqueOcr.Count > 1)
-            debug?.Notes.Add("ocr-ambiguous: several short names, no template winner.");
-
-        var templateConfirmed = templateResult != null
-            && templateResult.Mode is "icon-highlight" or "icon";
-        if (ItemAiIdentifier.IsConfigured && !templateConfirmed)
-        {
-            var ai = await TryAiIdentifyAsync(
-                snapshots, tooltip, tooltipOcr, uniqueOcr, x, y, scanId, debug, ct).ConfigureAwait(false);
-            if (ai != null)
-            {
-                if (local != null && local.Item.Id != ai.Item.Id)
-                    debug?.Notes.Add(
-                        $"ai-override: {ItemDisplayNames.ShortName(local.Item)} → {ItemDisplayNames.ShortName(ai.Item)}");
-                return ai;
-            }
-        }
-        else if (debug != null && !ItemAiIdentifier.IsConfigured)
-            debug.Notes.Add("ai: skipped (disabled or no API key)");
-        else if (debug != null && templateConfirmed)
-            debug.Notes.Add("ai: skipped (template confirmed)");
-
-        return local;
-    }
-
-    private async Task<ItemScanResult?> TryAiIdentifyAsync(
-        List<IconSnapshot> snapshots,
-        ItemDefinition? tooltip,
-        List<string> tooltipOcr,
-        List<(ItemDefinition Item, int W, int H, bool Highlighted)> uniqueOcr,
-        int x, int y, int scanId, ItemScanDebugReport? debug, CancellationToken ct)
-    {
-        if (!ItemAiIdentifier.IsConfigured) return null;
-
-        var snap = snapshots.FirstOrDefault(s => s.Highlighted) ?? snapshots.FirstOrDefault();
-        if (snap == null) return null;
-
-        var candidates = new List<ItemDefinition>();
-        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        void Add(ItemDefinition? item)
-        {
-            if (item == null || !seen.Add(item.Id)) return;
-            candidates.Add(item);
-        }
-
-        Add(tooltip);
-        foreach (var hit in uniqueOcr)
-            Add(hit.Item);
-        foreach (var (item, _, _) in _matcher.MatchTopCandidates(snap.Icon, snap.W, snap.H, snap.Highlighted, 20))
-            Add(item);
-
-        var ocrBits = tooltipOcr.Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
-        if (debug != null)
-        {
-            foreach (var line in debug.Ocr)
-            {
-                if (!string.IsNullOrWhiteSpace(line.RawText))
-                    ocrBits.Add(line.RawText);
-            }
-        }
-        var ocrBlob = string.Join(" | ", ocrBits.Distinct(StringComparer.OrdinalIgnoreCase));
-        if (ocrBlob.Length >= 2)
-        {
-            foreach (var item in _catalog.Search(ocrBlob, 20))
-                Add(item);
-        }
-        foreach (var bit in ocrBits)
-        {
-            var cleaned = ItemCatalog.SanitizeInCellOcr(bit);
-            if (cleaned.Length is >= 2 and <= 16)
-            {
-                Add(_catalog.MatchExactShortLabel(cleaned));
-                foreach (var item in _catalog.Search(cleaned, 8))
-                    Add(item);
-            }
-        }
-
-        StatusChanged?.Invoke(Loc.T("ItemScan.Status.Ai"));
-        debug?.Notes.Add($"ai: screenshot+click → {App.Settings.ItemScanAiProvider}, {candidates.Count} catalog hints");
-
-        var (itemHit, note, raw) = await ItemAiIdentifier.IdentifyAsync(
-            x, y, snap.W, snap.H, ocrBlob, candidates, _catalog, ct).ConfigureAwait(false);
-        debug?.Notes.Add(note);
-        if (debug != null)
-        {
-            debug.AiNote = note;
-            debug.AiRaw = string.IsNullOrWhiteSpace(raw) ? null : raw;
-        }
-        if (itemHit == null) return null;
-
-        return Result(itemHit, 0.97, "ai", x, y, scanId);
-    }
-
-    private static bool IsAmmoBox(ItemDefinition item) =>
-        item.Types.Any(t => t.Equals("ammoBox", StringComparison.OrdinalIgnoreCase));
-
-    private static bool IsLooseAmmo(ItemDefinition item) =>
-        item.Types.Any(t => t.Equals("ammo", StringComparison.OrdinalIgnoreCase)) && !IsAmmoBox(item);
-
-    private static bool IsAmmoFamily(ItemDefinition item) => IsLooseAmmo(item) || IsAmmoBox(item);
-
-    private static ItemDefinition PreferAmmoByTooltip(
-        ItemDefinition? tooltip, ItemDefinition loose, ItemDefinition box)
-    {
-        if (tooltip?.Id == box.Id) return box;
-        if (tooltip?.Id == loose.Id) return loose;
-        var name = tooltip != null ? ItemDisplayNames.Name(tooltip) : "";
-        if (name.Contains("Pacote", StringComparison.OrdinalIgnoreCase)
-            || name.Contains("Pack", StringComparison.OrdinalIgnoreCase)
-            || name.Contains("Caixa", StringComparison.OrdinalIgnoreCase)
-            || name.Contains("Box", StringComparison.OrdinalIgnoreCase))
-            return box;
-        return loose;
-    }
-
-    private ItemScanResult? ScanIconFromTemplates(
-        List<IconSnapshot> snapshots, int x, int y, int scanId,
-        ItemScanDebugReport? debug, bool highlightOnly)
-    {
-        var pool = highlightOnly
-            ? snapshots.Where(s => s.Highlighted).ToList()
-            : snapshots.Take(4).ToList();
-
-        var raw = new List<(ScanCandidate Candidate, bool FromHighlight)>();
-        foreach (var snap in pool)
-        {
-            var w = snap.W;
-            var h = snap.H;
-            var highlighted = snap.Highlighted;
-            // Exact slot crop only — the padded label crop slides 1×1 templates
-            // over the neighbor and scores ~0.46 against every ammo pack.
-            var search = snap.Icon;
-            var (item, conf, second, matchW, matchH) = _matcher.MatchIconInRegion(
-                search, w, h, highlighted, searchSmaller: highlighted);
-            if (debug != null)
-            {
-                foreach (var (topItem, score, topSecond) in _matcher.MatchTopCandidates(search, matchW > 0 ? matchW : w, matchH > 0 ? matchH : h, highlighted, 5))
-                {
-                    debug.Templates.Add(new TemplateDebugLine
-                    {
-                        SlotW = matchW > 0 ? matchW : w,
-                        SlotH = matchH > 0 ? matchH : h,
-                        ItemId = topItem.Id,
-                        Name = ItemDisplayNames.Name(topItem),
-                        ShortName = ItemDisplayNames.ShortName(topItem),
-                        Score = score,
-                        SecondScore = topSecond
-                    });
-                }
-            }
-
-            if (item == null) continue;
-
-            var slots = matchW * matchH;
-            if (conf < PrefilterConfidence(slots, highlighted)) continue;
-            raw.Add((new ScanCandidate(item, conf, second, matchW, matchH, slots), highlighted));
-        }
-
-        if (raw.Count == 0)
-            return null;
-
-        var ranked = raw
-            .GroupBy(r => r.Candidate.Item.Id)
-            .Select(g =>
-            {
-                var best = g.OrderByDescending(r => r.Candidate.Confidence)
-                    .ThenByDescending(r => r.FromHighlight)
-                    .ThenByDescending(r => r.Candidate.Slots)
-                    .First();
-                var c = best.Candidate;
-                return new
-                {
-                    c.Item,
-                    RawConfidence = c.Confidence,
-                    InnerMargin = c.Confidence - c.SecondConfidence,
-                    FromHighlight = best.FromHighlight,
-                    c.SecondConfidence,
-                    c.Slots,
-                    c.SlotW,
-                    c.SlotH,
-                    Hits = g.Count()
-                };
-            })
-            .OrderByDescending(t => t.RawConfidence)
-            .ThenByDescending(t => t.FromHighlight)
-            .ThenByDescending(t => t.Slots)
-            .ThenByDescending(t => t.Hits)
-            .ToList();
-
-        var top = ranked[0];
-        if (ranked.Count > 1 && top.Slots < ranked[1].Slots
-            && top.RawConfidence - ranked[1].RawConfidence < 0.06)
-        {
-            debug?.Notes.Add(
-                $"template: {top.Slots}-slot {ItemDisplayNames.ShortName(top.Item)} not far enough " +
-                $"ahead of {ranked[1].Slots}-slot {ItemDisplayNames.ShortName(ranked[1].Item)}.");
-            top = ranked[1];
-        }
-        // Compare RAW scores — a highlight bonus used to inflate 78% vs 77%
-        // (Gorro UX PRO on Tala) into a "pass".
-        var runnerUpRaw = ranked.Count > 1 ? ranked[1].RawConfidence : top.SecondConfidence;
-        var margin = top.RawConfidence - runnerUpRaw;
-
-        var minConf = top.FromHighlight ? 0.84 : 0.90;
-        var minMargin = top.FromHighlight ? 0.03 : 0.05;
-        var minInner = top.FromHighlight ? 0.02 : 0.04;
-
-        var tiedIcon = top.InnerMargin < minInner && top.RawConfidence < 0.91;
-        var ambiguous = margin < minMargin || top.RawConfidence < minConf || tiedIcon;
-
-        if (ambiguous)
-        {
-            if (debug != null)
-            {
-                debug.Notes.Add(
-                    $"template-reject: top={top.Item.Id} conf={top.RawConfidence:F3} margin={margin:F3} inner={top.InnerMargin:F3} slots={top.Slots} (need >={minConf:F2} / margin>={minMargin:F3} / inner>={minInner:F3})");
-                if (App.Settings.ItemScanSlotPx == 0)
-                    debug.Notes.Add("Dica: se os crops estao desalinhados em 01-scan-region.png, ajuste Tamanho do slot nas Settings (1080p/1440p/4K).");
-            }
-            return null;
-        }
-
-        if (top.RawConfidence < 0.96)
-            StatusChanged?.Invoke(Loc.T("ItemScan.Status.LowConfidence"));
-
-        return new ItemScanResult
-        {
-            Item = top.Item,
-            Confidence = top.RawConfidence,
-            Mode = top.FromHighlight ? "icon-highlight" : "icon",
-            ScreenX = x,
-            ScreenY = y,
-            SlotWidth = top.SlotW,
-            SlotHeight = top.SlotH,
-            ScanId = scanId
-        };
-    }
-
-    private static double PrefilterConfidence(int slots, bool highlighted) =>
-        highlighted ? 0.80 : (slots <= 2 ? 0.88 : 0.86);
-
-    private async Task<ItemScanResult?> TryScanNameFromSnapshotAsync(
-        Bitmap bmp, int x, int y, int scanId, ItemScanDebugReport? debug)
-    {
-        var text = await OcrHelper.ReadTextAsync(bmp).ConfigureAwait(false);
-        if (debug != null)
-        {
-            debug.Ocr.Add(new OcrDebugLine
-            {
-                Crop = "name-bar",
-                RawText = text
-            });
-        }
-
-        if (string.IsNullOrWhiteSpace(text) || text.Trim().Length < 3)
-            return null;
-
-        var item = _catalog.MatchByName(text);
-        if (debug != null && debug.Ocr.Count > 0)
-        {
-            debug.Ocr[^1].MatchedItemId = item?.Id;
-            debug.Ocr[^1].MatchedShortName = item != null ? ItemDisplayNames.Name(item) : null;
-        }
-
-        if (item == null)
-            return null;
-
-        return new ItemScanResult
-        {
-            Item = item,
-            Confidence = 1,
-            Mode = "name",
-            ScreenX = x,
-            ScreenY = y,
-            SlotWidth = item.Width,
-            SlotHeight = item.Height,
-            ScanId = scanId
-        };
-    }
-
     public void Dispose()
     {
         CancelPendingScans();
         try { _scanCts?.Dispose(); } catch { /* ignore */ }
         _scanCts = null;
         _catalog.ItemsUpdated -= OnCatalogUpdated;
-        _matcher.Dispose();
+        _lens.Dispose();
     }
 }
