@@ -339,6 +339,55 @@ body::-webkit-scrollbar,
   transform-origin: center center;
 }
 
+#squad {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.squad-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+.squad-icon-wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  transform-origin: center center;
+}
+
+.squad-icon {
+  position: absolute;
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
+  transform-origin: center center;
+}
+
+.squad-nick {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  transform: translateX(-50%);
+  font: 600 10px Bahnschrift, Segoe UI, sans-serif;
+  color: #f2f2f2;
+  text-shadow: 0 0 3px #000, 0 1px 2px #000;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
 #hint {
   display: none !important;
 }

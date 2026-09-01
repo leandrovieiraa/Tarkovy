@@ -54,9 +54,63 @@
                         <TextBlock x:Name="EftTargetLabel" VerticalAlignment="Center" Margin="2,0,10,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="10"
                                    ToolTip="{DynamicResource Main.Tooltip.EftTarget}"/>
-                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.39" VerticalAlignment="Center" Margin="2,0,6,0"
+                        <TextBlock x:Name="AppVersionLabel" Text="Dev 0.1.47" VerticalAlignment="Center" Margin="2,0,6,0"
                                    Foreground="{StaticResource BrushTextDim}" FontSize="11"
                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
+                        <Button x:Name="SquadLinkBtn" Width="40" Height="32" Padding="0"
+                                Click="Settings_Click"
+                                Background="Transparent" BorderThickness="0"
+                                Foreground="{StaticResource BrushSquadOffline}"
+                                WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.SquadLink}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Viewbox Width="17" Height="17">
+                                <Canvas Width="16" Height="16">
+                                    <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="1.55" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Fill="Transparent"
+                                          Data="M2.1,8.1 A7.1,7.1 0 0 1 13.9,8.1"/>
+                                    <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="1.55" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Fill="Transparent"
+                                          Data="M4.6,10.4 A4.2,4.2 0 0 1 11.4,10.4"/>
+                                    <Ellipse Width="2.5" Height="2.5" Canvas.Left="6.75" Canvas.Top="12.1"
+                                             Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        <Button x:Name="SquadHeaderBtn" Width="40" Height="36" Padding="0"
+                                Click="Squad_Click"
+                                Background="Transparent" BorderThickness="0"
+                                Foreground="{StaticResource BrushAmber}"
+                                WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
+                                ToolTip="{DynamicResource Main.Tooltip.Squad}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Viewbox Width="17" Height="17">
+                                    <Canvas Width="16" Height="16">
+                                        <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              Data="M3,1.3 H12.4 V14.7 H3 Z"/>
+                                        <Ellipse Width="2.1" Height="2.1" Canvas.Left="8.6" Canvas.Top="7.2" Fill="#111111"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock x:Name="SquadHeaderCount"
+                                           FontFamily="{StaticResource HudFont}"
+                                           FontSize="8" FontWeight="SemiBold"
+                                           Height="10" LineHeight="10"
+                                           HorizontalAlignment="Center" TextAlignment="Center"
+                                           Margin="0,1,0,0"
+                                           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </StackPanel>
+                        </Button>
                         <Button x:Name="SettingsHeaderBtn" Content="⚙" Width="40" Height="32" Click="Settings_Click"
                                 Background="Transparent" Foreground="{StaticResource BrushAmber}" BorderThickness="0"
                                 FontSize="15" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand"
@@ -330,6 +384,27 @@
                     <TranslateTransform x:Name="SettingsDrawerShift" X="440"/>
                 </Border.RenderTransform>
                 <local:SettingsWindow x:Name="SettingsHost" VerticalAlignment="Stretch"/>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="SquadOverlay" Panel.ZIndex="8000" Visibility="Collapsed">
+            <Image x:Name="SquadBlurShot" Stretch="Fill" IsHitTestVisible="False"
+                   RenderOptions.BitmapScalingMode="LowQuality"
+                   RenderOptions.CachingHint="Cache">
+                <Image.Effect>
+                    <BlurEffect Radius="32" KernelType="Gaussian" RenderingBias="Performance"/>
+                </Image.Effect>
+            </Image>
+            <Border Background="#73000000" MouseLeftButtonDown="SquadScrim_Click"/>
+            <Border x:Name="SquadDrawer" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                    Width="440"
+                    Background="{StaticResource BrushBgDeep}"
+                    BorderBrush="{StaticResource BrushAmber}" BorderThickness="1,0,0,0"
+                    MouseLeftButtonDown="SquadDrawer_MouseDown">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="SquadDrawerShift" X="440"/>
+                </Border.RenderTransform>
+                <local:SquadWindow x:Name="SquadHost" VerticalAlignment="Stretch"/>
             </Border>
         </Grid>
 

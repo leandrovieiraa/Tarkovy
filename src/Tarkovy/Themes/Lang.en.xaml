@@ -4,6 +4,11 @@
 
   <!-- Main -->
   <sys:String x:Key="Main.Tooltip.Settings">Settings</sys:String>
+  <sys:String x:Key="Main.Tooltip.Squad">Squad room</sys:String>
+  <sys:String x:Key="Main.Tooltip.Squad.Count">Squad room · {0}/{1}</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink">Supabase connection</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink.On">Supabase connected</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink.Off">Supabase disconnected — paste URL and anon key in Config</sys:String>
   <sys:String x:Key="Main.Tooltip.Minimize">Minimize</sys:String>
   <sys:String x:Key="Main.Tooltip.Maximize">Maximize</sys:String>
   <sys:String x:Key="Main.Tooltip.Restore">Restore</sys:String>
@@ -84,6 +89,7 @@
   <!-- Footer / runtime -->
   <sys:String x:Key="Footer.NoFix">no fix</sys:String>
   <sys:String x:Key="Footer.Hud">{0}  ·  {1}  ·  {2}  ·  deleted shots {3}</sys:String>
+  <sys:String x:Key="Footer.Squad">SQUAD {0} · {1}</sys:String>
   <sys:String x:Key="Footer.RaidEndedCleaned">RAID ENDED · leftovers cleaned</sys:String>
   <sys:String x:Key="Footer.RaidEndedNoAuto">RAID ENDED · auto-cleanup off</sys:String>
   <sys:String x:Key="Footer.LogsMissing">LOGS: FOLDER NOT FOUND</sys:String>
@@ -127,6 +133,48 @@
   <sys:String x:Key="Settings.KeepLast">KEEP LAST SCREENSHOT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">AUTO-CLEAN ON RAID END (LOGS)</sys:String>
   <sys:String x:Key="Settings.AutoCleanupHint">When logs report raid end, close the session and remove leftover screenshots.</sys:String>
+  <sys:String x:Key="Settings.Section.Squad">SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.Hint">Optional. Paste your project URL and anon public key if you want squad positions on the map. Copy the SQL, run it once in the Supabase SQL editor, then use the door icon in the header to create or join a room.</sys:String>
+  <sys:String x:Key="Settings.Squad.Url">SUPABASE URL</sys:String>
+  <sys:String x:Key="Settings.Squad.AnonKey">ANON KEY</sys:String>
+  <sys:String x:Key="Settings.Squad.Nick">NICKNAME</sys:String>
+  <sys:String x:Key="Settings.Squad.Code">ROOM NAME</sys:String>
+  <sys:String x:Key="Settings.Squad.Password">ROOM PASSWORD</sys:String>
+  <sys:String x:Key="Settings.Squad.Create">CREATE ROOM</sys:String>
+  <sys:String x:Key="Settings.Squad.Join">JOIN</sys:String>
+  <sys:String x:Key="Settings.Squad.Leave">LEAVE</sys:String>
+  <sys:String x:Key="Settings.Squad.Copy">COPY</sys:String>
+  <sys:String x:Key="Squad.Generate.Tip">Generate a new room name</sys:String>
+  <sys:String x:Key="Squad.Copy.Tip">Copy room name</sys:String>
+  <sys:String x:Key="Squad.Password.Show">Show password</sys:String>
+  <sys:String x:Key="Squad.Password.Hide">Hide password</sys:String>
+  <sys:String x:Key="Settings.Squad.CopySql">COPY SQL FOR SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.Test">TEST CONNECTION</sys:String>
+  <sys:String x:Key="Settings.Squad.Online">Supabase reachable.</sys:String>
+  <sys:String x:Key="Settings.Squad.Offline">Supabase disconnected. Check URL and anon key.</sys:String>
+  <sys:String x:Key="Squad.Header">SQUAD</sys:String>
+  <sys:String x:Key="Squad.Panel.Hint">Pick a nickname. Room name is generated for you — use the button beside it to roll another. Create a room or join with name + password. Project URL and anon key stay in Config.</sys:String>
+  <sys:String x:Key="Squad.Members">CONNECTED</sys:String>
+  <sys:String x:Key="Squad.Members.Count">CONNECTED  {0}/{1}</sys:String>
+  <sys:String x:Key="Squad.Members.Empty">Nobody in the room yet.</sys:String>
+  <sys:String x:Key="Squad.Members.You">you</sys:String>
+  <sys:String x:Key="Squad.Members.NoFix">waiting for screenshot</sys:String>
+  <sys:String x:Key="Squad.Status.Idle">Not in a room.</sys:String>
+  <sys:String x:Key="Squad.Status.SqlCopied">SQL copied. Paste it in the Supabase SQL editor and Run.</sys:String>
+  <sys:String x:Key="Squad.Status.Working">Talking to Supabase…</sys:String>
+  <sys:String x:Key="Squad.Status.InRoom">In room {0}</sys:String>
+  <sys:String x:Key="Squad.Status.Error">Squad: {0}</sys:String>
+  <sys:String x:Key="Squad.Error.NeedProject">Paste the Supabase URL and anon key first.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedNick">Nickname required (1–20 characters).</sys:String>
+  <sys:String x:Key="Squad.Error.BadPassword">Wrong room password.</sys:String>
+  <sys:String x:Key="Squad.Error.NoRoom">Room not found.</sys:String>
+  <sys:String x:Key="Squad.Error.ShortPassword">Password must be at least 4 characters.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedSql">Run the Config SQL in Supabase again (Copy SQL), then create the room.</sys:String>
+  <sys:String x:Key="Squad.Error.AlreadyInRoom">You are already in this room.</sys:String>
+  <sys:String x:Key="Squad.Error.RoomFull">Room is full (max 5).</sys:String>
+  <sys:String x:Key="Squad.Error.RoomTaken">This room name already exists. Join it or generate another.</sys:String>
+  <sys:String x:Key="Squad.Error.RoomTakenRolled">That name was taken. New free name: {0}</sys:String>
+  <sys:String x:Key="Squad.Status.NameTaken">{0} already exists. Join it or generate another name.</sys:String>
   <sys:String x:Key="Settings.Cancel">CANCEL</sys:String>
   <sys:String x:Key="Settings.Save">SAVE</sys:String>
 

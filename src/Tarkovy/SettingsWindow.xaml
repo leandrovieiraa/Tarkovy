@@ -109,6 +109,19 @@
                     <PasswordBox x:Name="ItemScanAiKeyBox"/>
                     <TextBlock x:Name="ItemScanAiKeyHintText" FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,2,0,0"
                                Text="{DynamicResource Settings.ItemScanAiKeyHint}"/>
+
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Squad}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,0,0,8"
+                               Text="{DynamicResource Settings.Squad.Hint}"/>
+                    <Button Style="{StaticResource SlotButton}" HorizontalAlignment="Left" Margin="0,0,0,10"
+                            Content="{DynamicResource Settings.Squad.CopySql}" Click="SquadCopySql_Click"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Squad.Url}"/>
+                    <TextBox x:Name="SquadUrlBox"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.Squad.AnonKey}"/>
+                    <PasswordBox x:Name="SquadAnonKeyBox"/>
+                    <Button Style="{StaticResource SlotButton}" HorizontalAlignment="Left" Margin="0,12,0,0"
+                            Content="{DynamicResource Settings.Squad.Test}" Click="SquadTest_Click"/>
+                    <TextBlock x:Name="SquadProjectStatusText" FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,8,0,0"/>
                 </StackPanel>
             </ScrollViewer>
             <Border Grid.Row="2" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0" Padding="12">

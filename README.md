@@ -1,18 +1,18 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.39
+# TARKOVY · Dev 0.1.47
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.39-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.39"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.47-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.47"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.39**                   |
+| **Version**      | **Dev 0.1.47**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -67,6 +67,7 @@ No memory reading, no injection, no client modification.
 | ![layout](https://img.shields.io/badge/-layout-222?style=flat-square)  | Window layout        | Remembers position and size for main window, minimap, and Item Lens    |
 | ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
 | ![clean](https://img.shields.io/badge/-cleanup-222?style=flat-square)  | Screenshot cleanup   | Deletes the print after reading (and sweeps leftovers at raid end)     |
+| ![squad](https://img.shields.io/badge/-squad-222?style=flat-square)    | Squad map            | Door icon in the header: nickname, create/join a room, see who is connected. Friends appear on the map from their screenshots (your Supabase project — HTTPS out only) |
 | ![safe](https://img.shields.io/badge/-safe-222?style=flat-square)      | Safe approach        | Logs, screenshots, and screen capture only — no memory read / inject   |
 
 
@@ -86,7 +87,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.39`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.47`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -151,8 +152,28 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
   - **Page Up / Page Down** — change map floor (Interchange, Factory, Ground Zero)
 6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** the **center** of the item icon in stash/inventory (item must be highlighted) → prices panel opens (first run indexes icons from tarkov.dev). The icon scan **will miss or misidentify** some items (ammo, guns, similar icons) — use **Item Search** at the bottom of the panel. See [Item Lens limitations](#item-lens-limitations).
 7. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
+8. **Squad (optional):** the **door** icon in the header opens the room panel (nickname, create/join, who is connected). The **link** icon turns green when Supabase is reachable, yellow when not. Project URL + anon key live in **CONFIG**. Setup details are in the collapsed section below.
 
 On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show SmartScreen: *More info* → *Run anyway*.
+
+<details>
+<summary><strong>Squad map &amp; Supabase</strong> (optional)</summary>
+
+EFT does not expose live squad coordinates. Tarkovy publishes **your own** screenshot X/Y/Z/yaw to a room; everyone in that room sees the others on the map. Outbound HTTPS only — no port forwarding.
+
+1. Create a free project at [supabase.com](https://supabase.com)
+2. In Tarkovy **CONFIG → SUPABASE**, click **COPY SQL FOR SUPABASE** (or paste [`tools/supabase-squad.sql`](tools/supabase-squad.sql)) → run it once in the dashboard **SQL editor**
+3. **Project Settings → API**: copy **Project URL** and the **anon public** key into CONFIG, then **TEST CONNECTION** (header link icon should go green)
+4. Open the **door** icon → pick a nickname (1–20 chars) and a room password (4+ chars)
+5. One player clicks **CREATE ROOM** (a name like `FACTORY-A7F2` is generated; ⟳ rolls another) and shares **name + password**
+6. Everyone else pastes the code and password and clicks **JOIN**
+7. Take in-game screenshots as usual — each print updates your pin; mates poll about every 2.5s
+
+URL, anon key, nick, last room code and password are stored in `%AppData%\Tarkovy\settings.json` (same as the Item Lens AI key). Reopening Tarkovy tries to rejoin that room if you did not Leave.
+
+Positions older than ~20 minutes are hidden. Mates on a different map are not drawn. This is not an official BSG API — it only shares what Tarkovy already reads from screenshot filenames.
+
+</details>
 
 ### Item Lens limitations
 
@@ -251,17 +272,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.39` (`Tarkovy.exe`)
+### Release `v0.1.47` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.47/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2)             |
+| **SHA-256**    | `2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.39` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.39/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C)             |
 | **SHA-256**    | `CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.38` (`Tarkovy.exe`)
 
@@ -366,7 +395,66 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.39</strong> (latest)</summary>
+<summary><strong>Dev 0.1.47</strong> (latest)</summary>
+
+- **Squad** — max 5 players; door icon (same size as wifi) with `1/5` under it; leave/quit deletes you and drops empty rooms on Supabase
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.46</strong></summary>
+
+- **Squad** — refuse duplicate room names; generate/type/create check Supabase first; Create stays off while already in a room
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.45</strong></summary>
+
+- **Squad SQL** — room create no longer depends on `pgcrypto`/`gen_salt` (Supabase schema cache)
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.44</strong></summary>
+
+- **Squad panel** — icons on create / join / leave; auto room names (`FACTORY-A7F2`); password dots with show/hide eye
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.43</strong></summary>
+
+- **Header** — wifi-style connection icon (green / yellow) and a door for the squad room
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.42</strong></summary>
+
+- **Fix** — Config crashed (`BrushErr` missing) after squad colors were added to the theme
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.41</strong></summary>
+
+- **Squad header** — connection ● and room ⌂ sit next to Config (Segoe UI glyphs, same chrome as ⚙)
+- **Supabase** — URL + anon key in Config; door panel for nickname / create / join / who’s connected
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.40</strong></summary>
+
+- **Squad** — door icon next to Config: nickname, create/join a room, see who is connected; friends show on the map from screenshot positions
+- **Supabase** — URL + anon key stay in Config (optional); header link icon is green when the project is reachable, yellow when not
+- **Docs** — squad/Supabase setup lives in a collapsed Usage section
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.39</strong></summary>
 
 - **Player marker** — heading arrow is screen-space so zooming out (or a small overlay) no longer inflates it
 - **Quests** — Interchange **A Big Loss** listed as **Uma Grande Perda** (was Database - Part 2); tracked objectives switch the mall floor automatically

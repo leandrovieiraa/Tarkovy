@@ -79,7 +79,7 @@ public partial class MapView : UserControl
                 "tarkovy.assets",
                 assets,
                 CoreWebView2HostResourceAccessKind.Allow);
-            Web.Source = new Uri("https://tarkovy.assets/map.html?v=floor-click");
+            Web.Source = new Uri("https://tarkovy.assets/map.html?v=squad");
         }
         catch (Exception ex)
         {
@@ -262,6 +262,21 @@ public partial class MapView : UserControl
         }
 
         Post(new { type = "player", player = new { x = fix.X, y = fix.Y, z = fix.Z, yaw = fix.Yaw } });
+    }
+
+    public void SetSquad(IReadOnlyList<SquadMate> mates, string selfNick)
+    {
+        var members = mates.Select(m => new
+        {
+            nick = m.Nick,
+            mapId = m.MapId,
+            x = m.X,
+            y = m.Y,
+            z = m.Z,
+            yaw = m.Yaw,
+            hue = m.Hue
+        }).ToArray();
+        Post(new { type = "squad", members, self = selfNick ?? "" });
     }
 
     public void SetCompact(bool compact) => Post(new { type = "compact", value = compact });

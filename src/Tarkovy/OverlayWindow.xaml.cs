@@ -136,6 +136,8 @@ public partial class OverlayWindow : Window
 
     public void SetPlayer(PlayerFix? fix) => OverlayMap.SetPlayer(fix);
 
+    public void SetSquad(IReadOnlyList<SquadMate> mates, string selfNick) => OverlayMap.SetSquad(mates, selfNick);
+
     public void SetFollow(bool follow) => OverlayMap.SetFollow(follow);
 
     public void SetAutoFloor(bool auto) => OverlayMap.SetAutoFloor(auto);

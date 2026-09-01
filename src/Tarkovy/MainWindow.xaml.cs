@@ -48,6 +48,9 @@ public partial class MainWindow : Window
             StopItemScanWatcher();
             SettingsWindow.SettingsApplied -= OnSettingsApplied;
             Loc.LanguageChanged -= OnLanguageChanged;
+            if (App.Squad != null)
+                App.Squad.Changed -= OnSquadChanged;
+            SquadHost.Detach();
             _overlay?.Close();
             _itemLens?.ForceClose();
             _itemLens = null;
@@ -127,10 +130,12 @@ public partial class MainWindow : Window
         };
         SettingsWindow.SettingsApplied += OnSettingsApplied;
         SettingsHost.Closed += HideSettingsDrawer;
+        SquadHost.Closed += HideSquadDrawer;
         Loc.LanguageChanged += OnLanguageChanged;
         RegisterHotkeys();
         WireItemScanEvents();
         RefreshHud();
+        UpdateSquadHeader();
 
         await _loadingTerminal.TypeLineAsync("Loading.Term.Markers");
         await _loadingTerminal.TypeLineAsync("Loading.Term.ItemLens");
@@ -149,6 +154,8 @@ public partial class MainWindow : Window
         HideLoadingOverlay();
         PushMapToViews();
         Activate();
+        App.Squad?.StartBackgroundWork();
+        UpdateSquadHeader();
         _ = WarmupAndPushMapAsync();
         _ = DeferOptionalServicesAsync();
     }
@@ -287,6 +294,7 @@ public partial class MainWindow : Window
             SyncPoiMasters();
             SyncPanelTabs();
             RefreshHud();
+            UpdateSquadHeader();
         });
     }
 
@@ -317,10 +325,13 @@ public partial class MainWindow : Window
             PreviewMap.SetPlayer(fix);
             _overlay?.SetPlayer(fix);
             RefreshHud();
+            if (App.Squad.IsInRoom)
+                _ = App.Squad.PublishLastAsync();
         });
         App.Shots.Status += msg => Dispatcher.Invoke(() => AppendFooter(msg));
         App.Shots.DeletedCount += _ => Dispatcher.Invoke(RefreshHud);
         App.Raid.Changed += () => Dispatcher.Invoke(RefreshHud);
+        App.Squad.Changed += OnSquadChanged;
         App.Maps.MarkersUpdated += () => Dispatcher.Invoke(PushMapToViews);
         App.Items.ItemsUpdated += () => Dispatcher.Invoke(() =>
         {
@@ -329,6 +340,19 @@ public partial class MainWindow : Window
             _overlay?.SetPois(pois);
             if (_listMode == "pois") RebuildSideList();
         });
+    }
+
+    private void OnSquadChanged()
+    {
+        if (!Dispatcher.CheckAccess())
+        {
+            Dispatcher.BeginInvoke(OnSquadChanged);
+            return;
+        }
+
+        PushSquadToViews();
+        RefreshHud();
+        UpdateSquadHeader();
     }
 
     private void SelectMapId(string id)
@@ -385,6 +409,16 @@ public partial class MainWindow : Window
         MapTitle.Text = map.Name.ToUpperInvariant();
         SyncPoiMasters();
         ScheduleRebuildQuestList();
+        PushSquadToViews();
+    }
+
+    private void PushSquadToViews()
+    {
+        if (App.Squad == null) return;
+        var nick = App.Settings.SquadNickname ?? "";
+        var mates = App.Squad.IsInRoom ? App.Squad.Mates : [];
+        PreviewMap.SetSquad(mates, nick);
+        _overlay?.SetSquad(mates, nick);
     }
 
     private void ScheduleRebuildQuestList()
@@ -643,7 +677,10 @@ public partial class MainWindow : Window
         var posTxt = pos == null
             ? Loc.T("Footer.NoFix")
             : $"X {pos.X:0.0}  Y {pos.Y:0.0}  Z {pos.Z:0.0}  YAW {pos.Yaw:0}";
-        Footer.Text = Loc.T("Footer.Hud", App.Raid.StatusLabel, mapName, posTxt, App.Shots.DeletedThisRaid);
+        var hud = Loc.T("Footer.Hud", App.Raid.StatusLabel, mapName, posTxt, App.Shots.DeletedThisRaid);
+        if (App.Squad is { IsInRoom: true })
+            hud += "  ·  " + Loc.T("Footer.Squad", App.Squad.RoomCode, App.Squad.Mates.Count);
+        Footer.Text = hud;
     }
 
     private void AppendFooter(string msg)
@@ -665,10 +702,19 @@ public partial class MainWindow : Window
 
     private async void Settings_Click(object sender, RoutedEventArgs e)
     {
+        HideSquadDrawerImmediate();
         PreviewMap.SetHwndHidden(true);
-        await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
+        await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        await Task.Delay(40);
         CaptureSettingsBlur();
-        SettingsHost.LoadFromSettings();
+        try
+        {
+            SettingsHost.LoadFromSettings();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Tarkovy", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
         SettingsOverlay.Visibility = Visibility.Visible;
         var anim = new DoubleAnimation(440, 0, TimeSpan.FromMilliseconds(180))
         {
@@ -677,28 +723,27 @@ public partial class MainWindow : Window
         SettingsDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
     }
 
+    private async void Squad_Click(object sender, RoutedEventArgs e)
+    {
+        HideSettingsDrawerImmediate();
+        PreviewMap.SetHwndHidden(true);
+        await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        await Task.Delay(40);
+        CaptureSettingsBlur();
+        SquadBlurShot.Source = SettingsBlurShot.Source;
+        SquadHost.LoadFromSettings();
+        SquadOverlay.Visibility = Visibility.Visible;
+        var anim = new DoubleAnimation(440, 0, TimeSpan.FromMilliseconds(180))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+        };
+        SquadDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
+    }
+
     private void CaptureSettingsBlur()
     {
-        try
-        {
-            AppChrome.UpdateLayout();
-            var w = (int)Math.Ceiling(AppChrome.ActualWidth);
-            var h = (int)Math.Ceiling(AppChrome.ActualHeight);
-            if (w < 1 || h < 1)
-            {
-                SettingsBlurShot.Source = null;
-                return;
-            }
-
-            var shot = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
-            shot.Render(AppChrome);
-            shot.Freeze();
-            SettingsBlurShot.Source = shot;
-        }
-        catch
-        {
-            SettingsBlurShot.Source = null;
-        }
+        // Don't RenderTargetBitmap the chrome here: WebView2 HWND can freeze the UI thread.
+        SettingsBlurShot.Source = null;
     }
 
     private void SettingsScrim_Click(object sender, MouseButtonEventArgs e)
@@ -707,7 +752,39 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
+    private void SquadScrim_Click(object sender, MouseButtonEventArgs e)
+    {
+        HideSquadDrawer();
+        e.Handled = true;
+    }
+
     private void SettingsDrawer_MouseDown(object sender, MouseButtonEventArgs e) => e.Handled = true;
+
+    private void SquadDrawer_MouseDown(object sender, MouseButtonEventArgs e) => e.Handled = true;
+
+    private void HideSettingsDrawerImmediate()
+    {
+        SettingsDrawerShift.BeginAnimation(TranslateTransform.XProperty, null);
+        SettingsDrawerShift.X = 440;
+        SettingsOverlay.Visibility = Visibility.Collapsed;
+        SettingsBlurShot.Source = null;
+    }
+
+    private void HideSquadDrawerImmediate()
+    {
+        SquadHost.Detach();
+        SquadDrawerShift.BeginAnimation(TranslateTransform.XProperty, null);
+        SquadDrawerShift.X = 440;
+        SquadOverlay.Visibility = Visibility.Collapsed;
+        SquadBlurShot.Source = null;
+    }
+
+    private void RevealMapIfNoDrawer()
+    {
+        if (SettingsOverlay.Visibility != Visibility.Visible &&
+            SquadOverlay.Visibility != Visibility.Visible)
+            PreviewMap.SetHwndHidden(false);
+    }
 
     private void HideSettingsDrawer()
     {
@@ -720,9 +797,41 @@ public partial class MainWindow : Window
         {
             SettingsOverlay.Visibility = Visibility.Collapsed;
             SettingsBlurShot.Source = null;
-            PreviewMap.SetHwndHidden(false);
+            RevealMapIfNoDrawer();
         };
         SettingsDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
+    }
+
+    private void HideSquadDrawer()
+    {
+        if (SquadOverlay.Visibility != Visibility.Visible) return;
+        SquadHost.Detach();
+        var anim = new DoubleAnimation(0, 440, TimeSpan.FromMilliseconds(140))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+        };
+        anim.Completed += (_, _) =>
+        {
+            SquadOverlay.Visibility = Visibility.Collapsed;
+            SquadBlurShot.Source = null;
+            RevealMapIfNoDrawer();
+        };
+        SquadDrawerShift.BeginAnimation(TranslateTransform.XProperty, anim);
+    }
+
+    private void UpdateSquadHeader()
+    {
+        var online = App.Squad is { ProjectOnline: true };
+        var brush = TryFindResource(online ? "BrushSquadOnline" : "BrushSquadOffline") as Brush
+                    ?? (online ? Brushes.LimeGreen : Brushes.Gold);
+        SquadLinkBtn.Foreground = brush;
+        SquadLinkBtn.ToolTip = Loc.T(online ? "Main.Tooltip.SquadLink.On" : "Main.Tooltip.SquadLink.Off");
+        var inRoom = App.Squad is { IsInRoom: true };
+        var n = inRoom ? App.Squad!.Mates.Count : 0;
+        SquadHeaderCount.Text = $"{n}/{SquadHub.MaxPlayers}";
+        SquadHeaderBtn.ToolTip = inRoom
+            ? Loc.T("Main.Tooltip.Squad.Count", n, SquadHub.MaxPlayers)
+            : Loc.T("Main.Tooltip.Squad");
     }
 
     private void OnSettingsApplied()
@@ -743,6 +852,8 @@ public partial class MainWindow : Window
             StopItemScanWatcher();
         PushMapToViews();
         RefreshHud();
+        PushSquadToViews();
+        UpdateSquadHeader();
     }
 
     private void MapCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)

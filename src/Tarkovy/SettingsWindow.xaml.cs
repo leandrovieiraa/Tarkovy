@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,15 +28,15 @@ public partial class SettingsWindow : UserControl
         {
             Content = Loc.T("Settings.Language.English"),
             Tag = Loc.English,
-            Foreground = (Brush)FindResource("BrushText"),
-            Background = (Brush)FindResource("BrushBgRaised")
+            Foreground = ThemeBrush("BrushText"),
+            Background = ThemeBrush("BrushBgRaised")
         });
         LanguageCombo.Items.Add(new ComboBoxItem
         {
             Content = Loc.T("Settings.Language.Portuguese"),
             Tag = Loc.Portuguese,
-            Foreground = (Brush)FindResource("BrushText"),
-            Background = (Brush)FindResource("BrushBgRaised")
+            Foreground = ThemeBrush("BrushText"),
+            Background = ThemeBrush("BrushBgRaised")
         });
         LanguageCombo.SelectedIndex = Loc.Normalize(s.UiLanguage) == Loc.Portuguese ? 1 : 0;
         _suppressLang = false;
@@ -63,6 +64,9 @@ public partial class SettingsWindow : UserControl
         PopulateItemScanAiProviderCombo(s.ItemScanAiProvider);
         PopulateItemScanSlotCombo(s.ItemScanSlotPx);
         ItemScanRotatedBox.IsChecked = s.ItemScanRotatedIcons;
+        SquadUrlBox.Text = s.SquadSupabaseUrl ?? "";
+        SquadAnonKeyBox.Password = s.SquadSupabaseAnonKey ?? "";
+        RefreshSquadProjectStatus();
         RefreshPathBadges();
     }
 
@@ -133,15 +137,15 @@ public partial class SettingsWindow : UserControl
         {
             Content = Loc.T("Settings.Language.English"),
             Tag = Loc.English,
-            Foreground = (Brush)FindResource("BrushText"),
-            Background = (Brush)FindResource("BrushBgRaised")
+            Foreground = ThemeBrush("BrushText"),
+            Background = ThemeBrush("BrushBgRaised")
         });
         LanguageCombo.Items.Add(new ComboBoxItem
         {
             Content = Loc.T("Settings.Language.Portuguese"),
             Tag = Loc.Portuguese,
-            Foreground = (Brush)FindResource("BrushText"),
-            Background = (Brush)FindResource("BrushBgRaised")
+            Foreground = ThemeBrush("BrushText"),
+            Background = ThemeBrush("BrushBgRaised")
         });
         LanguageCombo.SelectedIndex = idx;
         _suppressLang = false;
@@ -149,6 +153,7 @@ public partial class SettingsWindow : UserControl
         PopulateItemScanAiProviderCombo(App.Settings.ItemScanAiProvider);
         RefreshAiKeyHint();
         RefreshPathBadges();
+        RefreshSquadProjectStatus();
         _ = ItemLocalizedNames.ReloadAsync();
     }
 
@@ -156,11 +161,16 @@ public partial class SettingsWindow : UserControl
     {
         var logsOk = Directory.Exists(LogsPathBox.Text);
         LogsOk.Text = logsOk ? Loc.T("Settings.Path.Ok") : Loc.T("Settings.Path.Missing");
-        LogsOk.Foreground = logsOk ? (Brush)FindResource("BrushOk") : (Brush)FindResource("BrushErr");
+        LogsOk.Foreground = ThemeBrush(logsOk ? "BrushOk" : "BrushErr");
         var shotsOk = Directory.Exists(ShotsPathBox.Text);
         ShotsOk.Text = shotsOk ? Loc.T("Settings.Path.Ok") : Loc.T("Settings.Path.Missing");
-        ShotsOk.Foreground = shotsOk ? (Brush)FindResource("BrushOk") : (Brush)FindResource("BrushErr");
+        ShotsOk.Foreground = ThemeBrush(shotsOk ? "BrushOk" : "BrushErr");
     }
+
+    private Brush ThemeBrush(string key) =>
+        TryFindResource(key) as Brush ??
+        Application.Current?.TryFindResource(key) as Brush ??
+        Brushes.Silver;
 
     private void BrowseLogs_Click(object sender, RoutedEventArgs e)
     {
@@ -214,6 +224,7 @@ public partial class SettingsWindow : UserControl
             s.ItemScanGameHeight = slotPx switch { 63 => 1080, 84 => 1440, 126 => 2160, _ => 0 };
         }
         s.ItemScanRotatedIcons = ItemScanRotatedBox.IsChecked == true;
+        ApplySquadProjectFields();
         var langChanged = Loc.Normalize(s.UiLanguage) != _langWhenOpened;
         Loc.Apply(s.UiLanguage);
         if (langChanged)
@@ -221,6 +232,8 @@ public partial class SettingsWindow : UserControl
         _ = Task.Run(() => StartupRegistration.Apply(s.StartWithWindows));
         App.ApplyWatchers();
         SettingsStore.Save(s);
+        if (App.Squad != null)
+            _ = App.Squad.ProbeProjectAsync();
         SettingsApplied?.Invoke();
         Closed?.Invoke();
     }
@@ -240,4 +253,54 @@ public partial class SettingsWindow : UserControl
     }
 
     private void Close_Click(object sender, RoutedEventArgs e) => Closed?.Invoke();
+
+    private void ApplySquadProjectFields()
+    {
+        var s = App.Settings;
+        s.SquadSupabaseUrl = SquadUrlBox.Text.Trim().TrimEnd('/');
+        s.SquadSupabaseAnonKey = SquadAnonKeyBox.Password?.Trim() ?? "";
+    }
+
+    private void RefreshSquadProjectStatus()
+    {
+        if (App.Squad is { ProjectOnline: true })
+        {
+            SquadProjectStatusText.Text = Loc.T("Settings.Squad.Online");
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushSquadOnline");
+            return;
+        }
+
+        SquadProjectStatusText.Text = Loc.T("Settings.Squad.Offline");
+        SquadProjectStatusText.Foreground = ThemeBrush("BrushSquadOffline");
+    }
+
+    private async void SquadTest_Click(object sender, RoutedEventArgs e)
+    {
+        ApplySquadProjectFields();
+        SettingsStore.Save(App.Settings);
+        if (App.Squad == null) return;
+        SquadProjectStatusText.Text = Loc.T("Squad.Status.Working");
+        SquadProjectStatusText.Foreground = ThemeBrush("BrushTextDim");
+        await App.Squad.ProbeProjectAsync();
+        RefreshSquadProjectStatus();
+    }
+
+    private void SquadCopySql_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Tarkovy.supabase-squad.sql");
+            if (stream == null)
+                throw new InvalidOperationException("SQL resource missing");
+            using var reader = new StreamReader(stream);
+            Clipboard.SetText(reader.ReadToEnd());
+            SquadProjectStatusText.Text = Loc.T("Squad.Status.SqlCopied");
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushTextDim");
+        }
+        catch (Exception ex)
+        {
+            SquadProjectStatusText.Text = Loc.T("Squad.Status.Error", ex.Message);
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushErr");
+        }
+    }
 }

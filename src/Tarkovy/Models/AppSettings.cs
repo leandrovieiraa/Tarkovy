@@ -54,6 +54,16 @@ public sealed class AppSettings
     /// <summary>UI language: en (default) or pt.</summary>
     public string UiLanguage { get; set; } = "en";
 
+    /// <summary>Supabase project URL, e.g. https://xxxx.supabase.co</summary>
+    public string SquadSupabaseUrl { get; set; } = "";
+    /// <summary>anon public key from Project Settings → API.</summary>
+    public string SquadSupabaseAnonKey { get; set; } = "";
+    public string SquadNickname { get; set; } = "";
+    public string SquadRoomCode { get; set; } = "";
+    public string SquadPassword { get; set; } = "";
+    /// <summary>Rejoin last room on launch after Create/Join; cleared on Leave.</summary>
+    public bool SquadStayInRoom { get; set; }
+
     public WindowPlacement MainWindowPlacement { get; set; } = new();
     public WindowPlacement OverlayWindowPlacement { get; set; } = new();
     public WindowPlacement ItemLensWindowPlacement { get; set; } = new();

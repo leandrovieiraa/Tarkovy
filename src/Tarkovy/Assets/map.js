@@ -6,6 +6,7 @@
   const markers = document.getElementById("markers");
   const poiMarkers = document.getElementById("poiMarkers");
   const playerEl = document.getElementById("player");
+  const squadEl = document.getElementById("squad");
   const tip = document.getElementById("tip");
   const wpBanner = document.getElementById("wpBanner");
   const rotLeftBtn = document.getElementById("rotLeft");
@@ -81,6 +82,8 @@
     followZoomApplied: false,
     followZoomMult: 3.2,
     player: null,
+    squad: [],
+    squadSelf: "",
     extracts: [],
     mines: [],
     spawns: [],
@@ -286,6 +289,7 @@
     world.style.setProperty("--map-rot", `${r}deg`);
     if (rotResetBtn) rotResetBtn.textContent = `${((r % 360) + 360) % 360}°`;
     syncPlayerScreen();
+    syncSquadScreen();
     updateRoute();
   }
 
@@ -334,6 +338,63 @@
       icon.style.top = -size / 2 + "px";
       icon.style.transform = `rotate(${state.player.yaw || 0}deg)`;
     }
+  }
+
+  function setSquad(members, selfNick) {
+    state.squad = Array.isArray(members) ? members : [];
+    if (typeof selfNick === "string") state.squadSelf = selfNick;
+    syncSquadScreen();
+  }
+
+  function syncSquadScreen() {
+    if (!squadEl) return;
+    squadEl.innerHTML = "";
+    if (!state.map) return;
+    const selfNick = String(state.squadSelf || "").toLowerCase();
+    const mapId = String(state.map.id || "").toLowerCase();
+    const size = Math.max(10, playerScreenSize() - 2);
+    const nickSize = state.compact ? 8 : 10;
+    for (const m of state.squad) {
+      if (!m || !m.nick) continue;
+      if (selfNick && String(m.nick).toLowerCase() === selfNick) continue;
+      if (!m.mapId) continue;
+      if (String(m.mapId).toLowerCase() !== mapId) continue;
+      const { pctX, pctY } = gameToPct(m.x, m.z, state.map);
+      if (!inMap(pctX, pctY)) continue;
+      const scr = worldToScreen(pctX * state.worldW, pctY * state.worldH);
+      const pin = document.createElement("div");
+      pin.className = "squad-pin";
+      pin.style.left = scr.x + "px";
+      pin.style.top = scr.y + "px";
+      const hue = Number(m.hue) || 60;
+      pin.innerHTML =
+        '<div class="squad-icon-wrap">' +
+        `<img class="marker-icon squad-icon" src="${MARKER_ICONS.player}" alt="" draggable="false" ` +
+        `style="filter:hue-rotate(${hue}deg) drop-shadow(0 0 2px rgba(0,0,0,0.9))">` +
+        `<span class="squad-nick" style="font-size:${nickSize}px">${escapeHtml(m.nick)}</span>` +
+        "</div>";
+      const wrap = pin.querySelector(".squad-icon-wrap");
+      const icon = pin.querySelector(".squad-icon");
+      if (wrap) wrap.style.transform = `rotate(${-state.rotation}deg)`;
+      if (icon) {
+        icon.style.width = size + "px";
+        icon.style.height = size + "px";
+        icon.style.left = -size / 2 + "px";
+        icon.style.top = -size / 2 + "px";
+        icon.style.transform = `rotate(${m.yaw || 0}deg)`;
+      }
+      const label = pin.querySelector(".squad-nick");
+      if (label) label.style.top = size / 2 + 2 + "px";
+      squadEl.appendChild(pin);
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
   function rotMat() {
@@ -1390,6 +1451,7 @@
       updateRoute();
     }
     if (data.type === "player") setPlayer(data.player);
+    if (data.type === "squad") setSquad(data.members, data.self);
     if (data.type === "autoFloor") setAutoFloor(data.value);
     if (data.type === "follow") {
       state.follow = !!data.value;

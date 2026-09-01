@@ -22,6 +22,8 @@
     <SolidColorBrush x:Key="BrushTextDim" Color="{StaticResource TextDim}"/>
     <SolidColorBrush x:Key="BrushOk" Color="{StaticResource OkGreen}"/>
     <SolidColorBrush x:Key="BrushErr" Color="{StaticResource ErrRed}"/>
+    <SolidColorBrush x:Key="BrushSquadOnline" Color="#3DDC84"/>
+    <SolidColorBrush x:Key="BrushSquadOffline" Color="#E8C547"/>
 
     <FontFamily x:Key="HudFont">Bahnschrift, Segoe UI</FontFamily>
 
@@ -465,6 +467,10 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="bd" Property="Background" Value="#333333"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.4"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

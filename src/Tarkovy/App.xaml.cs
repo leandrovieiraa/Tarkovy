@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using Tarkovy.Models;
 using Tarkovy.Services;
 
@@ -13,6 +13,7 @@ public partial class App : Application
     public static RaidSession Raid { get; } = new();
     public static LogWatcher Logs { get; private set; } = null!;
     public static ScreenshotWatcher Shots { get; private set; } = null!;
+    public static SquadHub Squad { get; private set; } = null!;
 
     private static Task? _bootTask;
     private static readonly object BootLock = new();
@@ -60,6 +61,7 @@ public partial class App : Application
             ItemScan = new ItemScanService(Items);
             Logs = new LogWatcher(Maps);
             Shots = new ScreenshotWatcher();
+            Squad = new SquadHub();
             _ = Items.LoadAsync();
             _ = Maps.RefreshMarkersAsync();
             ApplyWatchers();
@@ -117,8 +119,18 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         SettingsStore.Save(Settings);
+        try
+        {
+            if (Squad is { IsInRoom: true })
+                Squad.LeaveAsync().Wait(TimeSpan.FromSeconds(4));
+        }
+        catch
+        {
+            /* shutdown */
+        }
         Logs?.Dispose();
         Shots?.Dispose();
+        Squad?.Dispose();
         ShutdownItemScan();
         base.OnExit(e);
     }

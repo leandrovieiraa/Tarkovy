@@ -4,6 +4,11 @@
 
   <!-- Main -->
   <sys:String x:Key="Main.Tooltip.Settings">Config</sys:String>
+  <sys:String x:Key="Main.Tooltip.Squad">Sala do squad</sys:String>
+  <sys:String x:Key="Main.Tooltip.Squad.Count">Sala do squad · {0}/{1}</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink">Conexão Supabase</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink.On">Supabase conectado</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink.Off">Supabase desconectado — cole URL e chave anon no Config</sys:String>
   <sys:String x:Key="Main.Tooltip.Minimize">Minimizar</sys:String>
   <sys:String x:Key="Main.Tooltip.Maximize">Maximizar</sys:String>
   <sys:String x:Key="Main.Tooltip.Restore">Restaurar</sys:String>
@@ -84,6 +89,7 @@
   <!-- Footer / runtime -->
   <sys:String x:Key="Footer.NoFix">sem fix</sys:String>
   <sys:String x:Key="Footer.Hud">{0}  ·  {1}  ·  {2}  ·  prints apagados {3}</sys:String>
+  <sys:String x:Key="Footer.Squad">SQUAD {0} · {1}</sys:String>
   <sys:String x:Key="Footer.RaidEndedCleaned">RAID ENCERRADA · leftovers limpos</sys:String>
   <sys:String x:Key="Footer.RaidEndedNoAuto">RAID ENCERRADA · limpeza auto desligada</sys:String>
   <sys:String x:Key="Footer.LogsMissing">LOGS: PASTA NAO ENCONTRADA</sys:String>
@@ -127,6 +133,48 @@
   <sys:String x:Key="Settings.KeepLast">MANTER O ÚLTIMO PRINT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">LIMPAR AUTOMÁTICO AO FIM DA RAID (LOGS)</sys:String>
   <sys:String x:Key="Settings.AutoCleanupHint">Quando o log indicar fim de raid, encerra a sessão e remove leftovers da pasta de prints.</sys:String>
+  <sys:String x:Key="Settings.Section.Squad">SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.Hint">Opcional. Cole a URL do projeto e a chave anon se quiser posições do squad no mapa. Copie o SQL, rode uma vez no SQL editor do Supabase e use o ícone da porta no header para criar ou entrar na sala.</sys:String>
+  <sys:String x:Key="Settings.Squad.Url">URL DO SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.AnonKey">CHAVE ANON</sys:String>
+  <sys:String x:Key="Settings.Squad.Nick">APELIDO</sys:String>
+  <sys:String x:Key="Settings.Squad.Code">NOME DA SALA</sys:String>
+  <sys:String x:Key="Settings.Squad.Password">SENHA DA SALA</sys:String>
+  <sys:String x:Key="Settings.Squad.Create">CRIAR SALA</sys:String>
+  <sys:String x:Key="Settings.Squad.Join">ENTRAR</sys:String>
+  <sys:String x:Key="Settings.Squad.Leave">SAIR</sys:String>
+  <sys:String x:Key="Settings.Squad.Copy">COPIAR</sys:String>
+  <sys:String x:Key="Squad.Generate.Tip">Gerar outro nome de sala</sys:String>
+  <sys:String x:Key="Squad.Copy.Tip">Copiar nome da sala</sys:String>
+  <sys:String x:Key="Squad.Password.Show">Mostrar senha</sys:String>
+  <sys:String x:Key="Squad.Password.Hide">Ocultar senha</sys:String>
+  <sys:String x:Key="Settings.Squad.CopySql">COPIAR SQL DO SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.Test">TESTAR CONEXÃO</sys:String>
+  <sys:String x:Key="Settings.Squad.Online">Supabase acessível.</sys:String>
+  <sys:String x:Key="Settings.Squad.Offline">Supabase desconectado. Confira URL e chave anon.</sys:String>
+  <sys:String x:Key="Squad.Header">SQUAD</sys:String>
+  <sys:String x:Key="Squad.Panel.Hint">Escolha um apelido. O nome da sala é gerado sozinho — use o botão ao lado para outro. Crie a sala ou entre com nome + senha. URL e chave anon ficam no Config.</sys:String>
+  <sys:String x:Key="Squad.Members">CONECTADOS</sys:String>
+  <sys:String x:Key="Squad.Members.Count">CONECTADOS  {0}/{1}</sys:String>
+  <sys:String x:Key="Squad.Members.Empty">Ninguém na sala ainda.</sys:String>
+  <sys:String x:Key="Squad.Members.You">você</sys:String>
+  <sys:String x:Key="Squad.Members.NoFix">aguardando screenshot</sys:String>
+  <sys:String x:Key="Squad.Status.Idle">Fora de sala.</sys:String>
+  <sys:String x:Key="Squad.Status.SqlCopied">SQL copiado. Cole no SQL editor do Supabase e rode.</sys:String>
+  <sys:String x:Key="Squad.Status.Working">Falando com o Supabase…</sys:String>
+  <sys:String x:Key="Squad.Status.InRoom">Na sala {0}</sys:String>
+  <sys:String x:Key="Squad.Status.Error">Squad: {0}</sys:String>
+  <sys:String x:Key="Squad.Error.NeedProject">Cole a URL e a chave anon do Supabase primeiro.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedNick">Apelido obrigatório (1–20 caracteres).</sys:String>
+  <sys:String x:Key="Squad.Error.BadPassword">Senha da sala errada.</sys:String>
+  <sys:String x:Key="Squad.Error.NoRoom">Sala não encontrada.</sys:String>
+  <sys:String x:Key="Squad.Error.ShortPassword">A senha precisa ter pelo menos 4 caracteres.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedSql">Rode de novo o SQL do Config no Supabase (Copiar SQL) e tente criar a sala.</sys:String>
+  <sys:String x:Key="Squad.Error.AlreadyInRoom">Você já está nesta sala.</sys:String>
+  <sys:String x:Key="Squad.Error.RoomFull">Sala cheia (máximo 5).</sys:String>
+  <sys:String x:Key="Squad.Error.RoomTaken">Este nome de sala já existe. Use Entrar ou gere outro.</sys:String>
+  <sys:String x:Key="Squad.Error.RoomTakenRolled">Este nome já existia. Novo nome livre: {0}</sys:String>
+  <sys:String x:Key="Squad.Status.NameTaken">{0} já existe. Use Entrar ou gere outro nome.</sys:String>
   <sys:String x:Key="Settings.Cancel">CANCELAR</sys:String>
   <sys:String x:Key="Settings.Save">SALVAR</sys:String>
 
