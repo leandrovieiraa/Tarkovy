@@ -4,7 +4,6 @@ obj/
 *.user
 publish/
 dist/
-dist-new/
 AppData/
 *.log
 *.suo

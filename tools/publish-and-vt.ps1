@@ -17,6 +17,14 @@ Set-Location $Root
 
 if (-not $SkipPublish) {
     Write-Host "Publishing to dist\..."
+    $running = Get-Process Tarkovy -ErrorAction SilentlyContinue
+    if ($running) {
+        throw "Close Tarkovy.exe (PID $($running.Id -join ', ')) before publish. Output is always dist\ — never dist-new."
+    }
+    if (Test-Path dist-new) {
+        Write-Host "Removing leftover dist-new\..."
+        Remove-Item dist-new -Recurse -Force
+    }
     if (Test-Path dist) {
         Write-Host "Cleaning dist\..."
         Remove-Item dist\* -Recurse -Force -ErrorAction SilentlyContinue

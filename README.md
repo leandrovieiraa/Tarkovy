@@ -118,7 +118,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
 
 ## Interface
 
-![Tarkovy app screenshot](docs/tarkovy-app.png)
+![Tarkovy app showcase](docs/tarkovy-app-gif.gif)
 
 *Main window — map preview, markers, and controls · Anomaly Labs*
 
@@ -214,7 +214,7 @@ Requires [.NET 8 SDK](https://dotnet.microsoft.com/download):
 dotnet publish src\Tarkovy\Tarkovy.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o dist
 ```
 
-Output: `dist\Tarkovy.exe` only (single-file, self-contained). Map JSON/HTML/icons are embedded and copy to `%AppData%\Tarkovy\assets` on first run.
+Output: `dist\Tarkovy.exe` only (single-file, self-contained). Always publish to `dist\` — never a second output folder. Map JSON/HTML/icons are embedded and copy to `%AppData%\Tarkovy\assets` on first run.
 
 For GitHub Releases you can upload **`Tarkovy.exe` directly** — no ZIP required. Zip only if you prefer a smaller download page artifact or your host requires it.
 
