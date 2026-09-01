@@ -13,8 +13,7 @@
   const rotResetBtn = document.getElementById("rotReset");
   const clearWpBtn = document.getElementById("clearWp");
   const placeWpBtn = document.getElementById("placeWp");
-  const floorSep = document.getElementById("floorSep");
-  const floorTools = document.getElementById("floorTools");
+  const floorTools = document.getElementById("floorDock");
   const floorUpBtn = document.getElementById("floorUp");
   const floorDownBtn = document.getElementById("floorDown");
   const floorLabelBtn = document.getElementById("floorLabel");
@@ -61,8 +60,8 @@
     layerBosses: "Bosses",
     layerLocs: "Locations",
     poi: "MARKER",
-    floorUp: "Floor up",
-    floorDown: "Floor down",
+    floorUp: "Floor up (Page Up)",
+    floorDown: "Floor down (Page Down)",
     floorCurrent: "Floor",
     toolsShow: "Show map tools",
     toolsHide: "Hide map tools"
@@ -283,20 +282,58 @@
       `rotate(${r}deg) ` +
       `scale(${s}) ` +
       `translate(${-cx}px, ${-cy}px)`;
-    const inv = s > 0.0001 ? 1 / s : 1;
-    world.style.setProperty("--marker-inv", String(inv));
+    world.style.setProperty("--marker-inv", String(markerInverseScale()));
     world.style.setProperty("--map-rot", `${r}deg`);
     if (rotResetBtn) rotResetBtn.textContent = `${((r % 360) + 360) % 360}°`;
-    updatePlayerVisual();
+    syncPlayerScreen();
     updateRoute();
   }
 
-  function updatePlayerVisual() {
+  /**
+   * Other map pins stay readable when zoomed in and shrink when zoomed out.
+   * The player arrow is screen-space (see syncPlayerScreen) and ignores this.
+   */
+  function markerInverseScale() {
+    const s = state.scale > 0.0001 ? state.scale : 1;
+    const native = 26;
+    const floor = state.compact ? 1 : 0.85;
+    const minPx = state.compact ? 14 : 12;
+    const maxPx = state.compact ? 20 : 26;
+    const unclamped = native * (s / Math.max(s, floor));
+    const screenPx = Math.min(maxPx, Math.max(minPx, unclamped));
+    return screenPx / (native * s);
+  }
+
+  function playerScreenSize() {
+    const viewMin = Math.min(stage.clientWidth, stage.clientHeight);
+    const cap = state.compact || viewMin < 360 ? 16 : 22;
+    return Math.round(Math.min(cap, Math.max(11, viewMin * 0.048)));
+  }
+
+  /** Pin the player in screen pixels so map zoom cannot inflate the arrow. */
+  function syncPlayerScreen() {
+    if (!state.player || !state.map) {
+      playerEl.hidden = true;
+      return;
+    }
+    const { pctX, pctY } = gameToPct(state.player.x, state.player.z, state.map);
+    const scr = worldToScreen(pctX * state.worldW, pctY * state.worldH);
+    playerEl.style.left = scr.x + "px";
+    playerEl.style.top = scr.y + "px";
+    playerEl.hidden = false;
+
+    const size = playerScreenSize();
+    const wrap = playerEl.querySelector(".player-icon-wrap");
     const icon = playerEl.querySelector(".player-icon");
-    if (!icon) return;
-    const inv = state.scale > 0.0001 ? 1 / state.scale : 1;
-    const yaw = state.player?.yaw || 0;
-    icon.style.transform = `rotate(${yaw}deg) scale(${inv})`;
+    if (wrap)
+      wrap.style.transform = `rotate(${-state.rotation}deg)`;
+    if (icon) {
+      icon.style.width = size + "px";
+      icon.style.height = size + "px";
+      icon.style.left = -size / 2 + "px";
+      icon.style.top = -size / 2 + "px";
+      icon.style.transform = `rotate(${state.player.yaw || 0}deg)`;
+    }
   }
 
   function rotMat() {
@@ -601,6 +638,22 @@
     return y >= min && y < max;
   }
 
+  /** Sem posição do player, o mapa fica no térreo e esconde objetivos do shopping. */
+  function maybeAutoFloorFromTrackedQuests() {
+    if (!hasFloors() || state.floorManual) return;
+    if (state.player && state.autoFloor) return;
+    for (const q of state.quests) {
+      if (!state.enabledQuests.has(q.slug) || state.completedQuests.has(q.slug)) continue;
+      for (const obj of q.objectives || []) {
+        const y = obj.y;
+        if (y == null || Number.isNaN(y)) continue;
+        const idx = floorIndexForHeight(y);
+        if (idx !== state.floorIndex) setFloorIndex(idx, false);
+        return;
+      }
+    }
+  }
+
   function applySvgFloor() {
     const svg = svgHost.querySelector("svg");
     if (!svg || !hasFloors()) return;
@@ -625,7 +678,6 @@
 
   function updateFloorUi() {
     const show = hasFloors();
-    if (floorSep) floorSep.hidden = !show;
     if (floorTools) floorTools.hidden = !show;
     if (!show) return;
     const f = activeFloor();
@@ -679,6 +731,7 @@
     applySvgFloor();
     updateFloorUi();
     maybeAutoFloorFromPlayer();
+    maybeAutoFloorFromTrackedQuests();
   }
 
   function setAutoFloor(value) {
@@ -993,7 +1046,7 @@
       if (state.completedQuests.has(q.slug)) continue;
       if (!state.enabledQuests.has(q.slug)) continue;
       for (const obj of q.objectives || []) {
-        if (!markerOnFloor(obj.y)) continue;
+        const onFloor = markerOnFloor(obj.y);
         const { pctX, pctY } = gameToPct(obj.x, obj.z, state.map);
         if (!inMap(pctX, pctY)) continue;
         const id = obj.id || `${q.slug}-${obj.x}`;
@@ -1002,7 +1055,10 @@
         stampMarker(node, "quest", id, q.name, obj.x, obj.z, "quest");
         node.dataset.tipName = name;
         if (isWp("quest", id)) node.classList.add("waypoint-target");
-        addMarkerLabel(node, q.name, "quest-label");
+        const fl = onFloor ? null : state.map.floors[floorIndexForHeight(obj.y)];
+        const tag = fl?.shortLabel || fl?.short || "";
+        addMarkerLabel(node, tag ? `${q.name} · ${tag}` : q.name, "quest-label");
+        if (!onFloor) node.classList.add("quest-off-floor");
         frag.appendChild(node);
       }
     }
@@ -1098,6 +1154,7 @@
     state.completedQuests = completed;
     const enabled = Array.isArray(enabledSlugs) ? enabledSlugs : [];
     state.enabledQuests = new Set(enabled.filter((s) => !completed.has(s)));
+    maybeAutoFloorFromTrackedQuests();
     scheduleRenderMarkers();
     updateRoute();
   }
@@ -1121,6 +1178,7 @@
     if (Array.isArray(enabled)) state.enabledPois = new Set(enabled);
     syncPoiCatButtons();
     scheduleRenderPois();
+    applyTransform();
   }
 
   function setPoiFilter(enabled) {
@@ -1136,16 +1194,18 @@
       updateRoute();
       return;
     }
-    playerEl.hidden = false;
-    const { pctX, pctY } = gameToPct(p.x, p.z, state.map);
-    place(playerEl, pctX, pctY);
-    updatePlayerVisual();
+    syncPlayerScreen();
     updateRoute();
     maybeAutoFloorFromPlayer();
     if (shouldFollow()) trackPlayer(false);
   }
 
+  function isMapChrome(el) {
+    return !!(el && el.closest && el.closest("#mapToolsDock, #toolsToggle, #floorDock, #wpBanner"));
+  }
+
   stage.addEventListener("wheel", (e) => {
+    if (isMapChrome(e.target)) return;
     e.preventDefault();
     const rect = stage.getBoundingClientRect();
     const sx = e.clientX - rect.left;
@@ -1162,7 +1222,7 @@
   stage.addEventListener("contextmenu", (e) => e.preventDefault());
 
   stage.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("#mapToolsDock") || e.target.closest("#toolsToggle")) return;
+    if (isMapChrome(e.target)) return;
     if (state.wpPlaceMode && e.button === 0 && !e.altKey) {
       e.preventDefault();
       placeWaypointFromPointer(e);
@@ -1215,8 +1275,17 @@
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && state.wpPlaceMode) setWpPlaceMode(false);
+    if (e.key === "PageUp") {
+      e.preventDefault();
+      shiftFloor(1);
+    }
+    if (e.key === "PageDown") {
+      e.preventDefault();
+      shiftFloor(-1);
+    }
   });
 
+  floorTools?.addEventListener("pointerdown", (e) => e.stopPropagation());
   floorUpBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     shiftFloor(1);
@@ -1306,6 +1375,10 @@
     if (data.type === "quests") setQuests(data.quests, data.enabled, data.completed);
     if (data.type === "layers") setLayers(data.layers);
     if (data.type === "pois") setPois(data.pois, data.enabled, data.compact);
+    if (data.type === "compact") {
+      state.compact = !!data.value;
+      applyTransform();
+    }
     if (data.type === "poiFilter") setPoiFilter(data.enabled);
     if (data.type === "extracts") setMarkers(data.extracts, [], [], data.showLabels);
     if (data.type === "showLabels") setShowLabels(data.value);
@@ -1336,6 +1409,7 @@
         fitToView();
       }
     }
+    if (data.type === "shiftFloor") shiftFloor(Number(data.delta) || 0);
   }
 
   window.chrome?.webview?.addEventListener("message", (ev) => onMessage(ev.data));

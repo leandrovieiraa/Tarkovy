@@ -76,7 +76,7 @@ body::-webkit-scrollbar,
   background-size: 24px 24px;
 }
 
-#markers, #poiMarkers, #player {
+#markers, #poiMarkers {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -207,9 +207,9 @@ body::-webkit-scrollbar,
   border-color: rgba(255, 59, 48, 0.55);
 }
 
-.quest-label {
-  color: #b8d9ff;
-  border-color: rgba(90, 168, 255, 0.55);
+.marker-wrap.quest.quest-off-floor .marker-icon {
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px rgba(90, 168, 255, 0.9));
 }
 
 .marker-wrap.spawn .extract-label,
@@ -310,8 +310,14 @@ body::-webkit-scrollbar,
 }
 
 #player {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 0;
   height: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: visible;
 }
 
 .player-icon-wrap {
@@ -321,16 +327,15 @@ body::-webkit-scrollbar,
   width: 0;
   height: 0;
   overflow: visible;
-  transform: rotate(calc(-1 * var(--map-rot, 0deg))) scale(var(--marker-inv, 1));
   transform-origin: center center;
 }
 
 .player-icon {
-  left: -15px;
-  top: -15px;
-  width: 30px;
-  height: 30px;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
   transform-origin: center center;
 }
 
@@ -473,6 +478,64 @@ body::-webkit-scrollbar,
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+#floorDock {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+#floorDock[hidden] {
+  display: none !important;
+}
+
+#floorDock button {
+  width: 30px;
+  min-height: 26px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid rgba(79, 195, 247, 0.45);
+  background: rgba(0, 0, 0, 0.85);
+  color: #9be7ff;
+  font-family: Bahnschrift, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#floorDock button:hover {
+  background: rgba(79, 195, 247, 0.18);
+  border-color: #9be7ff;
+  color: #fff;
+}
+
+#floorDock .floor-label-btn {
+  flex-direction: column;
+  min-height: 34px;
+  line-height: 1.05;
+  font-size: 10px;
+}
+
+#floorDock .floor-label-btn #floorShort {
+  font-size: 11px;
+  font-weight: 800;
+  margin-top: 1px;
+}
+
+#floorDock #floorUp:disabled,
+#floorDock #floorDown:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
 #stage.pad-right {
   padding-right: 40px;
 }
@@ -532,42 +595,6 @@ body::-webkit-scrollbar,
 #sideTools .poi-cat.active {
   border-color: #e8a317;
   color: #e8a317;
-}
-
-#sideTools .floor-label-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  line-height: 1.05;
-  font-size: 10px;
-  border-color: rgba(79, 195, 247, 0.55);
-  color: #9be7ff;
-}
-
-#sideTools .floor-label-btn #floorShort {
-  font-size: 11px;
-  font-weight: 800;
-  margin-top: 1px;
-}
-
-#sideTools #floorUp,
-#sideTools #floorDown {
-  font-size: 12px;
-  color: #9be7ff;
-  border-color: rgba(79, 195, 247, 0.4);
-}
-
-#sideTools #floorTools[hidden],
-#sideTools #floorSep[hidden] {
-  display: none !important;
-}
-
-#sideTools #floorUp:disabled,
-#sideTools #floorDown:disabled {
-  opacity: 0.35;
-  cursor: default;
 }
 
 #sideTools #rotReset {

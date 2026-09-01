@@ -18,6 +18,15 @@ OBJECTIVES_FROM: dict[str, str] = {
     "small-things-big-help": "the-blood-of-war-part-3",
 }
 
+# In-game 1.1.0 titles that replaced older SPT dump names (keep slug for tracking).
+RENAMES: list[dict] = [
+    {
+        "slug": "database-part-2",
+        "name": "A Big Loss",
+        "namePt": "Uma Grande Perda",
+    },
+]
+
 
 def slugify(name: str) -> str:
     s = unicodedata.normalize("NFKD", name)
@@ -100,6 +109,27 @@ PATCH: list[dict] = [
 ]
 
 
+def apply_renames(data: dict) -> int:
+    n = 0
+    by_slug = {r["slug"]: r for r in RENAMES}
+    for quests in data.values():
+        for q in quests:
+            spec = by_slug.get(q.get("slug") or "")
+            if not spec:
+                continue
+            changed = False
+            if spec.get("name") and q.get("name") != spec["name"]:
+                q["name"] = spec["name"]
+                changed = True
+            if spec.get("namePt") and q.get("namePt") != spec["namePt"]:
+                q["namePt"] = spec["namePt"]
+                changed = True
+            if changed:
+                n += 1
+                print(f"rename {spec['slug']} -> {spec['namePt'] or spec['name']}")
+    return n
+
+
 def merge_patch(data: dict) -> int:
     added = 0
     for entry in PATCH:
@@ -138,10 +168,11 @@ def merge_patch(data: dict) -> int:
 def main() -> None:
     data = json.loads(QUESTS.read_text(encoding="utf-8"))
     before = sum(len(v) for v in data.values())
+    renamed = apply_renames(data)
     added = merge_patch(data)
     after = sum(len(v) for v in data.values())
     QUESTS.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"\n=== {added} entries added ({before} -> {after} total) ===")
+    print(f"\n=== {renamed} renamed, {added} entries added ({before} -> {after} total) ===")
     print("wrote", QUESTS)
 
     appdata = Path.home() / "AppData/Roaming/Tarkovy/assets/quests.json"

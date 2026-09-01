@@ -69,4 +69,10 @@ public sealed class AppSettings
 
     [JsonIgnore]
     public string HotkeyToggleItemLens { get; } = "F10";
+
+    /// <summary>Change map floor up (Factory / Interchange / Ground Zero).</summary>
+    public string HotkeyFloorUp { get; } = "PageUp";
+
+    /// <summary>Change map floor down.</summary>
+    public string HotkeyFloorDown { get; } = "PageDown";
 }

@@ -1333,8 +1333,8 @@
     },
     {
       "slug": "database-part-2",
-      "name": "Database - Part 2",
-      "namePt": "Banco de dados - Parte 2",
+      "name": "A Big Loss",
+      "namePt": "Uma Grande Perda",
       "trader": "Ragman",
       "traderPt": "Ragman",
       "objectives": [
@@ -1345,7 +1345,7 @@
           "x": 86.60339,
           "y": 28.06081,
           "z": 120.860718,
-          "descriptionPt": "Consiga a rota da carga do OLI"
+          "descriptionPt": "Localize e obtenha os documentos da rota de carga da OLI na Interchange"
         }
       ]
     },

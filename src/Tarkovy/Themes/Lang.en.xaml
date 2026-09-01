@@ -53,6 +53,7 @@
   <sys:String x:Key="Main.Shortcut.Overlay">F8  show / hide overlay</sys:String>
   <sys:String x:Key="Main.Shortcut.Size">F9  extract panel</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemLens">F10  item lens (price panel)</sys:String>
+  <sys:String x:Key="Main.Shortcut.Floor">Page Up / Page Down  change map floor</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemScanIcon">Shift+click  item icon in stash / inventory</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemScanName">Click  item name when inspecting</sys:String>
   <sys:String x:Key="Main.Shortcut.CleanupHint">Raid end in logs cleans leftover screenshots (config)</sys:String>
@@ -166,8 +167,8 @@
   <sys:String x:Key="Map.Layer.Bosses">Bosses</sys:String>
   <sys:String x:Key="Map.Layer.Locs">Locations</sys:String>
   <sys:String x:Key="Map.Tip.Poi">MARKER</sys:String>
-  <sys:String x:Key="Map.Floor.Up">Floor up</sys:String>
-  <sys:String x:Key="Map.Floor.Down">Floor down</sys:String>
+  <sys:String x:Key="Map.Floor.Up">Floor up (Page Up)</sys:String>
+  <sys:String x:Key="Map.Floor.Down">Floor down (Page Down)</sys:String>
   <sys:String x:Key="Map.Floor.Current">Floor</sys:String>
   <sys:String x:Key="Map.Tools.Show">Show map tools</sys:String>
   <sys:String x:Key="Map.Tools.Hide">Hide map tools</sys:String>

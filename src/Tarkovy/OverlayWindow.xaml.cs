@@ -111,6 +111,7 @@ public partial class OverlayWindow : Window
         _extracts = extracts;
         _quests = quests ?? [];
         OverlayMap.LoadMap(map, extracts, mines, spawns, showLabels);
+        OverlayMap.SetCompact(true);
         OverlayMap.SetLayers(
             App.Settings.ShowExtracts,
             App.Settings.ShowMines,
@@ -138,6 +139,8 @@ public partial class OverlayWindow : Window
     public void SetFollow(bool follow) => OverlayMap.SetFollow(follow);
 
     public void SetAutoFloor(bool auto) => OverlayMap.SetAutoFloor(auto);
+
+    public void ShiftFloor(int delta) => OverlayMap.ShiftFloor(delta);
 
     public void RefreshMapPayload(MapDefinition map) => OverlayMap.RefreshMapPayload(map);
 

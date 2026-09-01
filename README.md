@@ -1,18 +1,18 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.38
+# TARKOVY · Dev 0.1.39
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.38-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.38"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.39-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.39"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.38**                   |
+| **Version**      | **Dev 0.1.39**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -58,11 +58,11 @@ No memory reading, no injection, no client modification.
 | ![hud](https://img.shields.io/badge/-overlay-222?style=flat-square)    | Overlay HUD          | Compact minimap (`F8`, off by default); optional exits panel (`F9`); min **260×180** |
 | ![lens](https://img.shields.io/badge/-lens-222?style=flat-square)     | Item Lens            | Shift+click stash/inventory icon (game icon cache + templates; AI only if local scan fails), or **search by name**; flea/trader/slot prices from tarkov.dev — **F10** |
 | ![wp](https://img.shields.io/badge/-waypoint-222?style=flat-square)   | Pencil waypoint      | ✎ click anywhere on map or minimap — route line to your position      |
-| ![floor](https://img.shields.io/badge/-floors-222?style=flat-square)  | Map floors           | ▲▼ layer switch (Factory, Interchange, Ground Zero); auto from Y      |
+| ![floor](https://img.shields.io/badge/-floors-222?style=flat-square)  | Map floors           | ▲▼ on the map (always visible) + **Page Up / Page Down** — Factory, Interchange, Ground Zero; auto from Y |
 | ![exfil](https://img.shields.io/badge/-extracts-222?style=flat-square) | Extracts & mines     | Toggleable layers + click extract to set a waypoint                    |
 | ![spawn](https://img.shields.io/badge/-pmc-222?style=flat-square)     | PMC spawns           | Toggleable respawn markers (cyan triangles) per map                    |
 | ![quest](https://img.shields.io/badge/-quests-222?style=flat-square)   | Map quest catalog    | Track missions; mark complete (○) to hide markers and stop tracking   |
-| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | **◎** eye toggle · EX / MN / RS / QT / LB · floors · ✎ waypoint · rotation — layout adapts to window size |
+| ![layers](https://img.shields.io/badge/-layers-222?style=flat-square)  | Side tools           | **◎** eye toggle · EX / MN / RS / QT / LB · ✎ waypoint · rotation — layout adapts to window size |
 | ![icons](https://img.shields.io/badge/-icons-222?style=flat-square)   | Game-style markers   | tarkov.dev icons per type (PMC/Scav exfil, hazard, spawn, quest…)   |
 | ![layout](https://img.shields.io/badge/-layout-222?style=flat-square)  | Window layout        | Remembers position and size for main window, minimap, and Item Lens    |
 | ![i18n](https://img.shields.io/badge/-i18n-222?style=flat-square)      | EN / PT UI           | App + quest titles follow your language setting                        |
@@ -86,7 +86,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.38`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.39`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -148,6 +148,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
   - **F8** — show / hide minimap overlay (off by default)
   - **F9** — toggle optional exits/quests side panel on the minimap (stays compact)
   - **F10** — show / hide Item Lens
+  - **Page Up / Page Down** — change map floor (Interchange, Factory, Ground Zero)
 6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** the **center** of the item icon in stash/inventory (item must be highlighted) → prices panel opens (first run indexes icons from tarkov.dev). The icon scan **will miss or misidentify** some items (ammo, guns, similar icons) — use **Item Search** at the bottom of the panel. See [Item Lens limitations](#item-lens-limitations).
 7. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
 
@@ -250,17 +251,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.38` (`Tarkovy.exe`)
+### Release `v0.1.39` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.39/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C)             |
+| **SHA-256**    | `CE936575C1BA684C3155267B0FC8AD78741B9D6870EF1DA70B40F383786DBB0C`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.38` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.38/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B)             |
 | **SHA-256**    | `862BBDA0BAB2B51700F45FA89D3CEE4E294E6F117419313015403D7FF93D383B`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.33` (`Tarkovy.exe`)
 
@@ -357,7 +366,16 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.38</strong> (latest)</summary>
+<summary><strong>Dev 0.1.39</strong> (latest)</summary>
+
+- **Player marker** — heading arrow is screen-space so zooming out (or a small overlay) no longer inflates it
+- **Quests** — Interchange **A Big Loss** listed as **Uma Grande Perda** (was Database - Part 2); tracked objectives switch the mall floor automatically
+- **Floors** — ▲▼ stay on the map (not inside the ◎ tray); clicks no longer start a pan; **Page Up / Page Down** change floor
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.38</strong></summary>
 
 - **Item Lens** — local scan uses the EFT icon cache + catalog templates (OpenCV) and Tesseract for inspect titles; optional AI is last-resort only
 - **Fix** — Shift+click no longer trusts a garbage tooltip (`MS?BBO` → Zibbo) when the highlighted cell is a larger item (CMS, kits); prefers the full grid cell and icon match
@@ -443,8 +461,8 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 
 - **Pencil waypoint (✎)** — click anywhere on the full map or compact minimap; route line to your position
 - **Compact overlay** — minimap stays small in-raid; **F9** toggles optional exits panel (no giant window)
-- **Map floors** — ▲▼ + layer label for Factory, Interchange, Ground Zero; markers filtered by floor
-- **Auto floor** — optional switch in CONFIG uses screenshot **Y** height; manual override with ▲▼
+- **Map floors** — ▲▼ + layer label for Factory, Interchange, Ground Zero; **Page Up / Page Down**; markers filtered by floor
+- **Auto floor** — optional switch in CONFIG uses screenshot **Y** height; manual override with ▲▼ or Page Up / Page Down
 
 </details>
 

@@ -53,6 +53,7 @@
   <sys:String x:Key="Main.Shortcut.Overlay">F8  mostrar / ocultar overlay</sys:String>
   <sys:String x:Key="Main.Shortcut.Size">F9  painel de saídas</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemLens">F10  item lens (painel de preços)</sys:String>
+  <sys:String x:Key="Main.Shortcut.Floor">Page Up / Page Down  mudar andar do mapa</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemScanIcon">Shift+clique  ícone do item no stash / inventário</sys:String>
   <sys:String x:Key="Main.Shortcut.ItemScanName">Clique  nome do item na inspeção</sys:String>
   <sys:String x:Key="Main.Shortcut.CleanupHint">Fim de raid nos logs limpa leftovers (config)</sys:String>
@@ -166,8 +167,8 @@
   <sys:String x:Key="Map.Layer.Bosses">Bosses</sys:String>
   <sys:String x:Key="Map.Layer.Locs">Locais</sys:String>
   <sys:String x:Key="Map.Tip.Poi">MARCADOR</sys:String>
-  <sys:String x:Key="Map.Floor.Up">Andar acima</sys:String>
-  <sys:String x:Key="Map.Floor.Down">Andar abaixo</sys:String>
+  <sys:String x:Key="Map.Floor.Up">Andar acima (Page Up)</sys:String>
+  <sys:String x:Key="Map.Floor.Down">Andar abaixo (Page Down)</sys:String>
   <sys:String x:Key="Map.Floor.Current">Andar</sys:String>
   <sys:String x:Key="Map.Tools.Show">Mostrar ferramentas do mapa</sys:String>
   <sys:String x:Key="Map.Tools.Hide">Ocultar ferramentas do mapa</sys:String>

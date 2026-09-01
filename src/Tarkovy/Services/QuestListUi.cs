@@ -19,6 +19,7 @@ public static class QuestListUi
                || ContainsIgnoreCase(NormalizeSearch(Loc.QuestTrader(quest)), f)
                || ContainsIgnoreCase(NormalizeSearch(quest.Name), f)
                || ContainsIgnoreCase(NormalizeSearch(quest.NamePt), f)
+               || ContainsIgnoreCase(NormalizeSearch(quest.Slug.Replace('-', ' ')), f)
                || ContainsIgnoreCase(NormalizeSearch(quest.Trader), f)
                || ContainsIgnoreCase(NormalizeSearch(quest.TraderPt), f);
     }

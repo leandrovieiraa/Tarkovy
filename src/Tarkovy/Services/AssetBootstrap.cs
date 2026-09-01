@@ -23,6 +23,12 @@ public static class AssetBootstrap
         if (Directory.Exists(bundled))
         {
             CopyTreeIfNewer(bundled, DirectoryPath);
+            foreach (var file in new[] { "map.js", "map.html", "map.css", "quests.json" })
+            {
+                var src = Path.Combine(bundled, file);
+                if (File.Exists(src))
+                    ForceCopy(src, Path.Combine(DirectoryPath, file));
+            }
             RefreshVersionedData(bundled, DirectoryPath);
         }
         else
@@ -129,7 +135,8 @@ public static class AssetBootstrap
             if (stream == null) continue;
 
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            if (versionMatch && File.Exists(dest) && new FileInfo(dest).Length == stream.Length)
+            var always = rel is "map.js" or "map.html" or "map.css" or "quests.json";
+            if (versionMatch && !always && File.Exists(dest) && new FileInfo(dest).Length == stream.Length)
                 continue;
 
             using var fs = File.Create(dest);

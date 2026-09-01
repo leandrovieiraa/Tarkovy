@@ -827,6 +827,8 @@ public partial class MainWindow : Window
         NativeMethods.RegisterHotKey(hwnd, 8, NativeMethods.ModNorepeat, NativeMethods.VkF8);
         NativeMethods.RegisterHotKey(hwnd, 9, NativeMethods.ModNorepeat, NativeMethods.VkF9);
         NativeMethods.RegisterHotKey(hwnd, 10, NativeMethods.ModNorepeat, NativeMethods.VkF10);
+        NativeMethods.RegisterHotKey(hwnd, 11, NativeMethods.ModNorepeat, NativeMethods.VkPrior);
+        NativeMethods.RegisterHotKey(hwnd, 12, NativeMethods.ModNorepeat, NativeMethods.VkNext);
     }
 
     private void UnregisterHotkeys()
@@ -839,6 +841,8 @@ public partial class MainWindow : Window
                 NativeMethods.UnregisterHotKey(hwnd, 8);
                 NativeMethods.UnregisterHotKey(hwnd, 9);
                 NativeMethods.UnregisterHotKey(hwnd, 10);
+                NativeMethods.UnregisterHotKey(hwnd, 11);
+                NativeMethods.UnregisterHotKey(hwnd, 12);
             }
         }
         catch
@@ -876,9 +880,25 @@ public partial class MainWindow : Window
                 Dispatcher.BeginInvoke(ToggleItemLensCore, System.Windows.Threading.DispatcherPriority.Input);
                 handled = true;
             }
+            else if (id == 11)
+            {
+                ShiftMapFloor(1);
+                handled = true;
+            }
+            else if (id == 12)
+            {
+                ShiftMapFloor(-1);
+                handled = true;
+            }
         }
 
         return IntPtr.Zero;
+    }
+
+    private void ShiftMapFloor(int delta)
+    {
+        PreviewMap.ShiftFloor(delta);
+        _overlay?.ShiftFloor(delta);
     }
 
     private void ToggleOverlayVisible()

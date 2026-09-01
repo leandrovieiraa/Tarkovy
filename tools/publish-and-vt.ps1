@@ -19,7 +19,7 @@ if (-not $SkipPublish) {
     Write-Host "Publishing to dist\..."
     $running = Get-Process Tarkovy -ErrorAction SilentlyContinue
     if ($running) {
-        throw "Close Tarkovy.exe (PID $($running.Id -join ', ')) before publish. Output is always dist\ — never dist-new."
+        throw "Close Tarkovy.exe (PID $($running.Id -join ', ')) before publish. Output is always dist\ - never dist-new."
     }
     if (Test-Path dist-new) {
         Write-Host "Removing leftover dist-new\..."

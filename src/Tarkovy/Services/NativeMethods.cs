@@ -19,6 +19,8 @@ internal static class NativeMethods
     public const int VkF8 = 0x77;
     public const int VkF9 = 0x78;
     public const int VkF10 = 0x79;
+    public const int VkPrior = 0x21;
+    public const int VkNext = 0x22;
 
     private const uint MonitorDefaultToNearest = 2;
 
