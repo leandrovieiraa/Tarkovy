@@ -34,6 +34,7 @@
 
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Windows}"/>
                     <CheckBox x:Name="StartWindowsBox" Content="{DynamicResource Settings.StartWithWindows}"/>
+                    <CheckBox x:Name="AutoUpdateBox" Content="{DynamicResource Settings.AutoUpdate}" Margin="0,8,0,0"/>
 
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Logs}"/>
                     <DockPanel LastChildFill="True">
@@ -113,8 +114,19 @@
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,18,0,4" Text="{DynamicResource Settings.Section.Squad}"/>
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,0,0,8"
                                Text="{DynamicResource Settings.Squad.Hint}"/>
-                    <Button Style="{StaticResource SlotButton}" HorizontalAlignment="Left" Margin="0,0,0,10"
-                            Content="{DynamicResource Settings.Squad.CopySql}" Click="SquadCopySql_Click"/>
+                    <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Squad.AppKey}"/>
+                    <PasswordBox x:Name="SquadAppKeyBox"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,4,0,8"
+                               Text="{DynamicResource Settings.Squad.AppKeyHint}"/>
+                    <WrapPanel Margin="0,0,0,10">
+                        <Button Style="{StaticResource SlotButton}" HorizontalAlignment="Left" Margin="0,0,8,0"
+                                Content="{DynamicResource Settings.Squad.CopySql}" Click="SquadCopySql_Click"/>
+                        <Button Style="{StaticResource SlotButton}" HorizontalAlignment="Left"
+                                Content="{DynamicResource Settings.Squad.CopySetKey}" Click="SquadCopySetKey_Click"/>
+                    </WrapPanel>
+                    <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Squad.SelfHost}"/>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,0,0,8"
+                               Text="{DynamicResource Settings.Squad.SelfHostHint}"/>
                     <TextBlock Style="{StaticResource HudLabel}" Text="{DynamicResource Settings.Squad.Url}"/>
                     <TextBox x:Name="SquadUrlBox"/>
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,10,0,4" Text="{DynamicResource Settings.Squad.AnonKey}"/>

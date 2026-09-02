@@ -8,15 +8,15 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Tarkovy</AssemblyName>
     <RootNamespace>Tarkovy</RootNamespace>
-    <Version>0.1.47</Version>
-    <FileVersion>0.1.47.0</FileVersion>
-    <AssemblyVersion>0.1.47.0</AssemblyVersion>
-    <InformationalVersion>Dev 0.1.47</InformationalVersion>
-    <AssemblyTitle>Dev 0.1.47</AssemblyTitle>
-    <ApplicationVersion>0.1.47.0</ApplicationVersion>
+    <Version>0.1.48</Version>
+    <FileVersion>0.1.48.0</FileVersion>
+    <AssemblyVersion>0.1.48.0</AssemblyVersion>
+    <InformationalVersion>Dev 0.1.48</InformationalVersion>
+    <AssemblyTitle>Dev 0.1.48</AssemblyTitle>
+    <ApplicationVersion>0.1.48.0</ApplicationVersion>
     <ApplicationTitle>Tarkovy</ApplicationTitle>
     <Product>Tarkovy</Product>
-    <Title>Dev 0.1.47</Title>
+    <Title>Dev 0.1.48</Title>
     <Company>Anomaly Labs</Company>
     <Authors>Anomaly Labs</Authors>
     <Copyright>Copyright © Anomaly Labs</Copyright>
@@ -60,6 +60,7 @@
     <EmbeddedResource Include="..\..\tools\supabase-squad.sql">
       <LogicalName>Tarkovy.supabase-squad.sql</LogicalName>
     </EmbeddedResource>
+    <None Include="SquadHost.Official.cs.example" />
   </ItemGroup>
   <PropertyGroup>
     <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>

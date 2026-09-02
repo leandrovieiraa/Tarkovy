@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private bool _itemLensOpening;
     private bool _itemLensAcceptsScans;
     private string _listMode = "quests";
+    private TaskCompletionSource<bool>? _updateChoice;
     private bool _poiBusy;
 
     public MainWindow()
@@ -86,6 +87,8 @@ public partial class MainWindow : Window
         _loadingTerminal ??= new LoadingTerminal(LoadingTerminalText);
         _loadingTerminal.Seed();
 
+        var updateCheck = GitHubUpdater.CheckAsync();
+
         WindowPlacementHelper.Restore(this, App.Settings.MainWindowPlacement, Width, Height);
         WindowPlacementHelper.EnsureVisible(this);
 
@@ -105,6 +108,13 @@ public partial class MainWindow : Window
             Close();
             return;
         }
+
+        UpdateInfo? update = null;
+        try { update = await updateCheck; }
+        catch { update = null; }
+
+        if (update != null && await OfferUpdateAsync(update))
+            return;
 
         _suppress = true;
         AppVersionLabel.Text = ProductInfo.AppVersionLabel;
@@ -178,6 +188,77 @@ public partial class MainWindow : Window
         LoadingOverlay.Opacity = 1;
         LoadingSnapshot.Source = null;
         LoadingTerminalText.Text = "";
+        UpdatePromptPanel.Visibility = Visibility.Collapsed;
+        UpdateProgressPanel.Visibility = Visibility.Collapsed;
+    }
+
+    private async Task<bool> OfferUpdateAsync(UpdateInfo update)
+    {
+        _loadingTerminal?.AppendLine(Loc.T("Loading.Term.UpdateFound", update.VersionLabel));
+        if (!await PromptUpdateAsync(update))
+        {
+            _loadingTerminal?.AppendLine(Loc.T("Loading.Term.UpdateSkip"));
+            return false;
+        }
+
+        return await ApplyUpdateAsync(update);
+    }
+
+    private Task<bool> PromptUpdateAsync(UpdateInfo info)
+    {
+        _updateChoice = new TaskCompletionSource<bool>();
+        var mb = info.SizeBytes > 0 ? (info.SizeBytes / (1024.0 * 1024.0)).ToString("0") : "?";
+        UpdatePromptBody.Text = Loc.T("Update.Prompt.Body", ProductInfo.AppVersionLabel, info.VersionLabel, mb);
+        UpdatePromptPanel.Visibility = Visibility.Visible;
+        return _updateChoice.Task;
+    }
+
+    private void UpdateYes_Click(object sender, RoutedEventArgs e)
+    {
+        UpdatePromptPanel.Visibility = Visibility.Collapsed;
+        _updateChoice?.TrySetResult(true);
+    }
+
+    private void UpdateLater_Click(object sender, RoutedEventArgs e)
+    {
+        UpdatePromptPanel.Visibility = Visibility.Collapsed;
+        _updateChoice?.TrySetResult(false);
+    }
+
+    private async Task<bool> ApplyUpdateAsync(UpdateInfo info)
+    {
+        UpdatePromptPanel.Visibility = Visibility.Collapsed;
+        UpdateProgressPanel.Visibility = Visibility.Visible;
+        UpdateProgressBar.Value = 0;
+        UpdateProgressLabel.Text = Loc.T("Update.Progress.Start");
+        _loadingTerminal?.AppendLine(Loc.T("Loading.Term.UpdateDl", info.VersionLabel));
+        var dest = GitHubUpdater.StagingPath(info);
+        IProgress<(long done, long total)> progress = new Progress<(long done, long total)>(p =>
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                var total = p.total <= 0 ? 1 : p.total;
+                UpdateProgressBar.Value = Math.Clamp((double)p.done / total, 0, 1);
+                UpdateProgressLabel.Text = Loc.T(
+                    "Update.Progress.Bytes",
+                    (p.done / (1024.0 * 1024.0)).ToString("0.0"),
+                    (total / (1024.0 * 1024.0)).ToString("0.0"));
+            });
+        });
+        try
+        {
+            await GitHubUpdater.DownloadAsync(info, dest, progress).ConfigureAwait(true);
+            _loadingTerminal?.AppendLine(Loc.T("Loading.Term.UpdateApply"));
+            GitHubUpdater.ApplyAndRelaunch(dest);
+            Application.Current.Shutdown();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            UpdateProgressPanel.Visibility = Visibility.Collapsed;
+            _loadingTerminal?.AppendLine(Loc.T("Loading.Term.UpdateFail", ex.Message));
+            return false;
+        }
     }
 
     private void SetLoading(bool loading)
@@ -828,10 +909,7 @@ public partial class MainWindow : Window
         SquadLinkBtn.ToolTip = Loc.T(online ? "Main.Tooltip.SquadLink.On" : "Main.Tooltip.SquadLink.Off");
         var inRoom = App.Squad is { IsInRoom: true };
         var n = inRoom ? App.Squad!.Mates.Count : 0;
-        SquadHeaderCount.Text = $"{n}/{SquadHub.MaxPlayers}";
-        SquadHeaderBtn.ToolTip = inRoom
-            ? Loc.T("Main.Tooltip.Squad.Count", n, SquadHub.MaxPlayers)
-            : Loc.T("Main.Tooltip.Squad");
+        SquadHeaderBtn.ToolTip = Loc.T("Main.Tooltip.Squad.Count", n, SquadHub.MaxPlayers);
     }
 
     private void OnSettingsApplied()

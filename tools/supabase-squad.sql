@@ -1,6 +1,9 @@
 -- Tarkovy squad rooms (run in the Supabase SQL editor).
 -- Dashboard → SQL → New query → paste → Run.
--- Safe to run again after updates. Then Config in Tarkovy: Project URL + anon key.
+-- Safe to run again after updates.
+-- Then (once): select public.squad_set_app_key('your-friend-password');
+-- Friends only type that password in Tarkovy. URL + anon stay in the published app.
+-- Developers who self-host: paste their own URL + anon in Config (leave empty to use the built-in host).
 
 do $$ begin
   create extension if not exists pgcrypto;
@@ -27,11 +30,21 @@ create table if not exists public.squad_positions (
   primary key (room_id, nick)
 );
 
+create table if not exists public.squad_config (
+  id int primary key default 1,
+  key_hash text not null default ''
+);
+
+insert into public.squad_config(id, key_hash) values (1, '')
+on conflict (id) do nothing;
+
 alter table public.squad_rooms enable row level security;
 alter table public.squad_positions enable row level security;
+alter table public.squad_config enable row level security;
 
 revoke all on public.squad_rooms from anon, authenticated, public;
 revoke all on public.squad_positions from anon, authenticated, public;
+revoke all on public.squad_config from anon, authenticated, public;
 
 -- Salted MD5 (no pgcrypto gen_salt). Room passwords are shared among friends, not accounts.
 create or replace function public.squad_hash_password(p_password text)
@@ -64,8 +77,50 @@ begin
 end;
 $$;
 
+create or replace function public.squad_assert_app_key(p_app_key text)
+returns void
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare
+  v_hash text;
+begin
+  select key_hash into v_hash from public.squad_config where id = 1;
+  if v_hash is null or length(v_hash) < 33 then
+    return;
+  end if;
+  if not public.squad_password_ok(coalesce(p_app_key, ''), v_hash) then
+    raise exception 'bad app key';
+  end if;
+end;
+$$;
+
+-- Run in the SQL editor (not from the app): select public.squad_set_app_key('password');
+create or replace function public.squad_set_app_key(p_key text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_key text := trim(coalesce(p_key, ''));
+begin
+  if length(v_key) < 4 then
+    raise exception 'password too short';
+  end if;
+  insert into public.squad_config(id, key_hash)
+  values (1, public.squad_hash_password(v_key))
+  on conflict (id) do update set key_hash = excluded.key_hash;
+  return jsonb_build_object('ok', true);
+end;
+$$;
+
 revoke all on function public.squad_hash_password(text) from public, anon, authenticated;
 revoke all on function public.squad_password_ok(text, text) from public, anon, authenticated;
+revoke all on function public.squad_assert_app_key(text) from public, anon, authenticated;
+revoke all on function public.squad_set_app_key(text) from public, anon, authenticated;
 
 create or replace function public.squad_prune_stale()
 returns void
@@ -84,8 +139,20 @@ revoke all on function public.squad_prune_stale() from public, anon, authenticat
 
 drop function if exists public.squad_create(text, text);
 drop function if exists public.squad_create(text, text, text);
+drop function if exists public.squad_create(text, text, text, text);
+drop function if exists public.squad_join(text, text, text);
+drop function if exists public.squad_join(text, text, text, text);
+drop function if exists public.squad_publish(text, text, text, text, double precision, double precision, double precision, double precision);
+drop function if exists public.squad_publish(text, text, text, text, double precision, double precision, double precision, double precision, text);
+drop function if exists public.squad_list(text, text);
+drop function if exists public.squad_list(text, text, text);
+drop function if exists public.squad_list(text, text, text, text);
+drop function if exists public.squad_leave(text, text, text);
+drop function if exists public.squad_leave(text, text, text, text);
+drop function if exists public.squad_name_taken(text);
+drop function if exists public.squad_name_taken(text, text);
 
-create or replace function public.squad_create(p_password text, p_nick text, p_code text default '')
+create or replace function public.squad_create(p_password text, p_nick text, p_code text default '', p_app_key text default '')
 returns jsonb
 language plpgsql
 security definer
@@ -99,6 +166,7 @@ declare
   i int;
   words text[] := array['CUSTOMS','FACTORY','DORM','MALL','WOODS','LABS','STREETS','GROUND','SHORE','LIGHTHOUSE','KORD','RAID'];
 begin
+  perform public.squad_assert_app_key(p_app_key);
   if v_nick is null or length(v_nick) < 1 or length(v_nick) > 20 then
     raise exception 'invalid nick';
   end if;
@@ -140,7 +208,7 @@ begin
 end;
 $$;
 
-create or replace function public.squad_join(p_code text, p_password text, p_nick text)
+create or replace function public.squad_join(p_code text, p_password text, p_nick text, p_app_key text default '')
 returns jsonb
 language plpgsql
 security definer
@@ -151,6 +219,7 @@ declare
   v_nick text := trim(p_nick);
   v_code text := upper(trim(p_code));
 begin
+  perform public.squad_assert_app_key(p_app_key);
   if v_nick is null or length(v_nick) < 1 or length(v_nick) > 20 then
     raise exception 'invalid nick';
   end if;
@@ -187,7 +256,8 @@ create or replace function public.squad_publish(
   p_x double precision,
   p_y double precision,
   p_z double precision,
-  p_yaw double precision)
+  p_yaw double precision,
+  p_app_key text default '')
 returns jsonb
 language plpgsql
 security definer
@@ -198,6 +268,7 @@ declare
   v_nick text := trim(p_nick);
   v_code text := upper(trim(p_code));
 begin
+  perform public.squad_assert_app_key(p_app_key);
   select * into v_room from squad_rooms where code = v_code;
   if not found then
     raise exception 'room not found';
@@ -218,10 +289,7 @@ begin
 end;
 $$;
 
-drop function if exists public.squad_list(text, text);
-drop function if exists public.squad_list(text, text, text);
-
-create or replace function public.squad_list(p_code text, p_password text, p_nick text default '')
+create or replace function public.squad_list(p_code text, p_password text, p_nick text default '', p_app_key text default '')
 returns jsonb
 language plpgsql
 security definer
@@ -232,6 +300,7 @@ declare
   v_code text := upper(trim(p_code));
   v_nick text := trim(p_nick);
 begin
+  perform public.squad_assert_app_key(p_app_key);
   select * into v_room from squad_rooms where code = v_code;
   if not found then
     raise exception 'room not found';
@@ -260,7 +329,7 @@ begin
 end;
 $$;
 
-create or replace function public.squad_leave(p_code text, p_password text, p_nick text)
+create or replace function public.squad_leave(p_code text, p_password text, p_nick text, p_app_key text default '')
 returns jsonb
 language plpgsql
 security definer
@@ -271,6 +340,7 @@ declare
   v_nick text := trim(p_nick);
   v_code text := upper(trim(p_code));
 begin
+  perform public.squad_assert_app_key(p_app_key);
   select * into v_room from squad_rooms where code = v_code;
   if not found then
     return jsonb_build_object('ok', true);
@@ -287,7 +357,7 @@ begin
 end;
 $$;
 
-create or replace function public.squad_name_taken(p_code text)
+create or replace function public.squad_name_taken(p_code text, p_app_key text default '')
 returns boolean
 language plpgsql
 volatile
@@ -295,6 +365,7 @@ security definer
 set search_path = public
 as $$
 begin
+  perform public.squad_assert_app_key(p_app_key);
   perform squad_prune_stale();
   return exists(
     select 1 from public.squad_rooms where code = upper(trim(coalesce(p_code, '')))
@@ -302,11 +373,11 @@ begin
 end;
 $$;
 
-grant execute on function public.squad_create(text, text, text) to anon, authenticated;
-grant execute on function public.squad_join(text, text, text) to anon, authenticated;
-grant execute on function public.squad_publish(text, text, text, text, double precision, double precision, double precision, double precision) to anon, authenticated;
-grant execute on function public.squad_list(text, text, text) to anon, authenticated;
-grant execute on function public.squad_leave(text, text, text) to anon, authenticated;
-grant execute on function public.squad_name_taken(text) to anon, authenticated;
+grant execute on function public.squad_create(text, text, text, text) to anon, authenticated;
+grant execute on function public.squad_join(text, text, text, text) to anon, authenticated;
+grant execute on function public.squad_publish(text, text, text, text, double precision, double precision, double precision, double precision, text) to anon, authenticated;
+grant execute on function public.squad_list(text, text, text, text) to anon, authenticated;
+grant execute on function public.squad_leave(text, text, text, text) to anon, authenticated;
+grant execute on function public.squad_name_taken(text, text) to anon, authenticated;
 
 notify pgrst, 'reload schema';

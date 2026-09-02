@@ -65,12 +65,12 @@ public sealed class SquadHub : IDisposable
         JsonElement json;
         try
         {
-            json = await RpcAsync("squad_create", new { p_password = password, p_nick = nick, p_code = code }, ct)
+            json = await RpcAsync("squad_create", new { p_password = password, p_nick = nick, p_code = code, p_app_key = AppKey() }, ct)
                 .ConfigureAwait(false);
         }
         catch (InvalidOperationException ex) when (IsMissingRpc(ex, "squad_create"))
         {
-            json = await RpcAsync("squad_create", new { p_password = password, p_nick = nick }, ct)
+            json = await RpcAsync("squad_create", new { p_password = password, p_nick = nick, p_app_key = AppKey() }, ct)
                 .ConfigureAwait(false);
         }
         Enter(json, password, nick);
@@ -95,7 +95,7 @@ public sealed class SquadHub : IDisposable
         if (c.Length < 4) return false;
         try
         {
-            var json = await RpcAsync("squad_name_taken", new { p_code = c }, ct).ConfigureAwait(false);
+            var json = await RpcAsync("squad_name_taken", new { p_code = c, p_app_key = AppKey() }, ct).ConfigureAwait(false);
             return json.ValueKind switch
             {
                 JsonValueKind.True => true,
@@ -136,7 +136,7 @@ public sealed class SquadHub : IDisposable
     {
         PersistCredsFromSettings();
         if (IsInRoom) await LeaveAsync().ConfigureAwait(false);
-        var json = await RpcAsync("squad_join", new { p_code = code, p_password = password, p_nick = nick }, ct).ConfigureAwait(false);
+        var json = await RpcAsync("squad_join", new { p_code = code, p_password = password, p_nick = nick, p_app_key = AppKey() }, ct).ConfigureAwait(false);
         Enter(json, password, nick);
         await PublishLastAsync(ct).ConfigureAwait(false);
     }
@@ -159,7 +159,7 @@ public sealed class SquadHub : IDisposable
             return;
         try
         {
-            await RpcAsync("squad_leave", new { p_code = code, p_password = pass, p_nick = nick }, CancellationToken.None)
+            await RpcAsync("squad_leave", new { p_code = code, p_password = pass, p_nick = nick, p_app_key = AppKey() }, CancellationToken.None)
                 .ConfigureAwait(false);
         }
         catch
@@ -171,8 +171,7 @@ public sealed class SquadHub : IDisposable
     public async Task TryRestoreAsync()
     {
         var s = App.Settings;
-        if (string.IsNullOrWhiteSpace(s.SquadSupabaseUrl) ||
-            string.IsNullOrWhiteSpace(s.SquadSupabaseAnonKey) ||
+        if (!SquadHost.HasProject(s) ||
             string.IsNullOrWhiteSpace(s.SquadRoomCode) ||
             string.IsNullOrWhiteSpace(s.SquadPassword) ||
             string.IsNullOrWhiteSpace(s.SquadNickname) ||
@@ -208,15 +207,15 @@ public sealed class SquadHub : IDisposable
             p_x = fix.X,
             p_y = fix.Y,
             p_z = fix.Z,
-            p_yaw = fix.Yaw
+            p_yaw = fix.Yaw,
+            p_app_key = AppKey()
         }, ct).ConfigureAwait(false);
     }
 
     public async Task ProbeProjectAsync(CancellationToken ct = default)
     {
         var s = App.Settings;
-        var url = (s.SquadSupabaseUrl ?? "").Trim().TrimEnd('/');
-        var key = (s.SquadSupabaseAnonKey ?? "").Trim();
+        var (url, key) = SquadHost.Resolve(s);
         var online = false;
         if (Uri.TryCreate(url, UriKind.Absolute, out var baseUri) && !string.IsNullOrWhiteSpace(key))
         {
@@ -364,12 +363,12 @@ public sealed class SquadHub : IDisposable
         JsonElement json;
         try
         {
-            json = await RpcAsync("squad_list", new { p_code = RoomCode, p_password = s.SquadPassword, p_nick = s.SquadNickname }, ct)
+            json = await RpcAsync("squad_list", new { p_code = RoomCode, p_password = s.SquadPassword, p_nick = s.SquadNickname, p_app_key = AppKey() }, ct)
                 .ConfigureAwait(false);
         }
         catch (InvalidOperationException ex) when (IsMissingRpc(ex, "squad_list"))
         {
-            json = await RpcAsync("squad_list", new { p_code = RoomCode, p_password = s.SquadPassword }, ct)
+            json = await RpcAsync("squad_list", new { p_code = RoomCode, p_password = s.SquadPassword, p_app_key = AppKey() }, ct)
                 .ConfigureAwait(false);
         }
         var list = new List<SquadMate>();
@@ -406,22 +405,26 @@ public sealed class SquadHub : IDisposable
     private static void PersistCredsFromSettings()
     {
         var s = App.Settings;
-        if (string.IsNullOrWhiteSpace(s.SquadSupabaseUrl) || string.IsNullOrWhiteSpace(s.SquadSupabaseAnonKey))
+        if (!SquadHost.HasProject(s))
             throw new InvalidOperationException(L("Squad.Error.NeedProject"));
+        if (string.IsNullOrWhiteSpace(SquadHost.AppKey(s)))
+            throw new InvalidOperationException(L("Squad.Error.NeedAppKey"));
         if (string.IsNullOrWhiteSpace(s.SquadNickname))
             throw new InvalidOperationException(L("Squad.Error.NeedNick"));
     }
 
+    private static string AppKey() => SquadHost.AppKey(App.Settings);
+
     private async Task<JsonElement> RpcAsync(string fn, object body, CancellationToken ct)
     {
         var s = App.Settings;
-        var project = (s.SquadSupabaseUrl ?? "").Trim().TrimEnd('/');
-        if (!Uri.TryCreate(project, UriKind.Absolute, out var baseUri))
+        var (project, key) = SquadHost.Resolve(s);
+        if (!Uri.TryCreate(project, UriKind.Absolute, out var baseUri) || string.IsNullOrWhiteSpace(key))
             throw new InvalidOperationException(L("Squad.Error.NeedProject"));
 
         using var req = new HttpRequestMessage(HttpMethod.Post, new Uri(baseUri, $"/rest/v1/rpc/{fn}"));
-        req.Headers.TryAddWithoutValidation("apikey", s.SquadSupabaseAnonKey.Trim());
-        req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", s.SquadSupabaseAnonKey.Trim());
+        req.Headers.TryAddWithoutValidation("apikey", key);
+        req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
         req.Headers.Accept.ParseAdd("application/json");
         req.Content = new StringContent(JsonSerializer.Serialize(body, Json), Encoding.UTF8, "application/json");
 
@@ -545,6 +548,8 @@ public sealed class SquadHub : IDisposable
     private static string ShortError(Exception ex)
     {
         var msg = ex.Message;
+        if (msg.Contains("bad app key", StringComparison.OrdinalIgnoreCase))
+            return L("Squad.Error.BadAppKey");
         if (msg.Contains("bad password", StringComparison.OrdinalIgnoreCase))
             return L("Squad.Error.BadPassword");
         if (msg.Contains("room not found", StringComparison.OrdinalIgnoreCase))

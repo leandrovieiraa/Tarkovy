@@ -53,6 +53,13 @@
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
+    <Style x:Key="HudProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushAmber}"/>
+        <Setter Property="Background" Value="#1A1A1A"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
     <Style x:Key="LoadingRing" TargetType="Ellipse">
         <Setter Property="Width" Value="44"/>
         <Setter Property="Height" Value="44"/>

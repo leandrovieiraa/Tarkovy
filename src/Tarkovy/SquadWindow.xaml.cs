@@ -23,6 +23,7 @@ public partial class SquadWindow : UserControl
     {
         var s = App.Settings;
         SquadNickBox.Text = string.IsNullOrWhiteSpace(s.SquadNickname) ? "Squad" : s.SquadNickname;
+        SquadAppKeyBox.Text = s.SquadAppKey ?? "";
         var inRoom = App.Squad is { IsInRoom: true };
         SquadCodeBox.Text = inRoom
             ? App.Squad.RoomCode
@@ -123,10 +124,46 @@ public partial class SquadWindow : UserControl
     private void PersistFields()
     {
         var s = App.Settings;
+        ApplyInviteFromBox();
+        s.SquadAppKey = (SquadAppKeyBox.Text ?? "").Trim();
         s.SquadNickname = SquadNickBox.Text.Trim();
         s.SquadRoomCode = (SquadCodeBox.Text ?? "").Trim().ToUpperInvariant();
         s.SquadPassword = ReadPassword();
         SettingsStore.Save(s);
+    }
+
+    private void SquadAppKey_LostFocus(object sender, RoutedEventArgs e)
+    {
+        ApplyInviteFromBox();
+        PersistFields();
+    }
+
+    private void ApplyInviteFromBox()
+    {
+        if (!SquadHost.TryParseInvite(SquadAppKeyBox.Text ?? "", out var key, out var code, out var pass))
+            return;
+        SquadAppKeyBox.Text = key;
+        if (!string.IsNullOrWhiteSpace(code) && App.Squad is not { IsInRoom: true })
+            SquadCodeBox.Text = code;
+        if (!string.IsNullOrWhiteSpace(pass))
+            SetPassword(pass, _passwordVisible);
+    }
+
+    private void SquadCopyInvite_Click(object sender, RoutedEventArgs e)
+    {
+        ApplyInviteFromBox();
+        PersistFields();
+        var invite = SquadHost.FormatInvite(
+            App.Settings.SquadAppKey,
+            SquadCodeBox.Text,
+            ReadPassword());
+        if (string.IsNullOrWhiteSpace(invite))
+        {
+            SquadStatusText.Text = Loc.T("Squad.Error.NeedAppKey");
+            return;
+        }
+        try { Clipboard.SetText(invite); } catch { /* ignore */ }
+        SquadStatusText.Text = Loc.T("Squad.Status.InviteCopied");
     }
 
     private string ReadPassword() =>
@@ -244,7 +281,7 @@ public partial class SquadWindow : UserControl
             if (await App.Squad.IsRoomNameTakenAsync(code))
             {
                 await PickFreeNameAsync();
-                throw new InvalidOperationException(Loc.T("Squad.Error.RoomTakenRolled", SquadCodeBox.Text));
+                throw new InvalidOperationException(Loc.T("Squad.Error.RoomTakenRolled", SquadCodeBox.Text ?? ""));
             }
             var pass = ReadPassword();
             if (pass.Length < 4)

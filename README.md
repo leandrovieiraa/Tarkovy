@@ -1,18 +1,18 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.47
+# TARKOVY · Dev 0.1.48
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.47-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.47"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.48-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.48"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.47**                   |
+| **Version**      | **Dev 0.1.48**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -87,7 +87,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.47`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.48`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -152,7 +152,7 @@ If Tarkovy saved you a death or two (or just made the mall less confusing), you 
   - **Page Up / Page Down** — change map floor (Interchange, Factory, Ground Zero)
 6. **Item Lens:** enable click-to-scan in **CONFIG** → **Shift+click** the **center** of the item icon in stash/inventory (item must be highlighted) → prices panel opens (first run indexes icons from tarkov.dev). The icon scan **will miss or misidentify** some items (ammo, guns, similar icons) — use **Item Search** at the bottom of the panel. See [Item Lens limitations](#item-lens-limitations).
 7. **Waypoint:** click **✎** on the map toolbar → click destination on the full map or minimap → yellow route line toward your position. **✕** clears it. **Esc** cancels pencil mode.
-8. **Squad (optional):** the **door** icon in the header opens the room panel (nickname, create/join, who is connected). The **link** icon turns green when Supabase is reachable, yellow when not. Project URL + anon key live in **CONFIG**. Setup details are in the collapsed section below.
+8. **Squad (optional):** the **door** icon in the header opens the room panel. Friends on the GitHub Release build paste a **squad key** (or a `TARKOVY …` invite) — no Supabase URL or anon key. The **link** icon turns green when the host is reachable. Self-host / developer setup is in the collapsed section below.
 
 On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show SmartScreen: *More info* → *Run anyway*.
 
@@ -161,17 +161,19 @@ On first run, assets are extracted to `%AppData%\Tarkovy`. Windows may show Smar
 
 EFT does not expose live squad coordinates. Tarkovy publishes **your own** screenshot X/Y/Z/yaw to a room; everyone in that room sees the others on the map. Outbound HTTPS only — no port forwarding.
 
-1. Create a free project at [supabase.com](https://supabase.com)
-2. In Tarkovy **CONFIG → SUPABASE**, click **COPY SQL FOR SUPABASE** (or paste [`tools/supabase-squad.sql`](tools/supabase-squad.sql)) → run it once in the dashboard **SQL editor**
-3. **Project Settings → API**: copy **Project URL** and the **anon public** key into CONFIG, then **TEST CONNECTION** (header link icon should go green)
-4. Open the **door** icon → pick a nickname (1–20 chars) and a room password (4+ chars)
-5. One player clicks **CREATE ROOM** (a name like `FACTORY-A7F2` is generated; ⟳ rolls another) and shares **name + password**
-6. Everyone else pastes the code and password and clicks **JOIN**
-7. Take in-game screenshots as usual — each print updates your pin; mates poll about every 2.5s
+**Friends (Release exe):** open the **door** → paste the squad key you sent (or a `TARKOVY` invite) → nickname → create/join with the **room** name + password. They never see URL or anon key.
 
-URL, anon key, nick, last room code and password are stored in `%AppData%\Tarkovy\settings.json` (same as the Item Lens AI key). Reopening Tarkovy tries to rejoin that room if you did not Leave.
+**You (host, once):**
 
-Positions older than ~20 minutes are hidden. Mates on a different map are not drawn. This is not an official BSG API — it only shares what Tarkovy already reads from screenshot filenames.
+1. In Tarkovy **CONFIG → SQUAD**, click **COPY SQL FOR SUPABASE** → run it in the dashboard **SQL editor**
+2. Type the password you will give friends in **SQUAD KEY** → **COPY SET-KEY SQL** → run that in the SQL editor too
+3. Open the **door**, same key is already there → **copy invite** and send that one line (or just the key, then later room name + room password)
+
+**Developers / own project:** leave the built-in host unused. In CONFIG paste **your** Project URL + **anon / publishable** key (never `service_role` / `sb_secret`). Copy SQL + set-key SQL as above. `src/Tarkovy/SquadHost.Official.cs` is gitignored; Release builds store the official URL/key as AES-GCM blobs (not plaintext). Rotate with `dotnet run --project tools/EncryptSquadHost -- "<url>" "<anon-key>"`.
+
+Room names look like `FACTORY-A7F2`. Max 5 players. Positions older than ~20 minutes are hidden. Mates on a different map are not drawn. This is not an official BSG API — it only shares what Tarkovy already reads from screenshot filenames.
+
+The squad key, nick, last room code and room password are stored in `%AppData%\Tarkovy\settings.json`. Reopening Tarkovy tries to rejoin that room if you did not Leave.
 
 </details>
 
@@ -272,17 +274,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.47` (`Tarkovy.exe`)
+### Release `v0.1.48` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.48/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE)             |
+| **SHA-256**    | `7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.47` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.47/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2)             |
 | **SHA-256**    | `2638248C5521FA32F279E40FECECBE364868FA5B4E7D65BF7C111FDC0A3B83B2`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.39` (`Tarkovy.exe`)
 
@@ -395,7 +405,15 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.47</strong> (latest)</summary>
+<summary><strong>Dev 0.1.48</strong> (latest)</summary>
+
+- **Auto-update** — on the loading screen, Tarkovy checks GitHub Releases, asks to update, downloads with a bottom progress bar, then replaces this exe and relaunches (no extra updater app)
+- **Squad** — Release builds use a built-in host; friends paste a squad key or `TARKOVY` invite (no URL/anon). Config URL + anon is only for self-host. SQL gate: `squad_set_app_key`. Official URL/key in the exe are AES-GCM, not plaintext.
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.47</strong></summary>
 
 - **Squad** — max 5 players; door icon (same size as wifi) with `1/5` under it; leave/quit deletes you and drops empty rooms on Supabase
 

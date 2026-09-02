@@ -39,6 +39,12 @@ public sealed class LoadingTerminal
         Render("", showCursor: true);
     }
 
+    public void AppendLine(string line)
+    {
+        _history.AppendLine(line);
+        Render("", showCursor: true);
+    }
+
     public void Complete() => Render("", showCursor: false);
 
     private void Render(string currentLine, bool showCursor)

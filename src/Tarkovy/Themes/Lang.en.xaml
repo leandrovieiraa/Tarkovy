@@ -5,10 +5,10 @@
   <!-- Main -->
   <sys:String x:Key="Main.Tooltip.Settings">Settings</sys:String>
   <sys:String x:Key="Main.Tooltip.Squad">Squad room</sys:String>
-  <sys:String x:Key="Main.Tooltip.Squad.Count">Squad room · {0}/{1}</sys:String>
+  <sys:String x:Key="Main.Tooltip.Squad.Count">Squad room · {0}/{1} players</sys:String>
   <sys:String x:Key="Main.Tooltip.SquadLink">Supabase connection</sys:String>
   <sys:String x:Key="Main.Tooltip.SquadLink.On">Supabase connected</sys:String>
-  <sys:String x:Key="Main.Tooltip.SquadLink.Off">Supabase disconnected — paste URL and anon key in Config</sys:String>
+  <sys:String x:Key="Main.Tooltip.SquadLink.Off">Supabase disconnected — check the squad key, or URL/anon in Config</sys:String>
   <sys:String x:Key="Main.Tooltip.Minimize">Minimize</sys:String>
   <sys:String x:Key="Main.Tooltip.Maximize">Maximize</sys:String>
   <sys:String x:Key="Main.Tooltip.Restore">Restore</sys:String>
@@ -78,6 +78,17 @@
   <sys:String x:Key="Loading.Term.ItemLens">&gt; INIT  item lens…</sys:String>
   <sys:String x:Key="Loading.Term.Ui">&gt; INIT  interface…</sys:String>
   <sys:String x:Key="Loading.Term.Ready">&gt; OK    ready</sys:String>
+  <sys:String x:Key="Loading.Term.UpdateFound">&gt; PULL  {0} available</sys:String>
+  <sys:String x:Key="Loading.Term.UpdateSkip">&gt; SKIP  update later</sys:String>
+  <sys:String x:Key="Loading.Term.UpdateDl">&gt; GET   downloading {0}…</sys:String>
+  <sys:String x:Key="Loading.Term.UpdateApply">&gt; SWAP  closing and relaunching…</sys:String>
+  <sys:String x:Key="Loading.Term.UpdateFail">&gt; FAIL  update: {0}</sys:String>
+  <sys:String x:Key="Update.Prompt.Title">UPDATE</sys:String>
+  <sys:String x:Key="Update.Prompt.Body">New GitHub release.&#x0a;&#x0a;Current: {0}&#x0a;New: {1}  ·  {2} MB&#x0a;&#x0a;Download and reopen Tarkovy updated?</sys:String>
+  <sys:String x:Key="Update.Prompt.Yes">UPDATE</sys:String>
+  <sys:String x:Key="Update.Prompt.Later">LATER</sys:String>
+  <sys:String x:Key="Update.Progress.Start">DOWNLOADING RELEASE…</sys:String>
+  <sys:String x:Key="Update.Progress.Bytes">{0} / {1} MB</sys:String>
   <sys:String x:Key="Main.Footer.Tagline">TARKOVY  ·  local companion  ·  no memory reading</sys:String>
 
   <!-- Status -->
@@ -109,6 +120,7 @@
   <sys:String x:Key="Settings.Language.Portuguese">Português</sys:String>
   <sys:String x:Key="Settings.Section.Windows">WINDOWS</sys:String>
   <sys:String x:Key="Settings.StartWithWindows">START WITH WINDOWS</sys:String>
+  <sys:String x:Key="Settings.AutoUpdate">CHECK GITHUB FOR UPDATES ON LAUNCH</sys:String>
   <sys:String x:Key="Settings.Section.Logs">LOGS FOLDER</sys:String>
   <sys:String x:Key="Settings.Section.Shots">SCREENSHOTS FOLDER</sys:String>
   <sys:String x:Key="Settings.Path.Ok">OK</sys:String>
@@ -133,8 +145,13 @@
   <sys:String x:Key="Settings.KeepLast">KEEP LAST SCREENSHOT (DEBUG)</sys:String>
   <sys:String x:Key="Settings.AutoCleanup">AUTO-CLEAN ON RAID END (LOGS)</sys:String>
   <sys:String x:Key="Settings.AutoCleanupHint">When logs report raid end, close the session and remove leftover screenshots.</sys:String>
-  <sys:String x:Key="Settings.Section.Squad">SUPABASE</sys:String>
-  <sys:String x:Key="Settings.Squad.Hint">Optional. Paste your project URL and anon public key if you want squad positions on the map. Copy the SQL, run it once in the Supabase SQL editor, then use the door icon in the header to create or join a room.</sys:String>
+  <sys:String x:Key="Settings.Section.Squad">SQUAD</sys:String>
+  <sys:String x:Key="Settings.Squad.Hint">Two different secrets. 1) This server key — send once to friends. 2) At the door, room name + room password — per raid. URL + anon below are only if you host your own project.</sys:String>
+  <sys:String x:Key="Settings.Squad.AppKey">SERVER KEY (SEND TO FRIENDS)</sys:String>
+  <sys:String x:Key="Settings.Squad.AppKeyHint">Send this once. Without it their Tarkovy cannot use your project. Not the room password — that lives on the door panel and changes per raid.</sys:String>
+  <sys:String x:Key="Settings.Squad.CopySetKey">COPY SET-KEY SQL</sys:String>
+  <sys:String x:Key="Settings.Squad.SelfHost">YOUR OWN SUPABASE</sys:String>
+  <sys:String x:Key="Settings.Squad.SelfHostHint">Leave empty to use the built-in Tarkovy host. Fill these to use a project you created. Copy SQL, run it, then Copy set-key SQL and run that too.</sys:String>
   <sys:String x:Key="Settings.Squad.Url">SUPABASE URL</sys:String>
   <sys:String x:Key="Settings.Squad.AnonKey">ANON KEY</sys:String>
   <sys:String x:Key="Settings.Squad.Nick">NICKNAME</sys:String>
@@ -146,14 +163,15 @@
   <sys:String x:Key="Settings.Squad.Copy">COPY</sys:String>
   <sys:String x:Key="Squad.Generate.Tip">Generate a new room name</sys:String>
   <sys:String x:Key="Squad.Copy.Tip">Copy room name</sys:String>
+  <sys:String x:Key="Squad.CopyInvite.Tip">Copy TARKOVY invite (key + room)</sys:String>
   <sys:String x:Key="Squad.Password.Show">Show password</sys:String>
   <sys:String x:Key="Squad.Password.Hide">Hide password</sys:String>
   <sys:String x:Key="Settings.Squad.CopySql">COPY SQL FOR SUPABASE</sys:String>
   <sys:String x:Key="Settings.Squad.Test">TEST CONNECTION</sys:String>
   <sys:String x:Key="Settings.Squad.Online">Supabase reachable.</sys:String>
-  <sys:String x:Key="Settings.Squad.Offline">Supabase disconnected. Check URL and anon key.</sys:String>
+  <sys:String x:Key="Settings.Squad.Offline">Supabase disconnected. Check the built-in host, or URL and anon key.</sys:String>
   <sys:String x:Key="Squad.Header">SQUAD</sys:String>
-  <sys:String x:Key="Squad.Panel.Hint">Pick a nickname. Room name is generated for you — use the button beside it to roll another. Create a room or join with name + password. Project URL and anon key stay in Config.</sys:String>
+  <sys:String x:Key="Squad.Panel.Hint">Paste the server key first (the one the host sent you once). Then nickname, room name and room password for this raid. No URL or anon key needed.</sys:String>
   <sys:String x:Key="Squad.Members">CONNECTED</sys:String>
   <sys:String x:Key="Squad.Members.Count">CONNECTED  {0}/{1}</sys:String>
   <sys:String x:Key="Squad.Members.Empty">Nobody in the room yet.</sys:String>
@@ -161,10 +179,14 @@
   <sys:String x:Key="Squad.Members.NoFix">waiting for screenshot</sys:String>
   <sys:String x:Key="Squad.Status.Idle">Not in a room.</sys:String>
   <sys:String x:Key="Squad.Status.SqlCopied">SQL copied. Paste it in the Supabase SQL editor and Run.</sys:String>
+  <sys:String x:Key="Squad.Status.SetKeyCopied">SET-KEY SQL copied. Paste it in the SQL editor and Run (after the main SQL).</sys:String>
+  <sys:String x:Key="Squad.Status.InviteCopied">Invite copied. Friends paste it in the squad key field.</sys:String>
   <sys:String x:Key="Squad.Status.Working">Talking to Supabase…</sys:String>
   <sys:String x:Key="Squad.Status.InRoom">In room {0}</sys:String>
   <sys:String x:Key="Squad.Status.Error">Squad: {0}</sys:String>
-  <sys:String x:Key="Squad.Error.NeedProject">Paste the Supabase URL and anon key first.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedProject">This build has no squad host. Paste your Supabase URL and anon key in Config.</sys:String>
+  <sys:String x:Key="Squad.Error.NeedAppKey">Paste the squad key first (the one shared with friends).</sys:String>
+  <sys:String x:Key="Squad.Error.BadAppKey">Wrong squad key.</sys:String>
   <sys:String x:Key="Squad.Error.NeedNick">Nickname required (1–20 characters).</sys:String>
   <sys:String x:Key="Squad.Error.BadPassword">Wrong room password.</sys:String>
   <sys:String x:Key="Squad.Error.NoRoom">Room not found.</sys:String>

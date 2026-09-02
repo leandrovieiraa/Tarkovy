@@ -34,6 +34,25 @@
                     <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap"
                                Text="{DynamicResource Squad.Panel.Hint}"/>
 
+                    <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Settings.Squad.AppKey}"/>
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SlotButton}" Width="40" Height="32"
+                                Margin="6,0,0,0" Padding="0" ToolTip="{DynamicResource Squad.CopyInvite.Tip}"
+                                Click="SquadCopyInvite_Click">
+                            <Viewbox Width="14" Height="14">
+                                <Canvas Width="16" Height="16">
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          Data="M6,1.5 H14.5 V11 H11.8 V3.2 H6 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          Data="M1.5,5 H10 V14.5 H1.5 Z"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        <TextBox x:Name="SquadAppKeyBox" LostFocus="SquadAppKey_LostFocus"/>
+                    </DockPanel>
+                    <TextBlock FontSize="11" Foreground="{StaticResource BrushTextDim}" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="{DynamicResource Settings.Squad.AppKeyHint}"/>
+
                     <TextBlock Style="{StaticResource HudLabel}" Margin="0,16,0,4" Text="{DynamicResource Settings.Squad.Nick}"/>
                     <TextBox x:Name="SquadNickBox" LostFocus="SquadFields_LostFocus"/>
 

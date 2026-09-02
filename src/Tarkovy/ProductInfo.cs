@@ -3,8 +3,8 @@ namespace Tarkovy;
 /// <summary>App + target Escape from Tarkov versions (update when revalidating against a new patch).</summary>
 public static class ProductInfo
 {
-    public const string AppVersion = "0.1.47";
-    public const string AppVersionLabel = "Dev 0.1.47";
+    public const string AppVersion = "0.1.48";
+    public const string AppVersionLabel = "Dev 0.1.48";
 
     /// <summary>EFT client / patch this build was validated against.</summary>
     public const string EftPatch = "1.1.0";
@@ -16,4 +16,7 @@ public static class ProductInfo
     public const string EftSeason = "Season 1 — KORD BREACH";
 
     public const string EftTargetShort = "EFT 1.1.0 · KORD BREACH";
+
+    public const string GitHubOwner = "leandrovieiraa";
+    public const string GitHubRepo = "Tarkovy";
 }

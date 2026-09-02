@@ -43,6 +43,7 @@ public partial class SettingsWindow : UserControl
 
         _langWhenOpened = Loc.Normalize(s.UiLanguage);
         StartWindowsBox.IsChecked = s.StartWithWindows;
+        AutoUpdateBox.IsChecked = s.AutoUpdateEnabled;
         LogsPathBox.Text = s.LogsFolder;
         ShotsPathBox.Text = s.ScreenshotsFolder;
         ShowExtractsBox.IsChecked = s.ShowExtracts;
@@ -66,6 +67,7 @@ public partial class SettingsWindow : UserControl
         ItemScanRotatedBox.IsChecked = s.ItemScanRotatedIcons;
         SquadUrlBox.Text = s.SquadSupabaseUrl ?? "";
         SquadAnonKeyBox.Password = s.SquadSupabaseAnonKey ?? "";
+        SquadAppKeyBox.Password = s.SquadAppKey ?? "";
         RefreshSquadProjectStatus();
         RefreshPathBadges();
     }
@@ -198,6 +200,7 @@ public partial class SettingsWindow : UserControl
         if (LanguageCombo.SelectedItem is ComboBoxItem langItem && langItem.Tag is string code)
             s.UiLanguage = Loc.Normalize(code);
         s.StartWithWindows = StartWindowsBox.IsChecked == true;
+        s.AutoUpdateEnabled = AutoUpdateBox.IsChecked == true;
         s.LogsFolder = LogsPathBox.Text.Trim();
         s.ScreenshotsFolder = ShotsPathBox.Text.Trim();
         s.ShowExtracts = ShowExtractsBox.IsChecked == true;
@@ -259,6 +262,7 @@ public partial class SettingsWindow : UserControl
         var s = App.Settings;
         s.SquadSupabaseUrl = SquadUrlBox.Text.Trim().TrimEnd('/');
         s.SquadSupabaseAnonKey = SquadAnonKeyBox.Password?.Trim() ?? "";
+        s.SquadAppKey = SquadAppKeyBox.Password?.Trim() ?? "";
     }
 
     private void RefreshSquadProjectStatus()
@@ -283,6 +287,30 @@ public partial class SettingsWindow : UserControl
         SquadProjectStatusText.Foreground = ThemeBrush("BrushTextDim");
         await App.Squad.ProbeProjectAsync();
         RefreshSquadProjectStatus();
+    }
+
+    private void SquadCopySetKey_Click(object sender, RoutedEventArgs e)
+    {
+        var key = (SquadAppKeyBox.Password ?? "").Trim();
+        if (key.Length < 4)
+        {
+            SquadProjectStatusText.Text = Loc.T("Squad.Error.ShortPassword");
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushErr");
+            return;
+        }
+
+        try
+        {
+            var escaped = key.Replace("'", "''", StringComparison.Ordinal);
+            Clipboard.SetText($"select public.squad_set_app_key('{escaped}');");
+            SquadProjectStatusText.Text = Loc.T("Squad.Status.SetKeyCopied");
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushTextDim");
+        }
+        catch (Exception ex)
+        {
+            SquadProjectStatusText.Text = Loc.T("Squad.Status.Error", ex.Message);
+            SquadProjectStatusText.Foreground = ThemeBrush("BrushErr");
+        }
     }
 
     private void SquadCopySql_Click(object sender, RoutedEventArgs e)

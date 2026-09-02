@@ -1,0 +1,4 @@
+// Copy to SquadHost.Official.cs (gitignored) after encrypting URL + anon/publishable key:
+//   dotnet run --project tools/EncryptSquadHost -- "https://xxxx.supabase.co" "your-anon-key"
+// Never bake service_role / sb_secret. The ciphertext still ships in the exe — this only
+// stops a casual strings dump. The squad key on the server is the real gate.

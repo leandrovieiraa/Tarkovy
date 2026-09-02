@@ -21,6 +21,8 @@ public sealed class AppSettings
     public bool ShowMines { get; set; } = true;
     public bool ShowSpawns { get; set; } = true;
     public bool StartWithWindows { get; set; } = false;
+    /// <summary>Check GitHub Releases on boot and offer to replace this exe.</summary>
+    public bool AutoUpdateEnabled { get; set; } = true;
     public bool OverlayVisible { get; set; } = false;
     public bool ItemLensVisible { get; set; } = false;
     public bool ItemScanEnabled { get; set; } = true;
@@ -54,10 +56,12 @@ public sealed class AppSettings
     /// <summary>UI language: en (default) or pt.</summary>
     public string UiLanguage { get; set; } = "en";
 
-    /// <summary>Supabase project URL, e.g. https://xxxx.supabase.co</summary>
+    /// <summary>Supabase project URL, e.g. https://xxxx.supabase.co. Empty = built-in Tarkovy host.</summary>
     public string SquadSupabaseUrl { get; set; } = "";
-    /// <summary>anon public key from Project Settings → API.</summary>
+    /// <summary>anon public key from Project Settings → API. Empty = built-in Tarkovy host.</summary>
     public string SquadSupabaseAnonKey { get; set; } = "";
+    /// <summary>Shared squad access password. Friends paste this (or a TARKOVY invite) — not the room password.</summary>
+    public string SquadAppKey { get; set; } = "";
     public string SquadNickname { get; set; } = "";
     public string SquadRoomCode { get; set; } = "";
     public string SquadPassword { get; set; } = "";

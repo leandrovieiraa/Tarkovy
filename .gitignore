@@ -15,6 +15,7 @@ AppData/
 **/obj/
 
 # Local secrets / VirusTotal output (never commit API keys)
+src/Tarkovy/SquadHost.Official.cs
 tools/vt.local.env
 tools/_vt-out/
 tools/_spt/
