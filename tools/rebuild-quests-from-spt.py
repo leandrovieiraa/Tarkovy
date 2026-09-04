@@ -44,6 +44,7 @@ TRADER_IDS = {
     "638f541a29ffd1183d0c9141": "Lightkeeper",
     "6617beeaa9cfa777ca915b7c": "Ref",
     "661422d877667532fd605963": "Ref",
+    "656f0f98d80a697f855d34b1": "BTR Driver",
 }
 
 

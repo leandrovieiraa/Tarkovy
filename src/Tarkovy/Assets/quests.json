@@ -28,6 +28,32 @@
       ]
     },
     {
+      "slug": "bad-rep-evidence",
+      "name": "Bad Rep Evidence",
+      "namePt": "Evidencia de má reputação",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "bad-rep-evidence-0",
+          "description": "Gain access to the locked room in the office hallway on the third floor on Factory",
+          "descriptionPt": "Obtenha acesso a sala fechada nos escritórios do terceiro andar da Factory",
+          "category": "objective",
+          "x": 30.1318,
+          "y": 8.71818,
+          "z": 38.8869
+        }
+      ]
+    },
+    {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
       "slug": "black-swan",
       "name": "Black Swan",
       "namePt": "Cisne Negro",
@@ -222,7 +248,70 @@
       "namePt": "Claustrofobia",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "claustrophobia-0",
+          "description": "Eliminate any target in basement tunnel network on Factory",
+          "descriptionPt": "Elimine qualquer alvo nos porões antigos em Factory",
+          "category": "objective",
+          "x": 19.81,
+          "y": -2.56,
+          "z": 46.84
+        },
+        {
+          "id": "claustrophobia-1",
+          "description": "Eliminate any target in basement tunnel network on Factory",
+          "descriptionPt": "Elimine qualquer alvo nos porões antigos em Factory",
+          "category": "objective",
+          "x": -51.08,
+          "y": -2.99,
+          "z": 13.58
+        },
+        {
+          "id": "claustrophobia-2",
+          "description": "Eliminate any target in basement tunnel network on Factory",
+          "descriptionPt": "Elimine qualquer alvo nos porões antigos em Factory",
+          "category": "objective",
+          "x": 19.81,
+          "y": -2.99,
+          "z": -28.64
+        },
+        {
+          "id": "claustrophobia-3",
+          "description": "Eliminate any target in basement tunnel network on Factory",
+          "descriptionPt": "Elimine qualquer alvo nos porões antigos em Factory",
+          "category": "objective",
+          "x": 64.99,
+          "y": -2.99,
+          "z": 13.58
+        }
+      ]
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
       "objectives": []
+    },
+    {
+      "slug": "delivery-from-the-past",
+      "name": "Delivery From the Past",
+      "namePt": "Entrega do passado",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "delivery-from-the-past-0",
+          "description": "Stash the package in the break room on the 2nd floor near Gate 3 on Factory",
+          "descriptionPt": "Deixe a caixa na sala de descanso da Factory, no segundo andar perto da extração do Gate 3",
+          "category": "objective",
+          "x": 41.7418,
+          "y": 5.44818,
+          "z": 40.8179
+        }
+      ]
     },
     {
       "slug": "dragnet",
@@ -302,6 +391,32 @@
           "y": -2.088474,
           "z": 44.430035,
           "descriptionPt": "Localize e obtenha o contêiner de produtos químicos no depósito do TerraGroup na Factory"
+        }
+      ]
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "every-hunter-knows-this",
+      "name": "Every Hunter Knows This",
+      "namePt": "Todo Caçador Sabe Disso",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "every-hunter-knows-this-0",
+          "description": "Locate a good tripwire installation spot in the breach room on Factory",
+          "descriptionPt": "Localize um bom ponto de instalação da armadilha na Factory",
+          "category": "objective",
+          "x": 25.35,
+          "y": 8.76,
+          "z": 39.25
         }
       ]
     },
@@ -692,12 +807,151 @@
       ]
     },
     {
+      "slug": "hell-on-earth-part-2",
+      "name": "Hell on Earth - Part 2",
+      "namePt": "Inferno na Terra - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "import-ontrol",
       "name": "Import Сontrol",
       "namePt": "Controle de importação",
       "trader": "Mechanic",
       "traderPt": "Mechanic",
       "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera in the room where the firefighter burned the books to become happy on Factory",
+          "descriptionPt": "Instale uma câmera WI-FI na sala onde o bombeiro queimou os livros para ficar feliz na Factory",
+          "category": "item",
+          "x": 17.42,
+          "y": 1.832,
+          "z": 43.016
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the place where some valve technicians couldn't finish their third project on Factory",
+          "descriptionPt": "Instalar uma câmera WI-FI no local onde alguns técnicos de válvulas não conseguiram terminar seu terceiro projeto na Factory",
+          "category": "item",
+          "x": 21.4003,
+          "y": -1.87831,
+          "z": 11.709
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at the dangerous Russian chocolate beauty on Factory",
+          "descriptionPt": "Instale uma câmera WI-FI na perigosa beleza do chocolate russo na Factory",
+          "category": "item",
+          "x": -49.607,
+          "y": 2.3475,
+          "z": 60.411
+        },
+        {
+          "id": "is-this-a-reference-3",
+          "description": "Install a WI-FI Camera in the conspiracy theorist's room on Factory",
+          "descriptionPt": "Instale uma câmera WI-FI na sala do teórico da conspiração na Factory",
+          "category": "item",
+          "x": 27.369,
+          "y": 9.23306,
+          "z": 38.4243
+        },
+        {
+          "id": "is-this-a-reference-4",
+          "description": "Install a WI-FI Camera near where someone thought he'd get transported to the magic school on Factory",
+          "descriptionPt": "Instalar uma câmera WI-FI perto do local onde alguém pensou que seria transportado para a escola de magia na Factory",
+          "category": "item",
+          "x": 52.4067,
+          "y": 1.86445,
+          "z": -17.4861
+        },
+        {
+          "id": "is-this-a-reference-5",
+          "description": "Install a WI-FI Camera at the mother of all strategy games on Factory",
+          "descriptionPt": "Instale uma câmera WI-FI na mãe de todos os jogos de estratégia na Factory",
+          "category": "item",
+          "x": 30.7356,
+          "y": 4.287,
+          "z": -31.146
+        },
+        {
+          "id": "is-this-a-reference-6",
+          "description": "Install a WI-FI Camera at the stairway to the skies on Factory",
+          "descriptionPt": "Instalar uma câmera WI-FI na escada para os céus na Factory",
+          "category": "item",
+          "x": 59.563,
+          "y": 0.7,
+          "z": 50.49
+        }
+      ]
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "night-sweep",
+      "name": "Night Sweep",
+      "namePt": "Varredura Noturna",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "one-way-ticket",
+      "name": "One-Way Ticket",
+      "namePt": "Passagem Só de Ida",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "playing-the-market",
+      "name": "Playing the Market",
+      "namePt": "Brincando com o Mercado",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "playing-the-market-0",
+          "description": "Fix the first control board with a Toolset on Factory",
+          "descriptionPt": "Conserte o primeiro painel de comando",
+          "category": "item",
+          "x": 68.193,
+          "y": 1.059,
+          "z": -7.383
+        },
+        {
+          "id": "playing-the-market-1",
+          "description": "Fix the second control board with a Toolset on Factory",
+          "descriptionPt": "Conserte o segundo painel de comando",
+          "category": "item",
+          "x": 60.076,
+          "y": 1.093,
+          "z": -48.389
+        }
+      ]
     },
     {
       "slug": "possessor",
@@ -759,6 +1013,32 @@
       "namePt": "Pressionado por Circunstâncias",
       "trader": "Mechanic",
       "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "proper-comeback",
+      "name": "Proper Comeback",
+      "namePt": "Retorno adequado",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "proper-comeback-0",
+          "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Factory",
+          "descriptionPt": "Guarde uma estatueta de galo de ouro na câmera WI-FI da Prapor na Factory",
+          "category": "item",
+          "x": 34.789,
+          "y": 8.527,
+          "z": 35.5
+        }
+      ]
+    },
+    {
+      "slug": "sanitary-standards",
+      "name": "Sanitary Standards",
+      "namePt": "Padrões Sanitários",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
       "objectives": []
     },
     {
@@ -851,6 +1131,40 @@
       ]
     },
     {
+      "slug": "secrets-of-polikhim",
+      "name": "Secrets of Polikhim",
+      "namePt": "Segredos de Polikhim",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "secrets-of-polikhim-0",
+          "description": "Stash the package at the laboratory storage room on Factory",
+          "descriptionPt": "Guarde o pacote na sala de armazenamento do laboratório na Factory",
+          "category": "objective",
+          "x": 27.89,
+          "y": 1.15,
+          "z": -32.8899
+        }
+      ]
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "stirrup",
+      "name": "Stirrup",
+      "namePt": "Agitando",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
       "slug": "test-drive-part-5",
       "name": "Test Drive - Part 5",
       "namePt": "Test Drive - Parte 5",
@@ -867,6 +1181,14 @@
       "objectives": []
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-factory-chief",
       "name": "The Huntsman Path - Factory Chief",
       "namePt": "Tagilla",
@@ -875,9 +1197,49 @@
       "objectives": []
     },
     {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-secured-perimeter",
       "name": "The Huntsman Path - Secured Perimeter",
       "namePt": "Caminho do caçador. Perímetro seguro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
       "objectives": []
@@ -952,9 +1314,35 @@
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
+    },
+    {
+      "slug": "viewer",
+      "name": "Viewer",
+      "namePt": "Visualizador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "viewer-0",
+          "description": "Install a WI-FI Camera at the office corridor on Factory",
+          "descriptionPt": "Instalar uma câmera WI-FI no corredor do escritório na Factory",
+          "category": "item",
+          "x": 36.845,
+          "y": 9.433,
+          "z": 35.5
+        }
+      ]
     }
   ],
   "ground-zero": [
+    {
+      "slug": "all-this-filth",
+      "name": "All This Filth...",
+      "namePt": "Toda Essa Escória...",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
     {
       "slug": "burning-rubber",
       "name": "Burning Rubber",
@@ -982,6 +1370,22 @@
       ]
     },
     {
+      "slug": "debut",
+      "name": "Debut",
+      "namePt": "Estréia",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "first-in-line",
       "name": "First in Line",
       "namePt": "Primeiro da fila",
@@ -996,6 +1400,58 @@
           "y": 25.52,
           "z": -83.59,
           "descriptionPt": "Localize a estação Emercon no Ground Zero"
+        }
+      ]
+    },
+    {
+      "slug": "hell-on-earth-part-2",
+      "name": "Hell on Earth - Part 2",
+      "namePt": "Inferno na Terra - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "insomnia",
+      "name": "Insomnia",
+      "namePt": "Insônia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the high rise where one die-hard guy kicked ass on Ground Zero",
+          "descriptionPt": "Instale uma câmera WI-FI no arranha-céu onde um cara obstinado deu uma surra no Ground Zero",
+          "category": "item",
+          "x": 4.62801,
+          "y": 23.95,
+          "z": 337.248
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the computer with a joke for programmers on Ground Zero",
+          "descriptionPt": "Instale uma câmera WI-FI no computador com uma piada para programadores no Ground Zero",
+          "category": "item",
+          "x": 118.715,
+          "y": 24.2415,
+          "z": 190.305
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at the little chair surrounded by big black chairs on Ground Zero",
+          "descriptionPt": "Instale uma câmera WI-FI na pequena cadeira cercada por grandes cadeiras pretas no Ground Zero",
+          "category": "item",
+          "x": 41.1,
+          "y": 31.411,
+          "z": 140.81
         }
       ]
     },
@@ -1077,6 +1533,101 @@
           "y": 24.228,
           "z": 26.86,
           "descriptionPt": "Localize a loja de bebidas no Ground Zero"
+        }
+      ]
+    },
+    {
+      "slug": "needle-in-a-haystack",
+      "name": "Needle in a Haystack",
+      "namePt": "Agulha no Palheiro",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "needle-in-a-haystack-0",
+          "description": "Investigate the courtyard park by TerraGroup HQ on Ground Zero",
+          "descriptionPt": "Investigue o parque do pátio da sede da TerraGroup no Ground Zero",
+          "category": "objective",
+          "x": -15.4,
+          "y": 23.79,
+          "z": 68.9
+        }
+      ]
+    },
+    {
+      "slug": "new-paths",
+      "name": "New Paths",
+      "namePt": "Novos Caminhos",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "new-paths-0",
+          "description": "Scout the intersection of Mira Ave and the overpass on Ground Zero (In one raid)",
+          "descriptionPt": "Explorar o cruzamento da Mira Ave e o viaduto no Ground Zero (em um único ataque)",
+          "category": "objective",
+          "x": 172.43,
+          "y": 17.31,
+          "z": 64.7
+        },
+        {
+          "id": "new-paths-1",
+          "description": "Locate the passage leading to Streets of Tarkov on Ground Zero (In one raid)",
+          "descriptionPt": "Localize a passagem que leva a Streets of Tarkov no Ground Zero (em um ataque)",
+          "category": "objective",
+          "x": 222.829,
+          "y": 15.993,
+          "z": 65.72
+        }
+      ]
+    },
+    {
+      "slug": "night-sweep",
+      "name": "Night Sweep",
+      "namePt": "Varredura Noturna",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "polikhim-hobo",
+      "name": "Polikhim Hobo",
+      "namePt": "Mendigo Polikhim",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "power-of-persuasion",
+      "name": "Power of Persuasion",
+      "namePt": "Poder de Persuasão",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "rough-tarkov",
+      "name": "Rough Tarkov",
+      "namePt": "Tarkov Bruto",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "rough-tarkov-0",
+          "description": "Locate the Claymore mine on Ground Zero",
+          "descriptionPt": "Localize a mina Claymore no Ground Zero",
+          "category": "objective",
+          "x": 60.3544,
+          "y": 23.7417,
+          "z": 170.89
         }
       ]
     },
@@ -1189,6 +1740,14 @@
       ]
     },
     {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
       "slug": "shooting-cans",
       "name": "Shooting Cans",
       "namePt": "Atirando em latinhas",
@@ -1216,11 +1775,59 @@
       ]
     },
     {
+      "slug": "silent-caliber",
+      "name": "Silent Caliber",
+      "namePt": "Calibre Silencioso",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "stabilize-business",
       "name": "Stabilize Business",
       "namePt": "Estabilizar os Negócios",
       "trader": "Ragman",
       "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
       "objectives": []
     },
     {
@@ -1238,9 +1845,51 @@
       "trader": "Therapist",
       "traderPt": "Therapist",
       "objectives": []
+    },
+    {
+      "slug": "worst-job-in-the-world",
+      "name": "Worst Job in the World",
+      "namePt": "Pior trabalho do mundo",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
     }
   ],
   "interchange": [
+    {
+      "slug": "database-part-2",
+      "name": "A Big Loss",
+      "namePt": "Uma Grande Perda",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": [
+        {
+          "id": "database-part-2-0",
+          "description": "Locate and obtain the OLI cargo route documents on Interchange",
+          "category": "item",
+          "x": 86.60339,
+          "y": 28.06081,
+          "z": 120.860718,
+          "descriptionPt": "Localize e obtenha os documentos da rota de carga da OLI na Interchange"
+        }
+      ]
+    },
+    {
+      "slug": "all-this-filth",
+      "name": "All This Filth...",
+      "namePt": "Toda Essa Escória...",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
     {
       "slug": "big-sale",
       "name": "Big Sale",
@@ -1296,6 +1945,14 @@
       ]
     },
     {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "database-part-1",
       "name": "Database - Part 1",
       "namePt": "Banco de dados - Parte 1",
@@ -1332,22 +1989,12 @@
       ]
     },
     {
-      "slug": "database-part-2",
-      "name": "A Big Loss",
-      "namePt": "Uma Grande Perda",
-      "trader": "Ragman",
-      "traderPt": "Ragman",
-      "objectives": [
-        {
-          "id": "database-part-2-0",
-          "description": "Locate and obtain the OLI cargo route documents on Interchange",
-          "category": "item",
-          "x": 86.60339,
-          "y": 28.06081,
-          "z": 120.860718,
-          "descriptionPt": "Localize e obtenha os documentos da rota de carga da OLI na Interchange"
-        }
-      ]
+      "slug": "debut",
+      "name": "Debut",
+      "namePt": "Estréia",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
     },
     {
       "slug": "decontamination-service",
@@ -1363,6 +2010,14 @@
       "namePt": "Desbravador",
       "trader": "Ragman",
       "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     },
     {
@@ -1429,6 +2084,40 @@
       ]
     },
     {
+      "slug": "informed-means-armed",
+      "name": "Informed Means Armed",
+      "namePt": "Informado significa armado",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "informed-means-armed-0",
+          "description": "Install a WI-FI Camera to watch the Kiba Arms store entrance on Interchange",
+          "descriptionPt": "Instale uma câmera WIFI para vigiar a loja Kiba Arms",
+          "category": "item",
+          "x": 8.09503,
+          "y": 27.553,
+          "z": -36.702
+        }
+      ]
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "inventory-files",
+      "name": "Inventory Files",
+      "namePt": "Arquivos de Inventário",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "irresistible",
       "name": "Irresistible",
       "namePt": "Irresistível",
@@ -1445,6 +2134,14 @@
           "descriptionPt": "Localize e obtenha a caixa de armas perdidas em Interchange"
         }
       ]
+    },
+    {
+      "slug": "know-your-place",
+      "name": "Know Your Place!",
+      "namePt": "Conheça seu lugar!",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
     },
     {
       "slug": "long-line",
@@ -1589,6 +2286,65 @@
       ]
     },
     {
+      "slug": "needle-in-a-haystack",
+      "name": "Needle in a Haystack",
+      "namePt": "Agulha no Palheiro",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "needle-in-a-haystack-0",
+          "description": "Investigate the kart track on Interchange",
+          "descriptionPt": "Investigue a pista de kart na Interchange",
+          "category": "objective",
+          "x": 159.9,
+          "y": 23.4,
+          "z": -246.7
+        },
+        {
+          "id": "needle-in-a-haystack-1",
+          "description": "Investigate the indoor children's playground on Interchange",
+          "descriptionPt": "Investigue o parque infantil na Interchange",
+          "category": "objective",
+          "x": 42.5,
+          "y": 29.9,
+          "z": -216.4
+        }
+      ]
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "polikhim-hobo",
+      "name": "Polikhim Hobo",
+      "namePt": "Mendigo Polikhim",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "power-of-persuasion",
+      "name": "Power of Persuasion",
+      "namePt": "Poder de Persuasão",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "provocation",
       "name": "Provocation",
       "namePt": "Provocação",
@@ -1633,6 +2389,22 @@
       "objectives": []
     },
     {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "supplements",
+      "name": "Supplements",
+      "namePt": "Suplementos",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
       "slug": "the-blood-of-war-part-1",
       "name": "The Blood of War - Part 1",
       "namePt": "O Sangue da Guerra - Parte 1",
@@ -1667,6 +2439,22 @@
           "descriptionPt": "Marque o terceiro tanque de combustível com um marcador MS2000 na Interchange"
         }
       ]
+    },
+    {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
     },
     {
       "slug": "the-huntsman-path-sellout",
@@ -1704,11 +2492,59 @@
       ]
     },
     {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "the-stylish-one",
       "name": "The Stylish One",
       "namePt": "O elegante",
       "trader": "Ragman",
       "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
       "objectives": []
     }
   ],
@@ -1757,6 +2593,14 @@
           "descriptionPt": "Lançar um sinalizador vermelho na antiga serraria na Woods"
         }
       ]
+    },
+    {
+      "slug": "all-this-filth",
+      "name": "All This Filth...",
+      "namePt": "Toda Essa Escória...",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
     },
     {
       "slug": "another-shipping-delay",
@@ -1822,11 +2666,53 @@
       ]
     },
     {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
       "slug": "break-the-chain",
       "name": "Break the Chain",
       "namePt": "Quebrar a Corrente",
       "trader": "Mechanic",
       "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "choose-your-friends-wisely",
+      "name": "Choose Your Friends Wisely",
+      "namePt": "Escolha seus amigos com sabedoria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "chumming",
+      "name": "Chumming",
+      "namePt": "Parceria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "chumming-0",
+          "description": "Stash Golden neck chains in the middle wooden cabin at the sawmill on Woods",
+          "descriptionPt": "Coloque 3 correntes douradas no meio dos alojamentos da serraria",
+          "category": "item",
+          "x": -6.21436,
+          "y": -0.492475,
+          "z": -75.555
+        }
+      ]
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
       "objectives": []
     },
     {
@@ -1838,11 +2724,19 @@
       "objectives": []
     },
     {
+      "slug": "debut",
+      "name": "Debut",
+      "namePt": "Estréia",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "discombobulate",
       "name": "Discombobulate",
       "namePt": "Descombinar",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "discombobulate-0",
@@ -1872,6 +2766,14 @@
           "descriptionPt": "Guarde uma granada VOG-25 Khattabka na terceira caixa de munição de RPG na Woods"
         }
       ]
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
     },
     {
       "slug": "fair-price-part-2",
@@ -2036,6 +2938,14 @@
       ]
     },
     {
+      "slug": "hell-on-earth-part-2",
+      "name": "Hell on Earth - Part 2",
+      "namePt": "Inferno na Terra - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "hiking",
       "name": "Hiking",
       "namePt": "Trilha",
@@ -2131,6 +3041,32 @@
       "objectives": []
     },
     {
+      "slug": "informed-means-armed",
+      "name": "Informed Means Armed",
+      "namePt": "Informado significa armado",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "informed-means-armed-0",
+          "description": "Install a WI-FI Camera to watch the sawmill dock on Woods",
+          "descriptionPt": "Instale uma câmera WIFI para vigiar o píer",
+          "category": "item",
+          "x": 31.0868,
+          "y": -13.6127,
+          "z": 83.0115
+        }
+      ]
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "introduction",
       "name": "Introduction",
       "namePt": "Introdução",
@@ -2154,6 +3090,24 @@
           "y": 8.518,
           "z": 7.9998,
           "descriptionPt": "Encontre a mensagem do Jaeger"
+        }
+      ]
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the bear who sat into a flaming car on Woods",
+          "descriptionPt": "Instale uma câmera WI-FI no urso que sentou em um carro em chamas na Woods",
+          "category": "item",
+          "x": -117.325,
+          "y": 22.035,
+          "z": -463.95
         }
       ]
     },
@@ -2212,11 +3166,113 @@
       ]
     },
     {
+      "slug": "metal-birds",
+      "name": "Metal Birds",
+      "namePt": "Pássaros de Metal",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "night-sweep",
+      "name": "Night Sweep",
+      "namePt": "Varredura Noturna",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "one-less-loose-end",
+      "name": "One Less Loose End",
+      "namePt": "Uma Ponta Solta a Menos",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "one-less-loose-end-0",
+          "description": "Stash the journal at the old sawmill on Woods",
+          "descriptionPt": "Guarde o diário na antiga serraria na Woods",
+          "category": "objective",
+          "x": -510.893,
+          "y": 17.147,
+          "z": -178.235
+        }
+      ]
+    },
+    {
+      "slug": "order-from-outside",
+      "name": "Order From Outside",
+      "namePt": "Pedido externo",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "order-from-outside-0",
+          "description": "Stash the device at the specified location on Woods",
+          "descriptionPt": "Armazenar o dispositivo no local especificado na Woods",
+          "category": "objective",
+          "x": -55.005,
+          "y": 8.82,
+          "z": -498.353
+        }
+      ]
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "polikhim-hobo",
+      "name": "Polikhim Hobo",
+      "namePt": "Mendigo Polikhim",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "power-of-persuasion",
+      "name": "Power of Persuasion",
+      "namePt": "Poder de Persuasão",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "proper-comeback",
+      "name": "Proper Comeback",
+      "namePt": "Retorno adequado",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "proper-comeback-0",
+          "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Woods",
+          "descriptionPt": "Guarde uma estatueta de galo de ouro na câmera WI-FI da Prapor na Woods",
+          "category": "item",
+          "x": -219.748,
+          "y": 62.621,
+          "z": -219.975
+        }
+      ]
+    },
+    {
       "slug": "protect-the-sky",
       "name": "Protect the Sky",
       "namePt": "Proteger o Céu",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "protect-the-sky-0",
@@ -2266,6 +3322,68 @@
       ]
     },
     {
+      "slug": "return-the-favor",
+      "name": "Return the Favor",
+      "namePt": "Retorne o favor",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "return-the-favor-0",
+          "description": "Eliminate PMC operatives around the mountain area on Woods",
+          "descriptionPt": "Elimine agentes PMC ao redor da área montanhosa na Woods",
+          "category": "objective",
+          "x": -185.0,
+          "y": 45.7,
+          "z": -292.7
+        },
+        {
+          "id": "return-the-favor-1",
+          "description": "Hide the TerraGroup \"Blue Folders\" materials inside the black SUV in the USEC camp on Woods",
+          "descriptionPt": "Esconda a pasta de materiais TerraGroup \"Pastas Azuis\" dentro do SUV preto no acampamento USEC da Woods",
+          "category": "item",
+          "x": 289.967,
+          "y": 23.515,
+          "z": -439.012
+        },
+        {
+          "id": "return-the-favor-2",
+          "description": "Hide the TerraGroup \"Blue Folders\" materials in the crates near the satellite antenna in the USEC camp on Woods",
+          "descriptionPt": "Esconda os materiais \"Pastas Azuis\" da TerraGroup nas caixas perto da antena de satélite no acampamento USEC",
+          "category": "item",
+          "x": 292.484,
+          "y": 23.353,
+          "z": -507.383
+        }
+      ]
+    },
+    {
+      "slug": "rough-tarkov",
+      "name": "Rough Tarkov",
+      "namePt": "Tarkov Bruto",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "rough-tarkov-0",
+          "description": "Locate the heavily mined area at the USEC camp on Woods",
+          "descriptionPt": "Localize a área fortemente minada na Woods",
+          "category": "objective",
+          "x": 341.6,
+          "y": 22.907,
+          "z": -492.3
+        }
+      ]
+    },
+    {
+      "slug": "saving-private-roman",
+      "name": "Saving Private Roman",
+      "namePt": "O Resgate do Soldado Roman",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
       "slug": "search-mission",
       "name": "Search Mission",
       "namePt": "Missão de busca",
@@ -2293,6 +3411,14 @@
       ]
     },
     {
+      "slug": "sensory-analysis-part-1",
+      "name": "Sensory Analysis - Part 1",
+      "namePt": "Análise Sensorial - Parte 1",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "shipping-delay-part-1",
       "name": "Shipping Delay - Part 1",
       "namePt": "Atraso no Envio - Parte 1",
@@ -2304,8 +3430,8 @@
       "slug": "shipping-delay-part-2",
       "name": "Shipping Delay - Part 2",
       "namePt": "Atraso no Envio - Parte 2",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "shipping-delay-part-2-0",
@@ -2337,12 +3463,73 @@
       ]
     },
     {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
       "slug": "shootout-picnic",
       "name": "Shootout Picnic",
       "namePt": "Tiroteio no piquenique",
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
+    },
+    {
+      "slug": "simple-side-job",
+      "name": "Simple Side Job",
+      "namePt": "Trabalho paralelo simples",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "simple-side-job-0",
+          "description": "Stash the cargo at the Scav house on Woods",
+          "descriptionPt": "Esconda a carga na casa dos Scavs na Woods",
+          "category": "objective",
+          "x": 412.89,
+          "y": -13.04,
+          "z": 240.05
+        }
+      ]
+    },
+    {
+      "slug": "small-business-part-2",
+      "name": "Small Business - Part 2",
+      "namePt": "Pequenas empresas - Parte 2",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-3",
+      "name": "Small Business - Part 3",
+      "namePt": "Pequenas empresas - Parte 3",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "small-business-part-3-0",
+          "description": "Stash a Cultist knife at the river village marked circle on Woods",
+          "descriptionPt": "Esconda uma faca Cultista no círculo marcado na vila do rio na Woods",
+          "category": "item",
+          "x": 195.977,
+          "y": 1.032,
+          "z": -7.242
+        },
+        {
+          "id": "small-business-part-3-1",
+          "description": "Stash a Cultist knife at the sawmill marked circle on Woods",
+          "descriptionPt": "Esconda uma faca Cultist no círculo marcado pela serraria na Woods",
+          "category": "item",
+          "x": -88.7,
+          "y": 12.55,
+          "z": -717.61
+        }
+      ]
     },
     {
       "slug": "small-things-big-help",
@@ -2377,6 +3564,24 @@
           "y": 15.319,
           "z": 23.9849854,
           "descriptionPt": "Encontre e marque o segundo estoque de combustível com o marcador MS2000 na Woods"
+        }
+      ]
+    },
+    {
+      "slug": "special-comms",
+      "name": "Special Comms",
+      "namePt": "Comunicações especiais",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "special-comms-0",
+          "description": "Stash a Military cable at the boulder next to RUAF gate on Woods",
+          "descriptionPt": "Esconda um cabo militar na rocha próxima ao portão da RUAF na Woods",
+          "category": "item",
+          "x": -119.045,
+          "y": -0.93,
+          "z": 400.652
         }
       ]
     },
@@ -2435,6 +3640,22 @@
       ]
     },
     {
+      "slug": "stick-to-it",
+      "name": "Stick to It",
+      "namePt": "Persista Nisso",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
+      "slug": "stray-dogs",
+      "name": "Stray Dogs",
+      "namePt": "Cães de Rua",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "supply-plans",
       "name": "Supply Plans",
       "namePt": "Rota dos suprimentos",
@@ -2453,6 +3674,14 @@
       ]
     },
     {
+      "slug": "swift",
+      "name": "Swift",
+      "namePt": "Ágil",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "swift-one",
       "name": "Swift One",
       "namePt": "O elegante",
@@ -2464,8 +3693,8 @@
       "slug": "swift-retribution",
       "name": "Swift Retribution",
       "namePt": "Retribuição Rápida",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": []
     },
     {
@@ -2505,6 +3734,14 @@
       ]
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "the-higher-they-fly",
       "name": "The Higher They Fly",
       "namePt": "Voa Passarinho Voa",
@@ -2513,9 +3750,41 @@
       "objectives": []
     },
     {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-woods-keeper",
       "name": "The Huntsman Path - Woods Keeper",
       "namePt": "Caminho do caçador. Guarda da Woods",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
       "objectives": []
@@ -2590,12 +3859,108 @@
       "objectives": []
     },
     {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "thirsty-delivery",
+      "name": "Thirsty - Delivery",
+      "namePt": "Com sede - Entrega",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "thirsty-delivery-0",
+          "description": "Locate the specified stash spot on Woods",
+          "descriptionPt": "Localize o ponto de armazenamento especificado no Woods",
+          "category": "objective",
+          "x": 227.699,
+          "y": 21.056,
+          "z": -706.56
+        },
+        {
+          "id": "thirsty-delivery-1",
+          "description": "Stash the first Propane tank (5L)",
+          "descriptionPt": "Armazenar o primeiro tanque de propano (5L)",
+          "category": "item",
+          "x": 227.699,
+          "y": 21.056,
+          "z": -706.56
+        }
+      ]
+    },
+    {
       "slug": "uninvited-guests-part-2",
       "name": "Uninvited Guests - Part 2",
       "namePt": "Convidados Indesejados - Parte 2",
       "trader": "BTR Driver",
       "traderPt": "BTR Driver",
       "objectives": []
+    },
+    {
+      "slug": "viewer",
+      "name": "Viewer",
+      "namePt": "Visualizador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "viewer-0",
+          "description": "Install a WI-FI Camera on the mountain ledge on Woods",
+          "descriptionPt": "Instale uma câmera WI-FI na borda da montanha na Woods",
+          "category": "item",
+          "x": -219.227,
+          "y": 64.622,
+          "z": -224.434
+        }
+      ]
+    },
+    {
+      "slug": "weapons-circulation",
+      "name": "Weapons Circulation",
+      "namePt": "Circulação de Armas",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "weapons-circulation-0",
+          "description": "Locate and mark the first ritual spot with an MS2000 Marker on Woods",
+          "descriptionPt": "Instale o primeiro marcador MS2000 no local do ritual na Woods",
+          "category": "item",
+          "x": 195.977,
+          "y": 1.032,
+          "z": -7.242
+        },
+        {
+          "id": "weapons-circulation-1",
+          "description": "Locate and mark the second ritual spot with an MS2000 Marker on Woods",
+          "descriptionPt": "Instale o segundo marcador MS2000 no local do ritual na Woods",
+          "category": "item",
+          "x": -88.7,
+          "y": 12.55,
+          "z": -717.61
+        }
+      ]
     }
   ],
   "customs": [
@@ -2725,6 +4090,14 @@
       ]
     },
     {
+      "slug": "all-this-filth",
+      "name": "All This Filth...",
+      "namePt": "Toda Essa Escória...",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "background-check",
       "name": "Background Check",
       "namePt": "Verificação de antecedentes",
@@ -2741,6 +4114,14 @@
           "descriptionPt": "Encontre o relógio de bolso de bronze na Customs"
         }
       ]
+    },
+    {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
     },
     {
       "slug": "belka-and-strelka",
@@ -2830,6 +4211,14 @@
           "descriptionPt": "Marque o veículo com o sinalizador MS2000"
         }
       ]
+    },
+    {
+      "slug": "blood-in-the-water",
+      "name": "Blood in the Water",
+      "namePt": "Sangue na Água",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": []
     },
     {
       "slug": "bp-depot",
@@ -3106,6 +4495,40 @@
       ]
     },
     {
+      "slug": "chemical-experiments",
+      "name": "Chemical Experiments",
+      "namePt": "Experimentos Químicos",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "choose-your-friends-wisely",
+      "name": "Choose Your Friends Wisely",
+      "namePt": "Escolha seus amigos com sabedoria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "chumming",
+      "name": "Chumming",
+      "namePt": "Parceria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "chumming-0",
+          "description": "Stash Golden neck chains in the microwave on the 3rd floor of the dorm on Customs",
+          "descriptionPt": "Coloque 3 correntes douradas no microondas no terceiro andar dos dormitórios",
+          "category": "item",
+          "x": 170.795,
+          "y": 6.885,
+          "z": 172.0
+        }
+      ]
+    },
+    {
       "slug": "closer-to-the-people",
       "name": "Closer to the People",
       "namePt": "Mais perto das pessoas",
@@ -3149,6 +4572,30 @@
           "descriptionPt": "Localize e obtenha as notas de remessa da equipe de entrega na Customs"
         }
       ]
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "debut",
+      "name": "Debut",
+      "namePt": "Estréia",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "decisions-decisions-pvp-zone",
+      "name": "Decisions, Decisions [PVP ZONE]",
+      "namePt": "Decisões, decisões",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
     },
     {
       "slug": "digital-puzzle",
@@ -3213,12 +4660,56 @@
       ]
     },
     {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "every-hunter-knows-this",
+      "name": "Every Hunter Knows This",
+      "namePt": "Todo Caçador Sabe Disso",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "every-hunter-knows-this-0",
+          "description": "Locate a good tripwire installation spot at the three-story dorm stairs on Customs",
+          "descriptionPt": "Localize um bom ponto de instalação da armadilha na Customs",
+          "category": "objective",
+          "x": 171.123,
+          "y": 0.77,
+          "z": 159.918
+        }
+      ]
+    },
+    {
       "slug": "fall-ailment",
       "name": "Fall Ailment",
       "namePt": "Mal de Outono",
       "trader": "Therapist",
       "traderPt": "Therapist",
       "objectives": []
+    },
+    {
+      "slug": "farming",
+      "name": "Farming",
+      "namePt": "Cultivo",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "farming-0",
+          "description": "Locate the warehouse of seized goods on Customs",
+          "descriptionPt": "Encontre o armazém dos confiscados",
+          "category": "objective",
+          "x": -212.57,
+          "y": 1.162,
+          "z": -109.05
+        }
+      ]
     },
     {
       "slug": "farming-part-3",
@@ -3319,11 +4810,305 @@
       ]
     },
     {
+      "slug": "hell-on-earth-part-2",
+      "name": "Hell on Earth - Part 2",
+      "namePt": "Inferno na Terra - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "hobby-club",
+      "name": "Hobby Club",
+      "namePt": "Clube de Hobby",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "hobby-club-0",
+          "description": "Locate the checkpoint with seized cargo",
+          "descriptionPt": "Localize o posto de controle com a carga apreendida",
+          "category": "objective",
+          "x": 584.28,
+          "y": 0.94,
+          "z": 5.02
+        },
+        {
+          "id": "hobby-club-1",
+          "description": "Stash the AK-50 body at the specified spot on Customs",
+          "descriptionPt": "Esconda o corpo do AK-50 no local especificado na Customs",
+          "category": "item",
+          "x": 500.636,
+          "y": 17.861,
+          "z": 91.8714
+        },
+        {
+          "id": "hobby-club-2",
+          "description": "Stash the AK-50 handguard at the specified spot on Customs",
+          "descriptionPt": "Esconda o guarda-mão do AK-50 no local especificado na Customs",
+          "category": "objective",
+          "x": 500.636,
+          "y": 17.861,
+          "z": 91.8714
+        },
+        {
+          "id": "hobby-club-3",
+          "description": "Stash the AK-50 barrel at the specified spot on Customs",
+          "descriptionPt": "Esconda o cano do AK-50 no local especificado na Customs",
+          "category": "objective",
+          "x": 500.636,
+          "y": 17.861,
+          "z": 91.8714
+        },
+        {
+          "id": "hobby-club-4",
+          "description": "Stash the AK-50 dust cover at the specified spot on Customs",
+          "descriptionPt": "Esconda o dust cover do AK-50 no local especificado na Customs",
+          "category": "objective",
+          "x": 500.636,
+          "y": 17.861,
+          "z": 91.8714
+        }
+      ]
+    },
+    {
+      "slug": "hot-wheels",
+      "name": "Hot Wheels",
+      "namePt": "Hot Wheels",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": [
+        {
+          "id": "hot-wheels-0",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 375.769,
+          "y": 1.22,
+          "z": 20.38
+        },
+        {
+          "id": "hot-wheels-1",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 117.472,
+          "y": 1.603,
+          "z": -85.998
+        },
+        {
+          "id": "hot-wheels-2",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 316.23,
+          "y": 2.282,
+          "z": -192.114
+        },
+        {
+          "id": "hot-wheels-3",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 572.391,
+          "y": 1.807,
+          "z": -90.221
+        },
+        {
+          "id": "hot-wheels-4",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 5.53,
+          "y": 1.54,
+          "z": -96.45
+        },
+        {
+          "id": "hot-wheels-5",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 340.777,
+          "y": 1.728,
+          "z": -159.876
+        },
+        {
+          "id": "hot-wheels-6",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 557.326,
+          "y": -0.239,
+          "z": 1.47
+        },
+        {
+          "id": "hot-wheels-7",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -176.862,
+          "y": 1.691,
+          "z": -206.773
+        },
+        {
+          "id": "hot-wheels-8",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -279.377,
+          "y": 1.319,
+          "z": -139.938
+        },
+        {
+          "id": "hot-wheels-9",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 43.6733,
+          "y": 1.528,
+          "z": -157.658
+        },
+        {
+          "id": "hot-wheels-10",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 111.77,
+          "y": 2.899,
+          "z": -94.8571
+        },
+        {
+          "id": "hot-wheels-11",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 21.738,
+          "y": -0.723,
+          "z": 99.223
+        },
+        {
+          "id": "hot-wheels-12",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 98.449,
+          "y": 1.615,
+          "z": -86.199
+        },
+        {
+          "id": "hot-wheels-13",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -226.937,
+          "y": 1.347,
+          "z": -87.068
+        },
+        {
+          "id": "hot-wheels-14",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 92.184,
+          "y": 1.549,
+          "z": -152.423
+        },
+        {
+          "id": "hot-wheels-15",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": 67.1048,
+          "y": 1.607,
+          "z": -143.208
+        },
+        {
+          "id": "hot-wheels-16",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -203.416,
+          "y": 1.359,
+          "z": -188.637
+        },
+        {
+          "id": "hot-wheels-17",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -255.144,
+          "y": 1.368,
+          "z": -89.301
+        },
+        {
+          "id": "hot-wheels-18",
+          "description": "Complete the main objective as soon as possible",
+          "descriptionPt": "Complete o objetivo principal rapidamente",
+          "category": "item",
+          "x": -226.336,
+          "y": 1.384,
+          "z": -89.726
+        }
+      ]
+    },
+    {
       "slug": "hot-zone",
       "name": "Hot Zone",
       "namePt": "Zona Quente",
       "trader": "Ragman",
       "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the bucket-head villain on Customs",
+          "descriptionPt": "Instale uma câmera WI-FI no vilão da cabeça de balde na Customs",
+          "category": "item",
+          "x": 568.542,
+          "y": 7.703,
+          "z": -58.752
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at Anvil 3-4 crew member's execution site on Customs",
+          "descriptionPt": "Instalar uma câmera WI-FI no local de execução do membro da tripulação do Anvil 3-4 na Customs",
+          "category": "item",
+          "x": 567.928,
+          "y": 6.9,
+          "z": -79.97
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at every indie developer's worst nightmare on Customs",
+          "descriptionPt": "Instalar uma câmera WI-FI no pior pesadelo de todo desenvolvedor independente na Customs",
+          "category": "item",
+          "x": 173.57,
+          "y": 3.83039,
+          "z": 184.21
+        }
+      ]
+    },
+    {
+      "slug": "job-for-a-patriot",
+      "name": "Job for a Patriot",
+      "namePt": "Trabalho para um Patriota",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     },
     {
@@ -3333,6 +5118,85 @@
       "trader": "Fence",
       "traderPt": "Fence",
       "objectives": []
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "night-sweep",
+      "name": "Night Sweep",
+      "namePt": "Varredura Noturna",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "oil-run",
+      "name": "Oil Run",
+      "namePt": "Corrida do Combustível",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "oil-run-0",
+          "description": "Locate and mark any of the fuel tank trucks with an MS2000 Marker on Customs",
+          "descriptionPt": "Localize e marque um dos caminhões-tanque de combustível com um Marcador MS2000 em Customs",
+          "category": "item",
+          "x": 429.857,
+          "y": 2.73618,
+          "z": 16.2299
+        },
+        {
+          "id": "oil-run-1",
+          "description": "Locate and mark any of the fuel tank trucks with an MS2000 Marker on Customs",
+          "descriptionPt": "Localize e marque um dos caminhões-tanque de combustível com um Marcador MS2000 em Customs",
+          "category": "item",
+          "x": 101.447,
+          "y": 3.06018,
+          "z": -14.1001
+        },
+        {
+          "id": "oil-run-2",
+          "description": "Locate and mark any of the fuel tank trucks with an MS2000 Marker on Customs",
+          "descriptionPt": "Localize e marque um dos caminhões-tanque de combustível com um Marcador MS2000 em Customs",
+          "category": "item",
+          "x": 334.957,
+          "y": 3.04018,
+          "z": -189.97
+        },
+        {
+          "id": "oil-run-3",
+          "description": "Locate and mark any of the fuel tank trucks with an MS2000 Marker on Customs",
+          "descriptionPt": "Localize e marque um dos caminhões-tanque de combustível com um Marcador MS2000 em Customs",
+          "category": "item",
+          "x": -334.933,
+          "y": 2.22018,
+          "z": -163.46
+        }
+      ]
+    },
+    {
+      "slug": "operation-aquarius",
+      "name": "Operation Aquarius",
+      "namePt": "Operação Aquário",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": [
+        {
+          "id": "operation-aquarius-0",
+          "description": "Locate the water stockpile hidden inside one of the dorm rooms on Customs",
+          "descriptionPt": "Encontre o depósito de água escondido dentro no dormitório na Customs",
+          "category": "objective",
+          "x": 232.24,
+          "y": 3.39018,
+          "z": 138.877
+        }
+      ]
     },
     {
       "slug": "operation-aquarius-part-1",
@@ -3460,6 +5324,14 @@
       ]
     },
     {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "pharmacist",
       "name": "Pharmacist",
       "namePt": "Farmacêutico",
@@ -3515,6 +5387,14 @@
       "slug": "polikhim-hobo",
       "name": "Polikhim Hobo",
       "namePt": "Mendigo Polikhim",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "power-of-persuasion",
+      "name": "Power of Persuasion",
+      "namePt": "Poder de Persuasão",
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
@@ -3623,7 +5503,26 @@
       "namePt": "Rito de Passagem",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "rite-of-passage-0",
+          "description": "Eliminate Scavs at the old gas station on Customs",
+          "descriptionPt": "Elimine os Scavs no antigo posto de gasolina na Customs",
+          "category": "objective",
+          "x": 331.08,
+          "y": 2.388,
+          "z": -182.37
+        },
+        {
+          "id": "rite-of-passage-1",
+          "description": "Eliminate Scavs at the new gas station on Customs",
+          "descriptionPt": "Elimine os Scavs no novo posto de gasolina na Customs",
+          "category": "objective",
+          "x": 412.249,
+          "y": 1.01528,
+          "z": 27.3194
+        }
+      ]
     },
     {
       "slug": "sanitary-standards-part-2",
@@ -3631,6 +5530,14 @@
       "namePt": "Padrões Sanitários - Parte 2",
       "trader": "Therapist",
       "traderPt": "Therapist",
+      "objectives": []
+    },
+    {
+      "slug": "seizing-the-initiative",
+      "name": "Seizing the Initiative",
+      "namePt": "Tomando a iniciativa",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
       "objectives": []
     },
     {
@@ -3719,6 +5626,56 @@
           "y": 7.704,
           "z": -56.366837,
           "descriptionPt": "Localize e obtenha as listas de remessas do TerraGroup na Customs"
+        }
+      ]
+    },
+    {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-2",
+      "name": "Small Business - Part 2",
+      "namePt": "Pequenas empresas - Parte 2",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "stick-to-it",
+      "name": "Stick to It",
+      "namePt": "Persista Nisso",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
+      "slug": "stray-dogs",
+      "name": "Stray Dogs",
+      "namePt": "Cães de Rua",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "surprise-gift-pvp-zone",
+      "name": "Surprise Gift [PVP ZONE]",
+      "namePt": "Surprise Gift [PVP ZONE]",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "surprise-gift-pvp-zone-0",
+          "description": "Return to the old champion's hideout on Customs",
+          "descriptionPt": "Return to the old champion's hideout on Customs",
+          "category": "objective",
+          "x": 179.938,
+          "y": 3.981,
+          "z": 164.798
         }
       ]
     },
@@ -3812,9 +5769,43 @@
       ]
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-evil-watchman",
       "name": "The Huntsman Path - Evil Watchman",
       "namePt": "Caminho do caçador. Vigia maligno",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "the-huntsman-path-evil-watchman-0",
+          "description": "Eliminate PMC operatives in the Dorms area on Customs",
+          "descriptionPt": "Mate 5 PMCs na área dos dormitórios da Customs",
+          "category": "objective",
+          "x": 201.18,
+          "y": 5.31,
+          "z": 154.53
+        }
+      ]
+    },
+    {
+      "slug": "the-huntsman-path-justice",
+      "name": "The Huntsman Path - Justice",
+      "namePt": "Caminho do caçador. Justiça",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
       "objectives": []
@@ -3828,11 +5819,51 @@
       "objectives": []
     },
     {
+      "slug": "the-punisher-part-1",
+      "name": "The Punisher - Part 1",
+      "namePt": "O Justiceiro - Parte 1",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "the-punisher-part-3",
       "name": "The Punisher - Part 3",
       "namePt": "O Justiceiro - Parte 3",
       "trader": "Prapor",
       "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
       "objectives": []
     },
     {
@@ -3844,12 +5875,55 @@
       "objectives": []
     },
     {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-tarkov-shooter-part-5",
       "name": "The Tarkov Shooter - Part 5",
       "namePt": "O atirador de Tarkov - Parte 5",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
       "objectives": []
+    },
+    {
+      "slug": "thirsty-delivery",
+      "name": "Thirsty - Delivery",
+      "namePt": "Com sede - Entrega",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "thirsty-delivery-0",
+          "description": "Locate the specified stash spot on Customs",
+          "descriptionPt": "Localize o local de armazenamento especificado na Customs",
+          "category": "objective",
+          "x": 11.713,
+          "y": -0.719,
+          "z": 35.594
+        },
+        {
+          "id": "thirsty-delivery-1",
+          "description": "Stash the second Propane tank (5L)",
+          "descriptionPt": "Armazenar o segundo tanque de propano (5L)",
+          "category": "item",
+          "x": 11.713,
+          "y": -0.719,
+          "z": 35.594
+        }
+      ]
     },
     {
       "slug": "tigr-safari",
@@ -3969,6 +6043,30 @@
       ]
     },
     {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
+      "slug": "best-job-in-the-world",
+      "name": "Best Job in the World",
+      "namePt": "Melhor trabalho do mundo",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "choose-your-friends-wisely",
+      "name": "Choose Your Friends Wisely",
+      "namePt": "Escolha seus amigos com sabedoria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
       "slug": "classified-technologies",
       "name": "Classified Technologies",
       "namePt": "Troca de experiências",
@@ -3985,6 +6083,14 @@
           "descriptionPt": "Obtenha o pacote com o painel de controle do comandante do T-90M na Reserve"
         }
       ]
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
     },
     {
       "slug": "demonstration-model",
@@ -4058,6 +6164,30 @@
       ]
     },
     {
+      "slug": "drip-out-part-1-bear",
+      "name": "Drip-Out - Part 1",
+      "namePt": "Estiloso - Parte 1",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "easy-breezy",
+      "name": "Easy-Breezy",
+      "namePt": "Moleza",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "friend-from-norvinsk-part-1",
       "name": "Friend from Norvinsk - Part 1",
       "namePt": "Friend from Norvinsk - Part 1",
@@ -4066,11 +6196,55 @@
       "objectives": []
     },
     {
+      "slug": "getting-some-air",
+      "name": "Getting Some Air",
+      "namePt": "Tomando Um Ar",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "hobby-club",
+      "name": "Hobby Club",
+      "namePt": "Clube de Hobby",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "hobby-club-0",
+          "description": "Locate Glukhar's workshop on Reserve",
+          "descriptionPt": "Localize a oficina de Glukhar na Reserva",
+          "category": "objective",
+          "x": 45.4699,
+          "y": -2.78922,
+          "z": -117.468
+        }
+      ]
+    },
+    {
+      "slug": "hot-wheels",
+      "name": "Hot Wheels",
+      "namePt": "Hot Wheels",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": [
+        {
+          "id": "hot-wheels-0",
+          "description": "Locate and mark the spare BTR wheels with an MS2000 Marker",
+          "descriptionPt": "Localize e marque as rodas BTR sobressalentes com um marcador MS2000",
+          "category": "item",
+          "x": 100.468,
+          "y": -6.626,
+          "z": 28.377
+        }
+      ]
+    },
+    {
       "slug": "hot-wheels-let-s-try-again",
       "name": "Hot Wheels - Let's Try Again",
       "namePt": "Hot Wheels - Vamos tentar novamente",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "hot-wheels-lets-try-again-0",
@@ -4082,6 +6256,30 @@
           "descriptionPt": "Localize e marque as rodas BTR sobressalentes com um marcador MS2000 na reserva"
         }
       ]
+    },
+    {
+      "slug": "inevitable-response",
+      "name": "Inevitable Response",
+      "namePt": "Resposta inevitável",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
+      "slug": "insomnia",
+      "name": "Insomnia",
+      "namePt": "Insônia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
     },
     {
       "slug": "inventory-check",
@@ -4138,12 +6336,82 @@
       ]
     },
     {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the place where conscripts did a very important task on Reserve",
+          "descriptionPt": "Instale uma câmera WI-FI no local onde os recrutas realizaram uma tarefa muito importante na Reserva",
+          "category": "item",
+          "x": -82.75,
+          "y": -6.38,
+          "z": 62.44
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the two chair riddle on Reserve",
+          "descriptionPt": "Instalar uma câmera WI-FI no local de duas cadeiras na Reserva",
+          "category": "item",
+          "x": 125.102,
+          "y": -6.48194,
+          "z": -89.345
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at every tank driver's first videogame on Reserve",
+          "descriptionPt": "Instale uma câmera WI-FI no primeiro videogame de cada motorista de tanque na reserva",
+          "category": "item",
+          "x": -77.323,
+          "y": -6.252,
+          "z": -20.254
+        }
+      ]
+    },
+    {
+      "slug": "job-for-a-patriot",
+      "name": "Job for a Patriot",
+      "namePt": "Trabalho para um Patriota",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "make-amends-sweep-up",
+      "name": "Make Amends - Sweep Up",
+      "namePt": "Fazer as pazes - Varrer",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "no-place-for-renegades",
       "name": "No Place for Renegades",
       "namePt": "Sem espaço para renegados",
       "trader": "Prapor",
       "traderPt": "Prapor",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "no-place-for-renegades-0",
+          "description": "Eliminate Raiders in the command bunker on Reserve",
+          "descriptionPt": "Elimine Raiders no bunker de comando da Reserve",
+          "category": "objective",
+          "x": -109.65,
+          "y": -12.8292,
+          "z": 37.5119
+        }
+      ]
     },
     {
       "slug": "not-a-step-back",
@@ -4172,6 +6440,14 @@
       ]
     },
     {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "pest-control",
       "name": "Pest Control",
       "namePt": "Controle de praga",
@@ -4194,6 +6470,60 @@
           "y": -12.2860031,
           "z": -117.1,
           "descriptionPt": "Encontre o depósito de alimentos"
+        }
+      ]
+    },
+    {
+      "slug": "reserve-expert",
+      "name": "Reserve Expert",
+      "namePt": "Especialista em Reserve",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": [
+        {
+          "id": "reserve-expert-0",
+          "description": "Check the first armory in the eastern barracks (Black Pawn) on Reserve",
+          "descriptionPt": "Verifique o primeiro arsenal nos alojamentos leste (Black Pawn) em Reserve",
+          "category": "objective",
+          "x": -167.376,
+          "y": -1.28522,
+          "z": 31.3559
+        },
+        {
+          "id": "reserve-expert-1",
+          "description": "Check the duty room in the eastern barracks (Black Pawn) on Reserve",
+          "descriptionPt": "Verifique a sala de serviço no quartel (Peão Preto) ao leste da Reserve",
+          "category": "objective",
+          "x": -164.964,
+          "y": -4.22122,
+          "z": 34.5259
+        },
+        {
+          "id": "reserve-expert-2",
+          "description": "Check the second armory in the eastern barracks (Black Pawn) on Reserve",
+          "descriptionPt": "Verifique o segundo arsenal nos alojamentos leste (Black Pawn) em Reserve",
+          "category": "objective",
+          "x": -167.376,
+          "y": -7.04623,
+          "z": 31.3559
+        },
+        {
+          "id": "reserve-expert-3",
+          "description": "Check the first armory in the southern barracks (White Pawn) on Reserve",
+          "descriptionPt": "Verifique o primeiro arsenal nos alojamentos sul (White Pawn) em Reserve",
+          "category": "objective",
+          "x": -125.54,
+          "y": -1.28522,
+          "z": 95.6819
+        },
+        {
+          "id": "reserve-expert-4",
+          "description": "Check the second armory in the southern barracks (White Pawn) on Reserve",
+          "descriptionPt": "Verifique o segundo arsenal nos alojamentos sul (White Pawn) em Reserve",
+          "category": "objective",
+          "x": -125.518,
+          "y": -7.04623,
+          "z": 95.6799
         }
       ]
     },
@@ -4320,7 +6650,85 @@
       "namePt": "Corredor seguro",
       "trader": "Skier",
       "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "safe-corridor-0",
+          "description": "Eliminate Scavs in the underground storage warehouse on Reserve",
+          "descriptionPt": "Elimine Scavs no depósito subterrâneo em Reserve",
+          "category": "objective",
+          "x": 65.3899,
+          "y": -24.4292,
+          "z": -104.648
+        }
+      ]
+    },
+    {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
       "objectives": []
+    },
+    {
+      "slug": "silent-caliber",
+      "name": "Silent Caliber",
+      "namePt": "Calibre Silencioso",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-2",
+      "name": "Small Business - Part 2",
+      "namePt": "Pequenas empresas - Parte 2",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "snatch",
+      "name": "Snatch",
+      "namePt": "Snatch",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "snatch-0",
+          "description": "Stash the forged intelligence under the BMP-2 in place of the original",
+          "descriptionPt": "Esconda a inteligência forjada em baixo do the BMP-2 no lugar da original",
+          "category": "objective",
+          "x": 101.728,
+          "y": -5.59222,
+          "z": 64.4449
+        }
+      ]
+    },
+    {
+      "slug": "special-comms",
+      "name": "Special Comms",
+      "namePt": "Comunicações especiais",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "special-comms-0",
+          "description": "Stash a Bulbex cable cutter at the sandbags next to LAV III above the storage warehouse on Reserve",
+          "descriptionPt": "Esconda um cortador de cabos Bulbex nos sacos de areia ao lado do LAV III, acima do depósito de armazenamento na Reserva",
+          "category": "item",
+          "x": 50.9811,
+          "y": -0.624962,
+          "z": -181.917
+        }
+      ]
     },
     {
       "slug": "surplus-goods",
@@ -4337,6 +6745,78 @@
           "y": -6.725,
           "z": 59.1600342,
           "descriptionPt": "Obtenha o sistema de navegação de MBT na Reserve"
+        }
+      ]
+    },
+    {
+      "slug": "the-bunker",
+      "name": "The Bunker",
+      "namePt": "O Bunker",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "the-bunker-0",
+          "description": "Locate the underground bunker on Reserve",
+          "descriptionPt": "Encontre o Bunker subterrâneo na Reserve",
+          "category": "objective",
+          "x": -115.03,
+          "y": -11.8592,
+          "z": 33.8819
+        },
+        {
+          "id": "the-bunker-1",
+          "description": "Locate the control room in the underground bunker on Reserve",
+          "descriptionPt": "Localize a sala de controle no bunker subterrâneo na Reserve",
+          "category": "objective",
+          "x": -116.753,
+          "y": -13.1592,
+          "z": 31.6869
+        },
+        {
+          "id": "the-bunker-2",
+          "description": "Locate the hermetic door leading to the hospital (White Bishop) on Reserve",
+          "descriptionPt": "Localize a porta hermética que leva ao hospital (Bispo Branco) em Reserve",
+          "category": "objective",
+          "x": -90.3091,
+          "y": -13.4192,
+          "z": -5.14809
+        },
+        {
+          "id": "the-bunker-3",
+          "description": "Locate one of the two hermetic doors leading to the academy building (Black Bishop) on Reserve",
+          "descriptionPt": "Localize uma das duas portas herméticas que levam ao prédio da academia (Bispo Preto) em Reserve",
+          "category": "objective",
+          "x": -144.25,
+          "y": -9.98322,
+          "z": 6.19191
+        },
+        {
+          "id": "the-bunker-4",
+          "description": "Locate one of the two hermetic doors leading to barracks #1 (Black Pawn) on Reserve",
+          "descriptionPt": "Localize uma das duas portas herméticas que levam ao alojamento #1 (Peão Preto) em Reserve",
+          "category": "objective",
+          "x": -149.41,
+          "y": -9.32922,
+          "z": 50.0019
+        },
+        {
+          "id": "the-bunker-5",
+          "description": "Locate one of the two hermetic doors leading to barracks #2 (White Pawn) on Reserve",
+          "descriptionPt": "Localize uma das duas portas herméticas que levam ao alojamento #2 (Peão Branco) em Reserve",
+          "category": "objective",
+          "x": -107.01,
+          "y": -9.38822,
+          "z": 77.4919
+        },
+        {
+          "id": "the-bunker-6",
+          "description": "Locate the hermetic door leading to the air control center building (King) on Reserve",
+          "descriptionPt": "Localize a porta hermética que leva ao prédio do centro de controle aéreo (Rei) em Reserve",
+          "category": "objective",
+          "x": -73.0011,
+          "y": -9.65322,
+          "z": 29.9939
         }
       ]
     },
@@ -4430,6 +6910,30 @@
       "objectives": []
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-administrator",
+      "name": "The Huntsman Path - Administrator",
+      "namePt": "O Caminho do Caçador - Administrador",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-eraser",
+      "name": "The Huntsman Path - Eraser",
+      "namePt": "O Caminho do Caçador - Exterminador",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-eraser-part-1",
       "name": "The Huntsman Path - Eraser - Part 1",
       "namePt": "Caminho do caçador - Matador - Parte 1",
@@ -4438,11 +6942,125 @@
       "objectives": []
     },
     {
+      "slug": "the-huntsman-path-forest-cleaning",
+      "name": "The Huntsman Path - Forest Cleaning",
+      "namePt": "Caminho do Caçador. Limpeza na Woods",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-liberation",
+      "name": "The Huntsman Path - Liberation",
+      "namePt": "O Caminho do Caçador - Libertação",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-price-of-independence",
+      "name": "The Price of Independence",
+      "namePt": "O Preço da Independência",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": [
+        {
+          "id": "the-price-of-independence-0",
+          "description": "Stash the letter on the third floor of the military headquarters on Reserve",
+          "descriptionPt": "Esconda a carta no terceiro andar do quartel-general militar na Reserva",
+          "category": "objective",
+          "x": -127.216,
+          "y": 0.695778,
+          "z": -20.3591
+        }
+      ]
+    },
+    {
       "slug": "the-punisher-part-2",
       "name": "The Punisher - Part 2",
       "namePt": "O Justiceiro - Parte 2",
       "trader": "Prapor",
       "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-3",
+      "name": "The Punisher - Part 3",
+      "namePt": "O Justiceiro - Parte 3",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-import",
+      "name": "The Tarkov Import",
+      "namePt": "A Importação de Tarkov",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "worst-job-in-the-world",
+      "name": "Worst Job in the World",
+      "namePt": "Pior trabalho do mundo",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
       "objectives": []
     }
   ],
@@ -4451,8 +7069,8 @@
       "slug": "ask-for-directions",
       "name": "Ask for Directions",
       "namePt": "Peça Orientações",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "ask-for-directions-0",
@@ -4498,6 +7116,32 @@
       "namePt": "Avaliação - Parte 1",
       "trader": "Mechanic",
       "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "assessment-part-1-0",
+          "description": "Eliminate PMC operatives near the Lighthouse peninsula",
+          "descriptionPt": "Elimine operadores PMC no arredores do Farol",
+          "category": "objective",
+          "x": -29.5674,
+          "y": 23.3449,
+          "z": 112.691
+        }
+      ]
+    },
+    {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
+      "slug": "best-job-in-the-world",
+      "name": "Best Job in the World",
+      "namePt": "Melhor trabalho do mundo",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     },
     {
@@ -4528,6 +7172,14 @@
       ]
     },
     {
+      "slug": "bullshit",
+      "name": "Bullshit",
+      "namePt": "Lorota",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
       "slug": "cargo-x-part-4",
       "name": "Cargo X - Part 4",
       "namePt": "Carga X - Parte 4",
@@ -4551,6 +7203,22 @@
       "namePt": "Pego em flagrante",
       "trader": "Peacekeeper",
       "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "choose-your-friends-wisely",
+      "name": "Choose Your Friends Wisely",
+      "namePt": "Escolha seus amigos com sabedoria",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
       "objectives": []
     },
     {
@@ -4597,6 +7265,14 @@
       "objectives": []
     },
     {
+      "slug": "drip-out-part-2-bear",
+      "name": "Drip-Out - Part 2",
+      "namePt": "Estiloso - Parte 2",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "drug-trafficking",
       "name": "Drug Trafficking",
       "namePt": "Tráfico de Drogas",
@@ -4620,6 +7296,42 @@
           "y": 13.0148983,
           "z": -841.129333,
           "descriptionPt": "Localize o laboratório de drogas escondido na Lighthouse"
+        }
+      ]
+    },
+    {
+      "slug": "easy-job",
+      "name": "Easy Job",
+      "namePt": "Trabalho Fácil",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "easy-job-0",
+          "description": "Locate the helicopter at the water treatment plant on Lighthouse",
+          "descriptionPt": "Localize o helicóptero na estação de tratamento de água na Lighthouse",
+          "category": "objective",
+          "x": -95.9474,
+          "y": 2.4049,
+          "z": -553.349
+        },
+        {
+          "id": "easy-job-1",
+          "description": "Mark the helicopter with an MS2000 Marker",
+          "descriptionPt": "Marque o helicoptero com um sinalizador MS2000",
+          "category": "item",
+          "x": -96.4874,
+          "y": 2.3749,
+          "z": -552.589
+        },
+        {
+          "id": "easy-job-2",
+          "description": "Eliminate any target around the helicopter area",
+          "descriptionPt": "Elimine qualquer alvo na área do helicóptero",
+          "category": "objective",
+          "x": -51.1674,
+          "y": 14.5449,
+          "z": -573.209
         }
       ]
     },
@@ -4654,6 +7366,24 @@
       "slug": "easy-job-part-2",
       "name": "Easy Job - Part 2",
       "namePt": "Mamão com açúcar - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "easy-job-part-2-0",
+          "description": "Eliminate any target around the helicopter area at the water treatment plant on Lighthouse",
+          "descriptionPt": "Assegure a área ao redor do helicoptero na estação de tratamento de água na Lighthouse",
+          "category": "objective",
+          "x": -51.1674,
+          "y": 14.5449,
+          "z": -573.209
+        }
+      ]
+    },
+    {
+      "slug": "easy-breezy",
+      "name": "Easy-Breezy",
+      "namePt": "Moleza",
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
@@ -4700,6 +7430,41 @@
           "y": 6.044899,
           "z": -608.019348,
           "descriptionPt": "Encontre e marque o segundo caminhão tanque com um marcador MS 20000 na Lighthouse"
+        }
+      ]
+    },
+    {
+      "slug": "foresters-duty",
+      "name": "Forester's Duty",
+      "namePt": "Dever do guarda florestal",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "from-hand-to-hand",
+      "name": "From Hand to Hand",
+      "namePt": "De Mão em Mão",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "from-hand-to-hand-0",
+          "description": "Stash a Virtex programmable processor inside the makeshift lab on Lighthouse",
+          "descriptionPt": "Guarde um processador programável Virtex dentro do laboratório improvisado em Lighthouse",
+          "category": "item",
+          "x": -119.217,
+          "y": 13.0149,
+          "z": -841.129
+        },
+        {
+          "id": "from-hand-to-hand-1",
+          "description": "Stash a Military COFDM Wireless Signal Transmitter inside the makeshift lab on Lighthouse",
+          "descriptionPt": "Guarde um transmissor de sinal sem fio militar COFDM dentro do laboratório improvisado em Lighthouse",
+          "category": "item",
+          "x": -119.217,
+          "y": 13.0149,
+          "z": -841.129
         }
       ]
     },
@@ -4929,11 +7694,106 @@
       ]
     },
     {
+      "slug": "getting-some-air",
+      "name": "Getting Some Air",
+      "namePt": "Tomando Um Ar",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "gifts-from-tarkov",
+      "name": "Gifts from Tarkov",
+      "namePt": "Presentes de Tarkov",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "gifts-from-tarkov-0",
+          "description": "Locate and mark the TerraGroup cargo with an MS2000 Marker on Lighthouse",
+          "descriptionPt": "Encontre a carga da TerraGroup ao longo da costa da Lighthouse",
+          "category": "item",
+          "x": 136.899,
+          "y": 0.790897,
+          "z": 47.8887
+        }
+      ]
+    },
+    {
       "slug": "harley-forever",
       "name": "Harley Forever",
       "namePt": "Harley Para Sempre",
       "trader": "Ragman",
       "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "insomnia",
+      "name": "Insomnia",
+      "namePt": "Insônia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera by your friend Wilson on Lighthouse",
+          "descriptionPt": "Instale uma câmera WI-FI com seu amigo Wilson na Lighhouse",
+          "category": "item",
+          "x": 117.082,
+          "y": 0.8717,
+          "z": -154.473
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the kindled rest place on Lighthouse",
+          "descriptionPt": "Instalar uma câmera WI-FI no lugar de descanso aceso na Lighthouse",
+          "category": "item",
+          "x": 97.6261,
+          "y": 3.66,
+          "z": -165.79
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at the ominous welcome sign on Lighthouse",
+          "descriptionPt": "Instale uma câmera WI-FI na sinistra placa de boas-vindas na Lighhouse",
+          "category": "item",
+          "x": 36.06,
+          "y": 7.39,
+          "z": -261.6
+        },
+        {
+          "id": "is-this-a-reference-3",
+          "description": "Install a WI-FI Camera at the megagenius scientist's seat on Lighthouse",
+          "descriptionPt": "Instale uma câmera WI-FI no assento do cientista mega genio na Lighhouse",
+          "category": "item",
+          "x": 97.113,
+          "y": 24.225,
+          "z": 115.725
+        }
+      ]
+    },
+    {
+      "slug": "job-for-a-patriot",
+      "name": "Job for a Patriot",
+      "namePt": "Trabalho para um Patriota",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     },
     {
@@ -5395,6 +8255,51 @@
       ]
     },
     {
+      "slug": "make-amends-security",
+      "name": "Make Amends - Security",
+      "namePt": "Faça as pazes - Segurança",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "make-amends-security-0",
+          "description": "Place a WI-FI Camera at the yellow bus on the southern bridge approaching the water treatment plant",
+          "descriptionPt": "Coloque uma câmera WI-FI no ônibus amarelo na ponte sul que se aproxima da estação de tratamento de água",
+          "category": "item",
+          "x": -12.2174,
+          "y": 7.3249,
+          "z": -306.139
+        },
+        {
+          "id": "make-amends-security-1",
+          "description": "Place a WI-FI Camera at the yellow bulldozer in the south-eastern part of the water treatment plant",
+          "descriptionPt": "Coloque uma câmera WI-FI na escavedeira amarela na parte sudeste da estação de tratamento de água",
+          "category": "item",
+          "x": -195.282,
+          "y": 6.1549,
+          "z": -431.191
+        },
+        {
+          "id": "make-amends-security-2",
+          "description": "Place a WI-FI Camera at the police truck in the western part of the water treatment plant",
+          "descriptionPt": "Coloque uma câmera WI-FI no caminhão da polícia na parte oeste da estação de tratamento de água",
+          "category": "item",
+          "x": 83.1426,
+          "y": 6.1549,
+          "z": -557.799
+        },
+        {
+          "id": "make-amends-security-3",
+          "description": "Place a WI-FI Camera at the army truck near the industrial zone in the northern part of the water treatment plant",
+          "descriptionPt": "Coloque uma câmera WI-FI no caminhão do exército perto da zona industrial na parte norte da estação de tratamento de água",
+          "category": "item",
+          "x": -77.3294,
+          "y": 12.0149,
+          "z": -790.083
+        }
+      ]
+    },
+    {
       "slug": "missing-cargo",
       "name": "Missing Cargo",
       "namePt": "Carga Perdida",
@@ -5467,6 +8372,14 @@
       ]
     },
     {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "our-own-land",
       "name": "Our Own Land",
       "namePt": "Nossa propria terra",
@@ -5486,6 +8399,24 @@
       "slug": "overpopulation",
       "name": "Overpopulation",
       "namePt": "Superpopulação",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "overpopulation-0",
+          "description": "Eliminate any target around the chalets on Lighthouse",
+          "descriptionPt": "Elimine qualquer alvo na área dos chalés na Lighthouse",
+          "category": "objective",
+          "x": -108.867,
+          "y": 22.2449,
+          "z": -2.30933
+        }
+      ]
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
       "trader": "Peacekeeper",
       "traderPt": "Peacekeeper",
       "objectives": []
@@ -5590,11 +8521,59 @@
       ]
     },
     {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "silent-caliber",
+      "name": "Silent Caliber",
+      "namePt": "Calibre Silencioso",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "stick-to-it",
+      "name": "Stick to It",
+      "namePt": "Persista Nisso",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
+      "slug": "stray-dogs",
+      "name": "Stray Dogs",
+      "namePt": "Cães de Rua",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "test-drive-part-3",
       "name": "Test Drive - Part 3",
       "namePt": "Test Drive - Parte 3",
       "trader": "Prapor",
       "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
       "objectives": []
     },
     {
@@ -5625,6 +8604,32 @@
       ]
     },
     {
+      "slug": "the-huntsman-path-administrator-2",
+      "name": "The Huntsman Path - Administrator",
+      "namePt": "O Caminho do Caçador - Administrador",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "the-huntsman-path-administrator-2-0",
+          "description": "Launch a yellow signal flare at the train station on Lighthouse",
+          "descriptionPt": "Dispare um sinalizador amarelo na estação de trem em Lighthouse",
+          "category": "objective",
+          "x": -22.5974,
+          "y": 13.6849,
+          "z": -829.779
+        }
+      ]
+    },
+    {
+      "slug": "the-huntsman-path-forest-cleaning",
+      "name": "The Huntsman Path - Forest Cleaning",
+      "namePt": "Caminho do Caçador. Limpeza na Woods",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-outcasts",
       "name": "The Huntsman Path - Outcasts",
       "namePt": "O Caminho do Caçador - Exilado",
@@ -5633,11 +8638,94 @@
       "objectives": []
     },
     {
+      "slug": "the-price-of-independence",
+      "name": "The Price of Independence",
+      "namePt": "O Preço da Independência",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": [
+        {
+          "id": "the-price-of-independence-0",
+          "description": "Launch a yellow signal flare at the train station warehouse on Lighthouse",
+          "descriptionPt": "Lance um sinalizador amarelo no armazém da estação de trem na Lighthouse",
+          "category": "objective",
+          "x": -22.5974,
+          "y": 13.6849,
+          "z": -829.779
+        },
+        {
+          "id": "the-price-of-independence-1",
+          "description": "Launch a yellow signal flare at the pier on Lighthouse",
+          "descriptionPt": "Lance um sinalizador amarelo no píer da Lighthouse",
+          "category": "objective",
+          "x": 164.623,
+          "y": 2.3449,
+          "z": -160.06
+        }
+      ]
+    },
+    {
       "slug": "the-punisher-part-4",
       "name": "The Punisher - Part 4",
       "namePt": "O Justiceiro - Parte 4",
       "trader": "Prapor",
       "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-import",
+      "name": "The Tarkov Import",
+      "namePt": "A Importação de Tarkov",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
       "objectives": []
     },
     {
@@ -5668,11 +8756,35 @@
       ]
     },
     {
+      "slug": "unique-experience",
+      "name": "Unique Experience",
+      "namePt": "Experiência Única",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "watch-the-watcher",
       "name": "Watch the Watcher",
       "namePt": "Observe o Observador",
       "trader": "Fence",
       "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "wet-job-part-6",
+      "name": "Wet Job - Part 6",
+      "namePt": "Trabalho sujo - Parte 6",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "worst-job-in-the-world",
+      "name": "Worst Job in the World",
+      "namePt": "Pior trabalho do mundo",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
       "objectives": []
     }
   ],
@@ -5885,6 +8997,14 @@
       ]
     },
     {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
       "slug": "ballet-lover",
       "name": "Ballet Lover",
       "namePt": "Amante de balé",
@@ -5901,6 +9021,14 @@
           "descriptionPt": "Localize o apartamento do mestre do balé na Streets of Tarkov"
         }
       ]
+    },
+    {
+      "slug": "beyond-the-red-meat",
+      "name": "Beyond the Red Meat",
+      "namePt": "Além da Carne Vermelha",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
     },
     {
       "slug": "beyond-the-red-meat-part-1",
@@ -6056,11 +9184,46 @@
       ]
     },
     {
+      "slug": "broadcast-part-5",
+      "name": "Broadcast - Part 5",
+      "namePt": "Transmissão - Parte 5",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "broadcast-part-5-0",
+          "description": "Locate the ritual spot on Chekannaya st. on Streets of Tarkov",
+          "descriptionPt": "Localize o local do ritual na rua Chekannaya na Streets of Tarkov",
+          "category": "objective",
+          "x": 188.391,
+          "y": 0.759,
+          "z": 226.506
+        },
+        {
+          "id": "broadcast-part-5-1",
+          "description": "Stash a Cultist knife at the ritual spot",
+          "descriptionPt": "Esconda uma faca de Cultista no local do ritual",
+          "category": "item",
+          "x": 188.591,
+          "y": 0.374,
+          "z": 226.379
+        }
+      ]
+    },
+    {
       "slug": "cease-fire",
       "name": "Cease Fire!",
       "namePt": "Cessar fogo!",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
       "objectives": []
     },
     {
@@ -6070,6 +9233,33 @@
       "trader": "Mechanic",
       "traderPt": "Mechanic",
       "objectives": []
+    },
+    {
+      "slug": "corporate-perks",
+      "name": "Corporate Perks",
+      "namePt": "Benefícios Corporativos",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "corporate-perks-0",
+          "description": "Locate the IT firm office on Streets of Tarkov",
+          "descriptionPt": "Localize o escritório da empresa de TI na Streets of Tarkov",
+          "category": "objective",
+          "x": 164.36,
+          "y": 1.722,
+          "z": 148.11
+        },
+        {
+          "id": "corporate-perks-1",
+          "description": "Unravel the secret of the firm's success",
+          "descriptionPt": "Desvende o segredo do sucesso da empresa",
+          "category": "objective",
+          "x": 164.247,
+          "y": 1.722,
+          "z": 167.288
+        }
+      ]
     },
     {
       "slug": "create-a-distraction-part-2-pve-zone",
@@ -6178,6 +9368,14 @@
       ]
     },
     {
+      "slug": "district-patrol",
+      "name": "District Patrol",
+      "namePt": "Patrulha do Distrito",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "final-stretch",
       "name": "Final Stretch",
       "namePt": "Reta Final",
@@ -6199,7 +9397,17 @@
       "namePt": "Gendarmerie - Segurança de Shopping",
       "trader": "Prapor",
       "traderPt": "Prapor",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "gendarmerie-mall-cop-0",
+          "description": "Eliminate any target at the stylobate building while using Pistols on Streets of Tarkov",
+          "descriptionPt": "Elimine qualquer alvo no edifício estilóbato usando pistolas na Streets of Tarkov",
+          "category": "objective",
+          "x": -102.9,
+          "y": 8.6,
+          "z": -25.6
+        }
+      ]
     },
     {
       "slug": "gendarmerie-tickets-please",
@@ -6207,7 +9415,17 @@
       "namePt": "Gendarmaria - Ingressos, Por favor",
       "trader": "Prapor",
       "traderPt": "Prapor",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "gendarmerie-tickets-please-0",
+          "description": "Eliminate any target at the Rodina cinema while using SMGs on Streets of Tarkov",
+          "descriptionPt": "Elimine qualquer alvo no cinema Rodina usando SMGs na Streets of Tarkov",
+          "category": "objective",
+          "x": -180.4,
+          "y": 16.5,
+          "z": 400.7
+        }
+      ]
     },
     {
       "slug": "glory-to-cpsu",
@@ -6215,7 +9433,26 @@
       "namePt": "Glória ao CPSU",
       "trader": "Prapor",
       "traderPt": "Prapor",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "glory-to-cpsu-0",
+          "description": "Locate the place of work of Prapor's friend on Streets of Tarkov",
+          "descriptionPt": "Localize o local de trabalho do amigo de Prapor na Streets of Tarkov",
+          "category": "objective",
+          "x": 246.254,
+          "y": -0.328,
+          "z": 52.416
+        },
+        {
+          "id": "glory-to-cpsu-1",
+          "description": "Locate the apartment of Prapor's friend on Streets of Tarkov",
+          "descriptionPt": "Localize o apartamento do amigo do Prapor em Streets of Tarkov",
+          "category": "objective",
+          "x": 131.432,
+          "y": 7.587,
+          "z": 232.371
+        }
+      ]
     },
     {
       "slug": "glory-to-cpsu-part-1",
@@ -6322,7 +9559,26 @@
       "namePt": "Prisão Domiciliar",
       "trader": "Skier",
       "traderPt": "Skier",
-      "objectives": []
+      "objectives": [
+        {
+          "id": "house-arrest-0",
+          "description": "Locate where the missing group was held captive on Streets of Tarkov",
+          "descriptionPt": "Localize onde o grupo desaparecido foi mantido em cativeiro na Streets of Tarkov",
+          "category": "objective",
+          "x": 127.09,
+          "y": 10.636,
+          "z": 232.57
+        },
+        {
+          "id": "house-arrest-1",
+          "description": "Locate the debtor on Streets of tarkov",
+          "descriptionPt": "Localize o devedor em Streets of Tarkov",
+          "category": "objective",
+          "x": -80.26,
+          "y": 5.98,
+          "z": 50.5
+        }
+      ]
     },
     {
       "slug": "house-arrest-part-1",
@@ -6366,6 +9622,94 @@
           "y": 7.569,
           "z": 232.193,
           "descriptionPt": "Localize o apartamento improvisado do carcereiro na Streets of Tarkov"
+        }
+      ]
+    },
+    {
+      "slug": "information-source",
+      "name": "Information Source",
+      "namePt": "Fonte de informação",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "information-source-0",
+          "description": "Locate and mark the first Patrol-A armored vehicle with an MS2000 Marker on Streets of Tarkov",
+          "descriptionPt": "Localize e marque o primeiro veículo blindado Patrol-A com um marcador MS2000 na Streets of Tarkov",
+          "category": "item",
+          "x": -69.39,
+          "y": 3.52,
+          "z": 358.46
+        },
+        {
+          "id": "information-source-1",
+          "description": "Locate and mark the second Patrol-A armored vehicle with an MS2000 Marker on Streets of Tarkov",
+          "descriptionPt": "Localize e marque o segundo veículo blindado Patrol-A com um marcador MS2000 na Streets of Tarkov",
+          "category": "item",
+          "x": 172.48,
+          "y": 4.79,
+          "z": 416.94
+        }
+      ]
+    },
+    {
+      "slug": "insomnia",
+      "name": "Insomnia",
+      "namePt": "Insônia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the barbed wire body on Streets of Tarkov",
+          "descriptionPt": "Instale uma câmera WI-FI no corpo de arame farpado na Streets of Tarkov",
+          "category": "item",
+          "x": 181.272,
+          "y": 0.867,
+          "z": 229.012
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the amphibian pizza lovers' hideout on Streets of Tarkov",
+          "descriptionPt": "Instale uma câmera WI-FI no esconderijo dos amantes de pizza anfíbios na Streets of Tarkov",
+          "category": "item",
+          "x": -262.818,
+          "y": -2.334,
+          "z": 206.337
+        },
+        {
+          "id": "is-this-a-reference-2",
+          "description": "Install a WI-FI Camera at the really scary hole in the wall on Streets of Tarkov",
+          "descriptionPt": "Instale uma câmera WI-FI no buraco na parede realmente assustador na Streets of Tarkov",
+          "category": "item",
+          "x": 209.661,
+          "y": 0.815992,
+          "z": 230.837
+        },
+        {
+          "id": "is-this-a-reference-3",
+          "description": "Install a WI-FI Camera at the burned girl's sickroom on Streets of Tarkov",
+          "descriptionPt": "Instale uma câmera WI-FI no quarto de doente da menina queimada na Streets of Tarkov",
+          "category": "item",
+          "x": 182.723,
+          "y": 2.1748,
+          "z": 111.745
         }
       ]
     },
@@ -6450,6 +9794,22 @@
       "objectives": []
     },
     {
+      "slug": "know-your-place",
+      "name": "Know Your Place!",
+      "namePt": "Conheça seu lugar!",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "make-an-impression",
+      "name": "Make an Impression",
+      "namePt": "Faça uma impressão",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": []
+    },
+    {
       "slug": "matter-of-technique",
       "name": "Matter of Technique",
       "namePt": "Questão de Técnica",
@@ -6503,12 +9863,108 @@
       ]
     },
     {
+      "slug": "needle-in-a-haystack",
+      "name": "Needle in a Haystack",
+      "namePt": "Agulha no Palheiro",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "needle-in-a-haystack-0",
+          "description": "Investigate the children's playground by Concordia on Streets of Tarkov",
+          "descriptionPt": "Explore o parque infantil da Concordia na Streets of Tarkov",
+          "category": "objective",
+          "x": 215.64,
+          "y": 8.23,
+          "z": 360.7
+        }
+      ]
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
       "slug": "out-of-time",
       "name": "Out of Time",
       "namePt": "Sem Tempo",
       "trader": "Ragman",
       "traderPt": "Ragman",
       "objectives": []
+    },
+    {
+      "slug": "paramedic",
+      "name": "Paramedic",
+      "namePt": "Paramédico",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": []
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "pets-wont-need-it",
+      "name": "Pets Won't Need It",
+      "namePt": "Os Bichinhos Não Vão Precisar Disso",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": [
+        {
+          "id": "pets-wont-need-it-0",
+          "description": "Locate and scout the vet clinic on Streets of Tarkov",
+          "descriptionPt": "Localize e identifique a clínica veterinária na Streets of Tarkov",
+          "category": "objective",
+          "x": 224.87,
+          "y": 4.818,
+          "z": 172.806
+        },
+        {
+          "id": "pets-wont-need-it-1",
+          "description": "Locate and scout the x-ray technician's room on Streets of Tarkov",
+          "descriptionPt": "Localize e identifique a sala do técnico de raio-x na Streets of Tarkov",
+          "category": "objective",
+          "x": 182.993,
+          "y": 2.749,
+          "z": 101.998
+        },
+        {
+          "id": "pets-wont-need-it-2",
+          "description": "Locate the first pharmacy on Primorsky Ave on Streets of tarkov",
+          "descriptionPt": "Localize a primeira farmácia na Primorsky Ave em Streets of Tarkov",
+          "category": "objective",
+          "x": 39.054,
+          "y": 3.655,
+          "z": 162.409
+        },
+        {
+          "id": "pets-wont-need-it-3",
+          "description": "Locate the second pharmacy on Primorsky Ave on Streets of tarkov",
+          "descriptionPt": "Localize a segunda farmácia na Primorsky Ave em Streets of Tarkov",
+          "category": "objective",
+          "x": -44.62,
+          "y": 4.189,
+          "z": 336.07
+        },
+        {
+          "id": "pets-wont-need-it-4",
+          "description": "Locate the pharmacy near Cardinal apartment complex on Streets of tarkov",
+          "descriptionPt": "Localize a farmácia perto do complexo residencial Cardinal em Streets of Tarkov",
+          "category": "objective",
+          "x": 89.26,
+          "y": 5.07,
+          "z": -275.352
+        }
+      ]
     },
     {
       "slug": "pets-won-t-need-it-part-1",
@@ -6986,6 +10442,128 @@
       "objectives": []
     },
     {
+      "slug": "sensory-analysis-part-1",
+      "name": "Sensory Analysis - Part 1",
+      "namePt": "Análise Sensorial - Parte 1",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-2",
+      "name": "Small Business - Part 2",
+      "namePt": "Pequenas empresas - Parte 2",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "spotter",
+      "name": "Spotter",
+      "namePt": "Observador",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "spotter-0",
+          "description": "Locate a good sniping position in Concordia overlooking the construction site",
+          "descriptionPt": "Localize uma boa posição de atirador em Concordia com vista para o canteiro de obras",
+          "category": "objective",
+          "x": 219.391,
+          "y": 10.32,
+          "z": 397.479
+        },
+        {
+          "id": "spotter-1",
+          "description": "Locate a good sniping position in Concordia overlooking the construction site",
+          "descriptionPt": "Localize uma boa posição de atirador em Concordia com vista para o canteiro de obras",
+          "category": "objective",
+          "x": 224.982,
+          "y": 10.339,
+          "z": 396.674
+        },
+        {
+          "id": "spotter-2",
+          "description": "Locate a good sniping position in Concordia overlooking the construction site",
+          "descriptionPt": "Localize uma boa posição de atirador em Concordia com vista para o canteiro de obras",
+          "category": "objective",
+          "x": 214.79,
+          "y": 10.32,
+          "z": 398.14
+        },
+        {
+          "id": "spotter-3",
+          "description": "Hide AI Tactical Sound Moderator .338 LM near the red table",
+          "descriptionPt": "Esconda um moderador de som tático AI .338 LM perto da mesa vermelha",
+          "category": "item",
+          "x": 228.187,
+          "y": 9.876,
+          "z": 396.695
+        },
+        {
+          "id": "spotter-4",
+          "description": "Hide AI Tactical Sound Moderator .338 LM near the red table",
+          "descriptionPt": "Esconda um moderador de som tático AI .338 LM perto da mesa vermelha",
+          "category": "item",
+          "x": 218.212,
+          "y": 9.899,
+          "z": 396.306
+        },
+        {
+          "id": "spotter-5",
+          "description": "Hide AI Tactical Sound Moderator .338 LM near the red table",
+          "descriptionPt": "Esconda um moderador de som tático AI .338 LM perto da mesa vermelha",
+          "category": "item",
+          "x": 215.752,
+          "y": 9.794,
+          "z": 395.903
+        },
+        {
+          "id": "spotter-6",
+          "description": "Locate a good sniping position at Primorsky overlooking the movie theater",
+          "descriptionPt": "Localize uma boa posição de atirador em Primorsky com vista para o cinema",
+          "category": "objective",
+          "x": 36.983,
+          "y": 11.075,
+          "z": 88.167
+        },
+        {
+          "id": "spotter-7",
+          "description": "Locate a good sniping position at Primorsky overlooking the movie theater",
+          "descriptionPt": "Localize uma boa posição de atirador em Primorsky com vista para o cinema",
+          "category": "objective",
+          "x": 37.867,
+          "y": 12.664,
+          "z": 155.779
+        },
+        {
+          "id": "spotter-8",
+          "description": "Hide Trijicon REAP-IR thermal scope under Makhors' bed",
+          "descriptionPt": "Esconda uma mira térmica Trijicon REAP-IR em baixo da cama do Mahor",
+          "category": "item",
+          "x": 37.979,
+          "y": 12.154,
+          "z": 156.245
+        }
+      ]
+    },
+    {
       "slug": "surveillance",
       "name": "Surveillance",
       "namePt": "Vigilância",
@@ -7120,6 +10698,14 @@
       ]
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-administrator",
       "name": "The Huntsman Path - Administrator",
       "namePt": "O Caminho do Caçador - Administrador",
@@ -7149,6 +10735,96 @@
       "slug": "the-huntsman-path-crooked-cop",
       "name": "The Huntsman Path - Crooked Cop",
       "namePt": "O Caminho do Caçador – Policial Torto",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-forest-cleaning",
+      "name": "The Huntsman Path - Forest Cleaning",
+      "namePt": "Caminho do Caçador. Limpeza na Woods",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-secret-recipe",
+      "name": "The Secret Recipe",
+      "namePt": "A Receita Secreta",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "the-secret-to-productivity",
+      "name": "The Secret to Productivity",
+      "namePt": "O Segredo da Produtividade",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "the-secret-to-productivity-0",
+          "description": "Unravel the secret of the IT firm's employees' high morale on Streets of Tarkov",
+          "descriptionPt": "Desvende o segredo da moral alta dos funcionários da empresa de TI na Streets of Tarkov",
+          "category": "objective",
+          "x": -211.759,
+          "y": 4.199,
+          "z": 297.287
+        }
+      ]
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-5-2",
+      "name": "The Tarkov Shooter - Part 5",
+      "namePt": "O Atirador de Tarkov - Parte 5",
       "trader": "Jaeger",
       "traderPt": "Jaeger",
       "objectives": []
@@ -7416,11 +11092,64 @@
       "objectives": []
     },
     {
+      "slug": "beneath-the-streets",
+      "name": "Beneath The Streets",
+      "namePt": "Sob as Ruas",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": [
+        {
+          "id": "beneath-the-streets-0",
+          "description": "Scout the server room in The Lab (In one raid)",
+          "descriptionPt": "Explore a sala do servidor no Laboratório (em uma única incursão)",
+          "category": "objective",
+          "x": -125.55,
+          "y": 2.54,
+          "z": -305.091
+        },
+        {
+          "id": "beneath-the-streets-1",
+          "description": "Locate the passage leading to Streets of Tarkov in The Lab (In one raid)",
+          "descriptionPt": "Localize a passagem que leva a Streets of Tarkov em The Lab (em uma única incursão)",
+          "category": "objective",
+          "x": -169.08,
+          "y": 0.91,
+          "z": -420.878
+        },
+        {
+          "id": "beneath-the-streets-2",
+          "description": "Scout the hazard dome in The Lab (In one raid)",
+          "descriptionPt": "Explore a cúpula de perigo no Laboratório (em uma única incursão)",
+          "category": "objective",
+          "x": -172.281,
+          "y": 1.01,
+          "z": -371.251
+        },
+        {
+          "id": "beneath-the-streets-3",
+          "description": "Scout the control room in The Lab (In one raid)",
+          "descriptionPt": "Explore a sala de controle no Laboratório (em uma única incursão)",
+          "category": "objective",
+          "x": -170.743,
+          "y": 4.75,
+          "z": -283.03
+        }
+      ]
+    },
+    {
       "slug": "consolation-prize",
       "name": "Consolation Prize",
       "namePt": "Consolation Prize",
       "trader": "Skier",
       "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "decontamination-service",
+      "name": "Decontamination Service",
+      "namePt": "Serviço de descontaminação",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
       "objectives": []
     },
     {
@@ -7448,11 +11177,80 @@
       "objectives": []
     },
     {
+      "slug": "drip-out-part-1-bear",
+      "name": "Drip-Out - Part 1",
+      "namePt": "Estiloso - Parte 1",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "find-the-source",
       "name": "Find the Source",
       "namePt": "Encontre a Fonte",
       "trader": "Therapist",
       "traderPt": "Therapist",
+      "objectives": []
+    },
+    {
+      "slug": "following-the-bread-crumbs",
+      "name": "Following the Bread Crumbs",
+      "namePt": "Seguindo as migalhas de pão",
+      "trader": "Lightkeeper",
+      "traderPt": "Lightkeeper",
+      "objectives": [
+        {
+          "id": "following-the-bread-crumbs-0",
+          "description": "Search the weapon testing area in The Lab",
+          "descriptionPt": "Procure a área de teste de armas",
+          "category": "objective",
+          "x": -182.867,
+          "y": 1.29073,
+          "z": -312.875
+        },
+        {
+          "id": "following-the-bread-crumbs-1",
+          "description": "Search the human experiment room in The Lab",
+          "descriptionPt": "Procure a sala de experimentos humanos",
+          "category": "objective",
+          "x": -131.535,
+          "y": 1.00273,
+          "z": -357.844
+        }
+      ]
+    },
+    {
+      "slug": "make-amends-quarantine",
+      "name": "Make Amends - Quarantine",
+      "namePt": "Faça as pazes - Quarentena",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "make-amends-quarantine-0",
+          "description": "Place a WI-FI Camera inside the quarantine zone in The Lab",
+          "descriptionPt": "Coloque uma câmera WI-FI dentro da zona de quarentena no laboratório",
+          "category": "item",
+          "x": -129.049,
+          "y": 1.59873,
+          "z": -358.509
+        }
+      ]
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
       "objectives": []
     },
     {
@@ -7472,6 +11270,14 @@
           "descriptionPt": "Localize e obtenha a versão especial do transiluminador de pele LEDX no laboratório"
         }
       ]
+    },
+    {
+      "slug": "silent-caliber",
+      "name": "Silent Caliber",
+      "namePt": "Calibre Silencioso",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
     },
     {
       "slug": "terragroup-employee",
@@ -7501,6 +11307,14 @@
       ]
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-control",
       "name": "The Huntsman Path - Control",
       "namePt": "Caminho do Caçador - Controle",
@@ -7509,11 +11323,51 @@
       "objectives": []
     },
     {
+      "slug": "the-huntsman-path-liberation",
+      "name": "The Huntsman Path - Liberation",
+      "namePt": "O Caminho do Caçador - Libertação",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "the-root-cause",
       "name": "The Root Cause",
       "namePt": "A Causa Principal",
       "trader": "Therapist",
       "traderPt": "Therapist",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "unique-experience",
+      "name": "Unique Experience",
+      "namePt": "Experiência Única",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     }
   ],
@@ -7553,6 +11407,22 @@
           "descriptionPt": "Marque o terceiro entreposto na Shoreline"
         }
       ]
+    },
+    {
+      "slug": "balancing-part-1-pvp-zone",
+      "name": "Balancing - Part 1 [PVP ZONE]",
+      "namePt": "Balanceamento - Parte 1 [ZONA PVP]",
+      "trader": "Ref",
+      "traderPt": "Ref",
+      "objectives": []
+    },
+    {
+      "slug": "cargo-x",
+      "name": "Cargo X",
+      "namePt": "Cargo X",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
     },
     {
       "slug": "cargo-x-part-1",
@@ -7644,6 +11514,42 @@
       ]
     },
     {
+      "slug": "colleagues",
+      "name": "Colleagues",
+      "namePt": "Colegas",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": [
+        {
+          "id": "colleagues-0",
+          "description": "Locate the group that was sent to the Health Resort on Shoreline",
+          "descriptionPt": "Localize o grupo que foi enviado ao Resort na Shoreline",
+          "category": "objective",
+          "x": -253.17,
+          "y": -4.07,
+          "z": -56.86
+        },
+        {
+          "id": "colleagues-1",
+          "description": "Locate the group that was sent to the pier on Shoreline",
+          "descriptionPt": "Localize o grupo que foi enviado ao pier na Shoreline",
+          "category": "objective",
+          "x": -311.9,
+          "y": -60.9,
+          "z": 489.7
+        },
+        {
+          "id": "colleagues-2",
+          "description": "Locate the group that was sent to the cottages on Shoreline",
+          "descriptionPt": "Localize o grupo que foi enviado aos chalés na Shoreline",
+          "category": "objective",
+          "x": 94.21,
+          "y": -47.5,
+          "z": 61.97
+        }
+      ]
+    },
+    {
       "slug": "colleagues-part-1",
       "name": "Colleagues - Part 1",
       "namePt": "Colegas de trabalho. Pt.1",
@@ -7705,6 +11611,14 @@
           "descriptionPt": "Obtenha o Kit de cirurgia do Sanitar, marcado com um símbolo azul na Shoreline"
         }
       ]
+    },
+    {
+      "slug": "combat-proven",
+      "name": "Combat Proven",
+      "namePt": "Provado em combate",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
     },
     {
       "slug": "courtesy-visit",
@@ -7788,6 +11702,14 @@
       ]
     },
     {
+      "slug": "escort",
+      "name": "Escort",
+      "namePt": "Escolta",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
       "slug": "fishing-gear",
       "name": "Fishing Gear",
       "namePt": "Equipamento De Pesca",
@@ -7859,6 +11781,14 @@
       "objectives": []
     },
     {
+      "slug": "foresters-duty",
+      "name": "Forester's Duty",
+      "namePt": "Dever do guarda florestal",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "forge-a-friendship",
       "name": "Forge a Friendship",
       "namePt": "Forjar uma Amizade",
@@ -7918,6 +11848,14 @@
       "namePt": "Friend from Norvinsk - Part 2",
       "trader": "Mechanic",
       "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
+      "slug": "getting-some-air",
+      "name": "Getting Some Air",
+      "namePt": "Tomando Um Ar",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
       "objectives": []
     },
     {
@@ -8006,6 +11944,41 @@
           "y": 2.815,
           "z": -86.09,
           "descriptionPt": "Busque informações sobre o destino da pesquisa da Terragroup"
+        }
+      ]
+    },
+    {
+      "slug": "hell-on-earth-part-2",
+      "name": "Hell on Earth - Part 2",
+      "namePt": "Inferno na Terra - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "hidden-layer",
+      "name": "Hidden Layer",
+      "namePt": "Camada Oculta",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "hidden-layer-0",
+          "description": "Locate a good lead related to Knossos LLC",
+          "descriptionPt": "Localize um bom lead relacionado à Knossos LLC",
+          "category": "objective",
+          "x": -196.5,
+          "y": -6.0,
+          "z": -81.0
+        },
+        {
+          "id": "hidden-layer-1",
+          "description": "Find a way inside the Knossos LLC facility",
+          "descriptionPt": "Encontre uma maneira de entrar nas instalações da Knossos LLC",
+          "category": "objective",
+          "x": -196.0,
+          "y": -6.5,
+          "z": -77.0
         }
       ]
     },
@@ -8099,6 +12072,121 @@
       "objectives": []
     },
     {
+      "slug": "i-need-more-power",
+      "name": "I Need More Power",
+      "namePt": "Preciso de Mais Energia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "i-need-more-power-0",
+          "description": "Locate the generators in the east wing of the Health Resort on Shoreline",
+          "descriptionPt": "Encontre os geradores na ala direita do resort",
+          "category": "objective",
+          "x": -336.545,
+          "y": 0.145,
+          "z": -76.428
+        },
+        {
+          "id": "i-need-more-power-1",
+          "description": "Locate the generators in the west wing of the Health Resort on Shoreline",
+          "descriptionPt": "Encontre os geradores na ala esquerda do resort",
+          "category": "objective",
+          "x": -171.163,
+          "y": 0.14,
+          "z": -75.514
+        }
+      ]
+    },
+    {
+      "slug": "ill-wisher",
+      "name": "Ill-Wisher",
+      "namePt": "Mal-me-quer",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "ill-wisher-0",
+          "description": "Locate the first signal source on Shoreline",
+          "descriptionPt": "Encontre a primeira fonte de sinal",
+          "category": "objective",
+          "x": -230.4,
+          "y": 8.35,
+          "z": -93.62
+        },
+        {
+          "id": "ill-wisher-1",
+          "description": "Place a Signal jammer on the first signal source",
+          "descriptionPt": "Instalar um bloqueador de sinal na primeira fonte de sinal",
+          "category": "item",
+          "x": -230.55,
+          "y": 8.32,
+          "z": -92.39
+        },
+        {
+          "id": "ill-wisher-2",
+          "description": "Locate the second signal source on Shoreline",
+          "descriptionPt": "Encontre a segunda fonte de sinal",
+          "category": "objective",
+          "x": -483.31,
+          "y": -25.762,
+          "z": 253.66
+        },
+        {
+          "id": "ill-wisher-3",
+          "description": "Place a Signal jammer on the second signal source",
+          "descriptionPt": "Instalar um bloqueador de sinal na segunda fonte de sinal",
+          "category": "item",
+          "x": -483.81,
+          "y": -24.47,
+          "z": 248.83
+        }
+      ]
+    },
+    {
+      "slug": "insomnia",
+      "name": "Insomnia",
+      "namePt": "Insônia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "intimidator",
+      "name": "Intimidator",
+      "namePt": "Intimidador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "is-this-a-reference",
+      "name": "Is This a Reference?",
+      "namePt": "Isso é uma Referência?",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "is-this-a-reference-0",
+          "description": "Install a WI-FI Camera at the upside-down chair on Shoreline",
+          "descriptionPt": "Instalar uma câmera WI-FI na cadeira de cabeça para baixo na Shoreline",
+          "category": "item",
+          "x": 326.23,
+          "y": -54.202,
+          "z": 131.473
+        },
+        {
+          "id": "is-this-a-reference-1",
+          "description": "Install a WI-FI Camera at the not-so-lonely bathroom on Shoreline",
+          "descriptionPt": "Instale uma câmera WI-FI no banheiro não tão solitário na Shoreline",
+          "category": "item",
+          "x": -321.586,
+          "y": -61.078,
+          "z": 488.203
+        }
+      ]
+    },
+    {
       "slug": "know-your-enemy",
       "name": "Know Your Enemy",
       "namePt": "Conheça Seu Inimigo",
@@ -8107,11 +12195,19 @@
       "objectives": []
     },
     {
+      "slug": "master-key",
+      "name": "Master Key",
+      "namePt": "Chave Mestra",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
       "slug": "natural-exchange",
       "name": "Natural Exchange",
       "namePt": "Intercâmbio Natural",
-      "trader": "Unknown",
-      "traderPt": "Unknown",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
       "objectives": [
         {
           "id": "natural-exchange-0",
@@ -8132,6 +12228,49 @@
           "descriptionPt": "Esconda o segundo tanque de combustível de metal na base dos contrabandistas na Shoreline"
         }
       ]
+    },
+    {
+      "slug": "needle-in-a-haystack",
+      "name": "Needle in a Haystack",
+      "namePt": "Agulha no Palheiro",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "needle-in-a-haystack-0",
+          "description": "Investigate the coast-side construction site on Shoreline",
+          "descriptionPt": "Investigue o canteiro de obras na costa da Shoreline",
+          "category": "objective",
+          "x": -625.82,
+          "y": -54.72,
+          "z": 482.17
+        },
+        {
+          "id": "needle-in-a-haystack-1",
+          "description": "Investigate the children's playground by the Health Resort on Shoreline",
+          "descriptionPt": "Investigue o parque infantil perto do Health Resort na Shoreline",
+          "category": "objective",
+          "x": -351.33,
+          "y": -1.17,
+          "z": -134.0
+        }
+      ]
+    },
+    {
+      "slug": "new-beginning",
+      "name": "New Beginning",
+      "namePt": "Novo Começo",
+      "trader": "Ragman",
+      "traderPt": "Ragman",
+      "objectives": []
+    },
+    {
+      "slug": "night-sweep",
+      "name": "Night Sweep",
+      "namePt": "Varredura Noturna",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
     },
     {
       "slug": "no-swiping",
@@ -8202,6 +12341,32 @@
           "y": -54.911,
           "z": -159.882,
           "descriptionPt": "Localize o SUV de Ragman na Shoreline"
+        }
+      ]
+    },
+    {
+      "slug": "peacekeeping-mission",
+      "name": "Peacekeeping Mission",
+      "namePt": "Missão de paz",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "proper-comeback",
+      "name": "Proper Comeback",
+      "namePt": "Retorno adequado",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": [
+        {
+          "id": "proper-comeback-0",
+          "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Shoreline",
+          "descriptionPt": "Guarde uma estatueta de galo de ouro na câmera WI-FI da Prapor na Shoreline",
+          "category": "item",
+          "x": -459.721,
+          "y": -47.769,
+          "z": 564.833
         }
       ]
     },
@@ -8311,6 +12476,14 @@
           "descriptionPt": "Marque o segundo tanque T-90 com um marcador MS2000 na Shoreline"
         }
       ]
+    },
+    {
+      "slug": "seizing-the-initiative",
+      "name": "Seizing the Initiative",
+      "namePt": "Tomando a iniciativa",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
     },
     {
       "slug": "serious-allegations",
@@ -8447,6 +12620,14 @@
       "objectives": []
     },
     {
+      "slug": "shooter-born-in-heaven",
+      "name": "Shooter Born in Heaven",
+      "namePt": "Atirador Nascido no Céu",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": []
+    },
+    {
       "slug": "signal-part-1",
       "name": "Signal - Part 1",
       "namePt": "Sinal - Parte 1",
@@ -8506,6 +12687,49 @@
           "y": 8.32,
           "z": -92.39,
           "descriptionPt": "Coloque o bloqueador de sinal no segundo local especificado no Shoreline"
+        }
+      ]
+    },
+    {
+      "slug": "slaughterhouse",
+      "name": "Slaughterhouse",
+      "namePt": "Matadouro",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-2",
+      "name": "Small Business - Part 2",
+      "namePt": "Pequenas empresas - Parte 2",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": []
+    },
+    {
+      "slug": "small-business-part-3",
+      "name": "Small Business - Part 3",
+      "namePt": "Pequenas empresas - Parte 3",
+      "trader": "Fence",
+      "traderPt": "Fence",
+      "objectives": [
+        {
+          "id": "small-business-part-3-0",
+          "description": "Stash a Cultist knife at the sunken village marked circle on Shoreline",
+          "descriptionPt": "Esconda uma faca Cultista no círculo marcado da vila submersa na Shoreline",
+          "category": "item",
+          "x": 251.987,
+          "y": -52.69,
+          "z": -105.119
+        },
+        {
+          "id": "small-business-part-3-1",
+          "description": "Stash a Cultist knife at the Health Resort east wing marked circle on Shoreline",
+          "descriptionPt": "Esconda uma faca Cultist no círculo marcado na ala leste do Health Resort na Shoreline",
+          "category": "item",
+          "x": -336.644,
+          "y": 3.545,
+          "z": -88.728
         }
       ]
     },
@@ -8616,12 +12840,54 @@
       "objectives": []
     },
     {
+      "slug": "stick-to-it",
+      "name": "Stick to It",
+      "namePt": "Persista Nisso",
+      "trader": "BTR Driver",
+      "traderPt": "BTR Driver",
+      "objectives": []
+    },
+    {
+      "slug": "stray-dogs",
+      "name": "Stray Dogs",
+      "namePt": "Cães de Rua",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "tarkov-style-diplomacy",
+      "name": "Tarkov-Style Diplomacy",
+      "namePt": "Diplomacia ao Estilo Tarkov",
+      "trader": "Therapist",
+      "traderPt": "Therapist",
+      "objectives": []
+    },
+    {
       "slug": "test-drive-part-4",
       "name": "Test Drive - Part 4",
       "namePt": "Test Drive - Parte 4",
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
+    },
+    {
+      "slug": "the-cult",
+      "name": "The Cult",
+      "namePt": "O Culto",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "the-cult-0",
+          "description": "Locate the missing informant on Shoreline",
+          "descriptionPt": "Encontre o informante desaparecido na Shoreline",
+          "category": "objective",
+          "x": 287.069,
+          "y": -49.353,
+          "z": -42.327
+        }
+      ]
     },
     {
       "slug": "the-cult-part-1",
@@ -8642,6 +12908,30 @@
       ]
     },
     {
+      "slug": "the-guide",
+      "name": "The Guide",
+      "namePt": "O guia",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-forest-cleaning",
+      "name": "The Huntsman Path - Forest Cleaning",
+      "namePt": "Caminho do Caçador. Limpeza na Woods",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-huntsman-path-relentless",
+      "name": "The Huntsman Path - Relentless",
+      "namePt": "O Caminho do Caçador - Implacável",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "the-huntsman-path-sadist",
       "name": "The Huntsman Path - Sadist",
       "namePt": "Caminho do caçador. Sádico",
@@ -8655,6 +12945,62 @@
       "namePt": "O Justiceiro - Parte 1",
       "trader": "Prapor",
       "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-2",
+      "name": "The Punisher - Part 2",
+      "namePt": "O Justiceiro - Parte 2",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-5",
+      "name": "The Punisher - Part 5",
+      "namePt": "O Justiceiro - Parte 5",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-punisher-part-6",
+      "name": "The Punisher - Part 6",
+      "namePt": "O Justiceiro - Parte 6",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-eagle-owl",
+      "name": "The Survivalist Path - Eagle-Owl",
+      "namePt": "O caminho da sobrevivência - Bufo-real",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-wounded-beast",
+      "name": "The Survivalist Path - Wounded Beast",
+      "namePt": "O caminho da sobrevivência - Besta ferida",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
+      "slug": "the-tarkov-shooter-part-1",
+      "name": "The Tarkov Shooter - Part 1",
+      "namePt": "O atirador de Tarkov - Parte 1",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
       "objectives": []
     },
     {
@@ -8711,12 +13057,83 @@
       "objectives": []
     },
     {
+      "slug": "tracker",
+      "name": "Tracker",
+      "namePt": "Rastreador",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "tracker-0",
+          "description": "Locate the room with reservoirs in the Health Resort on Shoreline",
+          "descriptionPt": "Encontre um quarto com reservatórios no Resort",
+          "category": "objective",
+          "x": -336.975,
+          "y": -2.729,
+          "z": -88.085
+        },
+        {
+          "id": "tracker-1",
+          "description": "Locate the hidden TerraGroup cargo in the Health Resort on Shoreline",
+          "descriptionPt": "Localize o carregamento oculto da TerraGroup no Health Resort na Shoreline",
+          "category": "objective",
+          "x": -149.874,
+          "y": -6.08,
+          "z": -77.004
+        }
+      ]
+    },
+    {
       "slug": "uninvited-guests-part-1",
       "name": "Uninvited Guests - Part 1",
       "namePt": "Convidados Indesejados - Parte 1",
       "trader": "Prapor",
       "traderPt": "Prapor",
       "objectives": []
+    },
+    {
+      "slug": "viewer",
+      "name": "Viewer",
+      "namePt": "Visualizador",
+      "trader": "Prapor",
+      "traderPt": "Prapor",
+      "objectives": [
+        {
+          "id": "viewer-0",
+          "description": "Install a WI-FI Camera at the pier tower on Shoreline",
+          "descriptionPt": "Instalar uma câmera WI-FI na torre do píer na Shoreline",
+          "category": "item",
+          "x": -459.34,
+          "y": -47.6,
+          "z": 566.965
+        }
+      ]
+    },
+    {
+      "slug": "vitamins",
+      "name": "Vitamins",
+      "namePt": "Vitaminas",
+      "trader": "Skier",
+      "traderPt": "Skier",
+      "objectives": []
+    },
+    {
+      "slug": "weapons-circulation",
+      "name": "Weapons Circulation",
+      "namePt": "Circulação de Armas",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": [
+        {
+          "id": "weapons-circulation-0",
+          "description": "Locate and mark the ritual spot with an MS2000 Marker on Shoreline",
+          "descriptionPt": "Localize e Instale o marcador MS2000 no local do ritual na Shoreline",
+          "category": "item",
+          "x": -336.644,
+          "y": 3.545,
+          "z": -88.728
+        }
+      ]
     },
     {
       "slug": "wet-job-part-1",
@@ -8822,6 +13239,22 @@
           "z": -76.994
         }
       ]
+    },
+    {
+      "slug": "wet-job-part-6",
+      "name": "Wet Job - Part 6",
+      "namePt": "Trabalho sujo - Parte 6",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
+    },
+    {
+      "slug": "worst-job-in-the-world",
+      "name": "Worst Job in the World",
+      "namePt": "Pior trabalho do mundo",
+      "trader": "Peacekeeper",
+      "traderPt": "Peacekeeper",
+      "objectives": []
     }
   ],
   "the-labyrinth": [
@@ -8960,6 +13393,32 @@
       ]
     },
     {
+      "slug": "offensive-reconnaissance",
+      "name": "Offensive Reconnaissance",
+      "namePt": "Reconhecimento Ofensivo",
+      "trader": "Mechanic",
+      "traderPt": "Mechanic",
+      "objectives": [
+        {
+          "id": "offensive-reconnaissance-0",
+          "description": "Find out what is behind the Health Resort bunker door on Shoreline",
+          "descriptionPt": "Encontre o que está por trás da porta do bunker do Health Resort na Shoreline",
+          "category": "objective",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ]
+    },
+    {
+      "slug": "the-survivalist-path-zhivchik",
+      "name": "The Survivalist Path - Zhivchik",
+      "namePt": "O caminho da sobrevivência - Zhivchik",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": []
+    },
+    {
       "slug": "this-tape-sucks",
       "name": "This Tape Sucks",
       "namePt": "This Tape Sucks",
@@ -9020,6 +13479,24 @@
       "trader": "Ragman",
       "traderPt": "Ragman",
       "objectives": []
+    },
+    {
+      "slug": "work-smarter",
+      "name": "Work Smarter",
+      "namePt": "Trabalhe de forma mais inteligente",
+      "trader": "Jaeger",
+      "traderPt": "Jaeger",
+      "objectives": [
+        {
+          "id": "work-smarter-0",
+          "description": "Locate the secret exfil on Customs",
+          "descriptionPt": "Localize a extração do bunker secreto na Customs",
+          "category": "objective",
+          "x": 19.443,
+          "y": 1.07,
+          "z": 0.495
+        }
+      ]
     }
   ]
 }

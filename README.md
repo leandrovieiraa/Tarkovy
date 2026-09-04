@@ -1,18 +1,18 @@
 ![Tarkovy — by Anomaly Labs](docs/tarkovy-banner.png)
 
-# TARKOVY · Dev 0.1.48
+# TARKOVY · Dev 0.1.49
 
 **Minimap overlay companion for Escape from Tarkov**  
 by **Anomaly Labs**
 
 <p align="left">
-  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.48-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.48"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/leandrovieiraa/Tarkovy/releases"><img height="28" src="https://img.shields.io/badge/Dev-0.1.49-E8A317?style=for-the-badge&labelColor=111111" alt="Dev 0.1.49"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.escapefromtarkov.com/"><img height="28" src="https://img.shields.io/badge/EFT-1.1.0%20KORD%20BREACH-333333?style=for-the-badge&labelColor=111111" alt="EFT 1.1.0 KORD BREACH"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#requirements"><img height="28" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&labelColor=111111" alt="Windows 10 / 11"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#build"><img height="28" src="https://img.shields.io/badge/.NET-8%20WPF-512BD4?style=for-the-badge&labelColor=111111" alt=".NET 8 WPF"/></a>
   <br/><br/>
   <a href="#credits"><img height="28" src="https://img.shields.io/badge/Anomaly%20Labs-studio-111111?style=for-the-badge&labelColor=222222" alt="Anomaly Labs"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.virustotal.com/gui/file/7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.virustotal.com/gui/file/4ED53F2FA5D0C09C0E290658890CC53067810E896EB202DED8126F56EBE70DC0"><img height="28" src="https://img.shields.io/badge/VirusTotal-SHA--256-555555?style=for-the-badge&labelColor=111111" alt="VirusTotal SHA-256"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/anomalylabs"><img height="28" src="https://img.shields.io/badge/Buy%20me%20a%20beer-craft%20%F0%9F%8D%BA-FFDD00?style=for-the-badge&labelColor=111111" alt="Buy me a craft beer"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="mailto:anomalylabstudio@gmail.com"><img height="28" src="https://img.shields.io/badge/Support-email-555555?style=for-the-badge&labelColor=111111" alt="Support: anomalylabstudio@gmail.com"/></a>
 </p>
@@ -34,7 +34,7 @@ No memory reading, no injection, no client modification.
 |                  |                                  |
 | ---------------- | -------------------------------- |
 | **Product**      | Tarkovy                          |
-| **Version**      | **Dev 0.1.48**                   |
+| **Version**      | **Dev 0.1.49**                   |
 | **EFT target**   | **1.1.0** (`1.1.0.1.46699`) · Season 1 **KORD BREACH** (Aug 2026) |
 | **Studio**       | Anomaly Labs                     |
 | **Stack**        | .NET 8 · WPF · WebView2          |
@@ -87,7 +87,7 @@ Found something broken? Please open a GitHub Issue — we want the reports.
 
 1. Go to **[Issues → New issue](https://github.com/leandrovieiraa/Tarkovy/issues/new)**
 2. Describe what you expected vs what happened
-3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.48`)
+3. Include **EFT version** (see in-game / Tarkovy header target) and **Tarkovy version** (`Dev 0.1.49`)
 4. **Attach screenshots or short clips** of the main window, overlay, and/or the in-game situation — images help a lot
 5. Steps to reproduce if you have them
 
@@ -274,17 +274,25 @@ copy tools\vt.local.env.example tools\vt.local.env
 
 `tools\vt.local.env` and `tools\_vt-out\` are gitignored.
 
-### Release `v0.1.48` (`Tarkovy.exe`)
+### Release `v0.1.49` (`Tarkovy.exe`)
 
+
+|                |                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.49/Tarkovy.exe)                        |
+| **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/4ED53F2FA5D0C09C0E290658890CC53067810E896EB202DED8126F56EBE70DC0)             |
+| **SHA-256**    | `4ED53F2FA5D0C09C0E290658890CC53067810E896EB202DED8126F56EBE70DC0`                                                                   |
+
+<details>
+<summary><strong>Previous releases</strong></summary>
+
+### `v0.1.48` (`Tarkovy.exe`)
 
 |                |                                                                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Download**   | [Tarkovy.exe (GitHub Release)](https://github.com/leandrovieiraa/Tarkovy/releases/download/v0.1.48/Tarkovy.exe)                        |
 | **VirusTotal** | [Open scan report](https://www.virustotal.com/gui/file/7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE)             |
 | **SHA-256**    | `7FE9521E3A5376B4BE3604CBF76C8FE6C94C7C7C1495858B9458C1500CAB8BFE`                                                                   |
-
-<details>
-<summary><strong>Previous releases</strong></summary>
 
 ### `v0.1.47` (`Tarkovy.exe`)
 
@@ -405,7 +413,14 @@ Get-FileHash .\Tarkovy.exe -Algorithm SHA256
 ## Changelog
 
 <details open>
-<summary><strong>Dev 0.1.48</strong> (latest)</summary>
+<summary><strong>Dev 0.1.49</strong> (latest)</summary>
+
+- **Quests** — catalog synced from tarkov.dev live tasks (~429 unique / ~641 map rows, up from ~312). Pins filled where tarkov.dev has zone coords; many remain list-only (kills/handovers)
+
+</details>
+
+<details>
+<summary><strong>Dev 0.1.48</strong></summary>
 
 - **Auto-update** — on the loading screen, Tarkovy checks GitHub Releases, asks to update, downloads with a bottom progress bar, then replaces this exe and relaunches (no extra updater app)
 - **Squad** — Release builds use a built-in host; friends paste a squad key or `TARKOVY` invite (no URL/anon). Config URL + anon is only for self-host. SQL gate: `squad_set_app_key`. Official URL/key in the exe are AES-GCM, not plaintext.
