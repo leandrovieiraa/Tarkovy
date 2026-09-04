@@ -3,8 +3,8 @@ namespace Tarkovy;
 /// <summary>App + target Escape from Tarkov versions (update when revalidating against a new patch).</summary>
 public static class ProductInfo
 {
-    public const string AppVersion = "0.1.49";
-    public const string AppVersionLabel = "Dev 0.1.49";
+    public const string AppVersion = "0.1.50";
+    public const string AppVersionLabel = "Dev 0.1.50";
 
     /// <summary>EFT client / patch this build was validated against.</summary>
     public const string EftPatch = "1.1.0";

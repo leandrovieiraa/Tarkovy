@@ -63,7 +63,6 @@ public partial class MainWindow : Window
     {
         if (_bootStarted) return;
         _bootStarted = true;
-        Dispatcher.BeginInvoke(WarmItemLensWindow, System.Windows.Threading.DispatcherPriority.Background);
         _ = BootAsyncSafe();
     }
 
@@ -110,8 +109,18 @@ public partial class MainWindow : Window
         }
 
         UpdateInfo? update = null;
-        try { update = await updateCheck; }
-        catch { update = null; }
+        try
+        {
+            update = await updateCheck.WaitAsync(TimeSpan.FromSeconds(2));
+        }
+        catch (TimeoutException)
+        {
+            update = null;
+        }
+        catch
+        {
+            update = null;
+        }
 
         if (update != null && await OfferUpdateAsync(update))
             return;
@@ -149,7 +158,6 @@ public partial class MainWindow : Window
 
         await _loadingTerminal.TypeLineAsync("Loading.Term.Markers");
         await _loadingTerminal.TypeLineAsync("Loading.Term.ItemLens");
-        WarmItemLensWindow();
         await Dispatcher.InvokeAsync(static () => { }, System.Windows.Threading.DispatcherPriority.Render);
         UpdateLoadingSnapshot();
         await _loadingTerminal.TypeLineAsync("Loading.Term.Ui");
@@ -168,6 +176,8 @@ public partial class MainWindow : Window
         UpdateSquadHeader();
         _ = WarmupAndPushMapAsync();
         _ = DeferOptionalServicesAsync();
+        if (update == null)
+            _ = OfferLateUpdateAsync(updateCheck);
     }
 
     private void ShowLoadingOverlay()
@@ -188,8 +198,31 @@ public partial class MainWindow : Window
         LoadingOverlay.Opacity = 1;
         LoadingSnapshot.Source = null;
         LoadingTerminalText.Text = "";
+        LoadingTerminalPanel.Visibility = Visibility.Visible;
         UpdatePromptPanel.Visibility = Visibility.Collapsed;
         UpdateProgressPanel.Visibility = Visibility.Collapsed;
+    }
+
+    private async Task OfferLateUpdateAsync(Task<UpdateInfo?> check)
+    {
+        try
+        {
+            var update = await check.ConfigureAwait(true);
+            if (update == null || !IsLoaded) return;
+            PreviewMap.SetHwndHidden(true);
+            LoadingOverlay.Visibility = Visibility.Visible;
+            LoadingOverlay.Opacity = 1;
+            AppChrome.IsEnabled = false;
+            LoadingTerminalPanel.Visibility = Visibility.Collapsed;
+            if (await OfferUpdateAsync(update))
+                return;
+            HideLoadingOverlay();
+            PreviewMap.SetHwndHidden(false);
+        }
+        catch
+        {
+            /* ignore late update failures */
+        }
     }
 
     private async Task<bool> OfferUpdateAsync(UpdateInfo update)
@@ -289,6 +322,8 @@ public partial class MainWindow : Window
         await Task.Delay(DeferredServicesDelay);
         await Dispatcher.InvokeAsync(() =>
         {
+            if (!_itemLensReady)
+                WarmItemLensWindow();
             StartItemScanServices();
             if (App.Settings.OverlayVisible)
                 ShowOverlay();
@@ -413,8 +448,8 @@ public partial class MainWindow : Window
         App.Shots.DeletedCount += _ => Dispatcher.Invoke(RefreshHud);
         App.Raid.Changed += () => Dispatcher.Invoke(RefreshHud);
         App.Squad.Changed += OnSquadChanged;
-        App.Maps.MarkersUpdated += () => Dispatcher.Invoke(PushMapToViews);
-        App.Items.ItemsUpdated += () => Dispatcher.Invoke(() =>
+        App.Maps.MarkersUpdated += () => Dispatcher.BeginInvoke(PushMapToViews);
+        App.Items.ItemsUpdated += () => Dispatcher.BeginInvoke(() =>
         {
             var pois = App.Maps.PoisFor(App.Settings.SelectedMapId);
             PreviewMap.SetPois(pois);

@@ -169,23 +169,26 @@ public partial class MapView : UserControl
         var enabled = (enabledSlugs ?? App.Settings.EnabledQuestSlugs)
             .Where(s => !completed.Contains(s))
             .ToArray();
+        var enabledSet = new HashSet<string>(enabled, StringComparer.OrdinalIgnoreCase);
 
-        var payload = quests.Select(q => new
-        {
-            slug = q.Slug,
-            name = Loc.QuestName(q),
-            trader = Loc.QuestTrader(q),
-            objectives = q.Objectives.Select(o => new
+        var payload = quests
+            .Where(q => enabledSet.Contains(q.Slug) || q.Objectives.Count > 0)
+            .Select(q => new
             {
-                o.Id,
-                description = Loc.QuestObjectiveDescription(o),
-                o.Category,
-                o.X,
-                o.Y,
-                o.Z
-            }).ToArray(),
-            completed = completed.Contains(q.Slug)
-        }).ToArray();
+                slug = q.Slug,
+                name = Loc.QuestName(q),
+                trader = Loc.QuestTrader(q),
+                objectives = q.Objectives.Select(o => new
+                {
+                    o.Id,
+                    description = Loc.QuestObjectiveDescription(o),
+                    o.Category,
+                    o.X,
+                    o.Y,
+                    o.Z
+                }).ToArray(),
+                completed = completed.Contains(q.Slug)
+            }).ToArray();
         Post(new
         {
             type = "quests",

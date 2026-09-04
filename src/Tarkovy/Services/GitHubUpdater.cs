@@ -13,7 +13,8 @@ public sealed record UpdateInfo(
 
 public static class GitHubUpdater
 {
-    private static readonly HttpClient Http = CreateClient();
+    private static readonly HttpClient Http = CreateClient(TimeSpan.FromMinutes(12));
+    private static readonly HttpClient CheckHttp = CreateClient(TimeSpan.FromSeconds(6));
 
     public static bool CanCheck
     {
@@ -34,10 +35,10 @@ public static class GitHubUpdater
         try
         {
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            linked.CancelAfter(TimeSpan.FromSeconds(8));
+            linked.CancelAfter(TimeSpan.FromSeconds(6));
             using var req = new HttpRequestMessage(HttpMethod.Get,
                 $"https://api.github.com/repos/{ProductInfo.GitHubOwner}/{ProductInfo.GitHubRepo}/releases/latest");
-            using var resp = await Http.SendAsync(req, linked.Token).ConfigureAwait(false);
+            using var resp = await CheckHttp.SendAsync(req, linked.Token).ConfigureAwait(false);
             if (!resp.IsSuccessStatusCode) return null;
             var json = await resp.Content.ReadAsStringAsync(linked.Token).ConfigureAwait(false);
             return ParseLatest(json);
@@ -161,9 +162,9 @@ public static class GitHubUpdater
         return Version.TryParse(s, out var v) ? v : null;
     }
 
-    private static HttpClient CreateClient()
+    private static HttpClient CreateClient(TimeSpan timeout)
     {
-        var http = new HttpClient { Timeout = TimeSpan.FromMinutes(12) };
+        var http = new HttpClient { Timeout = timeout };
         http.DefaultRequestHeaders.UserAgent.ParseAdd($"Tarkovy/{ProductInfo.AppVersion}");
         http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
         return http;

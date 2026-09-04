@@ -63,8 +63,12 @@ public partial class App : Application
             Shots = new ScreenshotWatcher();
             Squad = new SquadHub();
             _ = Items.LoadAsync();
-            _ = Maps.RefreshMarkersAsync();
             ApplyWatchers();
+        });
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+            await Maps.RefreshMarkersAsync().ConfigureAwait(false);
         });
         if (Settings.StartWithWindows)
             _ = Task.Run(() => StartupRegistration.Apply(true));

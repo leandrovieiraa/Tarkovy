@@ -158,6 +158,7 @@ public sealed class ItemCatalog
         }
 
         _ = RefreshAsync(ct);
+
         ItemLocalizedNames.EnsureLoading();
     }
 
@@ -165,15 +166,28 @@ public sealed class ItemCatalog
     {
         try
         {
+            if (IsReady)
+                await Task.Delay(TimeSpan.FromSeconds(6), ct).ConfigureAwait(false);
+
             var itemsTask = Http.GetStringAsync("https://json.tarkov.dev/regular/items", ct);
-            var tasksTask = Http.GetStringAsync("https://json.tarkov.dev/regular/tasks", ct);
-            var hideoutTask = Http.GetStringAsync("https://json.tarkov.dev/regular/hideout", ct);
-            var craftsTask = Http.GetStringAsync("https://json.tarkov.dev/regular/crafts", ct);
+            Task<string>? tasksTask = null;
+            Task<string>? hideoutTask = null;
+            Task<string>? craftsTask = null;
+            var needUsage = _questItemIds.Count == 0 && _hideoutItemIds.Count == 0;
+            if (needUsage)
+            {
+                tasksTask = Http.GetStringAsync("https://json.tarkov.dev/regular/tasks", ct);
+                hideoutTask = Http.GetStringAsync("https://json.tarkov.dev/regular/hideout", ct);
+                craftsTask = Http.GetStringAsync("https://json.tarkov.dev/regular/crafts", ct);
+            }
 
             string? tasksJson = null, hideoutJson = null, craftsJson = null;
-            try { tasksJson = await tasksTask.ConfigureAwait(false); } catch { /* usage optional */ }
-            try { hideoutJson = await hideoutTask.ConfigureAwait(false); } catch { /* usage optional */ }
-            try { craftsJson = await craftsTask.ConfigureAwait(false); } catch { /* usage optional */ }
+            if (tasksTask != null)
+                try { tasksJson = await tasksTask.ConfigureAwait(false); } catch { /* usage optional */ }
+            if (hideoutTask != null)
+                try { hideoutJson = await hideoutTask.ConfigureAwait(false); } catch { /* usage optional */ }
+            if (craftsTask != null)
+                try { craftsJson = await craftsTask.ConfigureAwait(false); } catch { /* usage optional */ }
 
             var json = await itemsTask.ConfigureAwait(false);
             ParseItems(json);

@@ -4,6 +4,9 @@ namespace Tarkovy.Services;
 
 public static class AssetBootstrap
 {
+    private static readonly object Gate = new();
+    private static string? _ensuredPath;
+
     private static readonly string[] VersionedDataFiles =
     [
         "quests.json",
@@ -17,24 +20,31 @@ public static class AssetBootstrap
 
     public static string Ensure()
     {
-        Directory.CreateDirectory(DirectoryPath);
-
-        var bundled = Path.Combine(AppContext.BaseDirectory, "Assets");
-        if (Directory.Exists(bundled))
+        if (_ensuredPath != null) return _ensuredPath;
+        lock (Gate)
         {
-            CopyTreeIfNewer(bundled, DirectoryPath);
-            foreach (var file in new[] { "map.js", "map.html", "map.css", "quests.json" })
-            {
-                var src = Path.Combine(bundled, file);
-                if (File.Exists(src))
-                    ForceCopy(src, Path.Combine(DirectoryPath, file));
-            }
-            RefreshVersionedData(bundled, DirectoryPath);
-        }
-        else
-            ExtractEmbeddedResources();
+            if (_ensuredPath != null) return _ensuredPath;
 
-        return DirectoryPath;
+            Directory.CreateDirectory(DirectoryPath);
+
+            var bundled = Path.Combine(AppContext.BaseDirectory, "Assets");
+            if (Directory.Exists(bundled))
+            {
+                CopyTreeIfNewer(bundled, DirectoryPath);
+                foreach (var file in new[] { "map.js", "map.html", "map.css" })
+                {
+                    var src = Path.Combine(bundled, file);
+                    if (File.Exists(src))
+                        ForceCopy(src, Path.Combine(DirectoryPath, file));
+                }
+                RefreshVersionedData(bundled, DirectoryPath);
+            }
+            else
+                ExtractEmbeddedResources();
+
+            _ensuredPath = DirectoryPath;
+            return _ensuredPath;
+        }
     }
 
     private static bool AssetsVersionMatches()
@@ -135,7 +145,7 @@ public static class AssetBootstrap
             if (stream == null) continue;
 
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            var always = rel is "map.js" or "map.html" or "map.css" or "quests.json";
+            var always = rel is "map.js" or "map.html" or "map.css";
             if (versionMatch && !always && File.Exists(dest) && new FileInfo(dest).Length == stream.Length)
                 continue;
 
